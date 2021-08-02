@@ -191,6 +191,7 @@
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="StateMachine.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="PhysicsBody.h" />
