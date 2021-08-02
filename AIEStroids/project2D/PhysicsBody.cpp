@@ -39,7 +39,7 @@ void PhysicsBody::Update()
 		//add drag
 		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
 		//set rotation
-		gameObject->SetRotation(gameObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		gameObject->SetRotationZ(gameObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
 		
 		//reset force
 		force = Vector2::ZERO();
@@ -55,7 +55,7 @@ void PhysicsBody::Update()
 		//add drag
 		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
 		//set rotation
-		gameObject->SetRotation(gameObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		gameObject->SetRotationZ(gameObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
 	}
 		break;
 	case BodyType::STATIC:

@@ -31,8 +31,6 @@ public:
 
 	Vector2 GetLocalPosition() { return  m_LocalTransform.GetPosition(); }
 	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
-	
-	Vector2 GetGlobalPosition() { return m_GlobalTransform.GetPosition(); }
 
 	float GetRotation() { return m_LocalTransform.GetRotation(); }
 	void SetRotationX(float _radians) { m_LocalTransform.SetRotateX(_radians); }
@@ -44,6 +42,8 @@ public:
 
 	aie::Texture* GetTexture() { return m_Texture; }
 	void SetTexture(aie::Texture* _texture) { m_Texture = _texture; }
+
+	Vector2 GetVelocity() {}
 
 	//virtual void OnCollision(CollisionEvent _event);
 	
