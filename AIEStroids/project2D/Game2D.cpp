@@ -48,6 +48,9 @@ void Game2D::Update(float deltaTime)
 		application->Quit();
 	}
 
+	player->Update(aie::Application::GetInstance()->GetDeltaTime());
+	player->GetPhysicsBody()->Update();
+
 	//Call update on the camera
 	Camera::GetInstance()->Update(deltaTime);
 }

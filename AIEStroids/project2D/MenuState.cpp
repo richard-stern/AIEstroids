@@ -1,6 +1,18 @@
 // Author: Matin Kamali
 #include "MenuState.h"
 
+  // -------------------------------------------
+ //           DRAW UI FUNCTIONS
+// -------------------------------------------
+namespace UI { // @incomplete move Rect into its own file?
+	
+
+};
+
+  // -------------------------------------------
+ //               MENU STATE
+// -------------------------------------------
+
 ///
 MenuState::MenuState() {
 	// @incomplete
@@ -19,7 +31,7 @@ void MenuState::Update(float deltaTime, StateMachine* stateMachine) {
 };
 
 ///
-void MenuState::Draw(Renderer2D* renderer) {
+void MenuState::Draw(aie::Renderer2D* renderer) {
 	// @incomplete
 };
 ///
