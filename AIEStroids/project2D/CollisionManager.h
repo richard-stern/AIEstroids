@@ -17,11 +17,13 @@ class CollisionManager
 public:
 	//should be called every FIXED_TIME_STEP
 	void Update();
+	void ResolveCollisions();
 
 private:
-	std::vector<PhysicsBody*> collisionObjects;
-	std::vector<CollisionManifold> potentialCollisions;
+	static void ResolveCollision(CollisionManifold manifold);
+	static bool CheckAABBCollision(AABB& a, AABB& b);
 
-	
+	std::vector<PhysicsBody*> collisionObjects;
+	std::vector<CollisionManifold> collisions;
 };
 
