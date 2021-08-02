@@ -9,14 +9,19 @@ public:
 	Actor();
 	virtual ~Actor();
 
-	virtual void Update(float _deltaTime);
-	virtual void Draw(aie::Renderer2D* _renderer2D);
+	virtual void Update() override;
 
 	bool GetWrapAndRespawn() { return m_WrapAndRespawn; }
 	void SetWrapAndRespawn(bool _active) { m_WrapAndRespawn = _active; }
 
-protected:
-	bool m_WrapAndRespawn = false;
+	PhysicsBody* GetPhysicsBody() { return m_PhysicsBody; }
+	void SetPhysicsBody(PhysicsBody* _body) { m_PhysicsBody = _body; }
 
+	virtual void OnCollision(CollisionEvent _event);
+
+protected:
+	PhysicsBody* m_PhysicsBody = nullptr;
+
+	bool m_WrapAndRespawn = false;
 };
 

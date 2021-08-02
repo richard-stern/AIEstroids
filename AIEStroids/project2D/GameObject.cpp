@@ -20,11 +20,16 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
-
+	
 }
 
 void GameObject::Draw(aie::Renderer2D* _renderer2D)
 {
+	//_renderer2D->DrawSprite(m_Texture, GetLocalPosition().x, GetLocalPosition().y, 0, 0, GetRotation());
+}
 
+void GameObject::OnCollision(CollisionEvent _event)
+{
+	// TODO
 }
 

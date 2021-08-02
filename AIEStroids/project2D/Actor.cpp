@@ -1,4 +1,5 @@
 #include "Actor.h"
+#include "Application.h"
 
 Actor::Actor()
 {
@@ -10,15 +11,12 @@ Actor::~Actor()
 
 }
 
-void Actor::Update(float _deltaTime)
+void Actor::Update()
 {
-	if (m_WrapAndRespawn)
-	{
-		
-	}
+	
 }
 
-void Actor::Draw(aie::Renderer2D* _renderer2D)
+void Actor::OnCollision(CollisionEvent _event)
 {
 
 }

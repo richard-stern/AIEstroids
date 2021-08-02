@@ -43,12 +43,11 @@ public:
 	aie::Texture* GetTexture() { return m_Texture; }
 	void SetTexture(aie::Texture* _texture) { m_Texture = _texture; }
 
-	//virtual void OnCollision(CollisionEvent _event);
+	virtual void OnCollision(CollisionEvent _event);
 	
 protected:
 	GameObject* m_Parent = nullptr;
 	DynamicArray<GameObject*> m_Children;
-	PhysicsBody* m_PhysicsBody = nullptr;
 
 	Matrix3 m_GlobalTransform;
 	Matrix3 m_LocalTransform;
