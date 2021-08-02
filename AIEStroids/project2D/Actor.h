@@ -29,7 +29,7 @@ public:
 	virtual void OnCollision(CollisionEvent _event);
 
 protected:
-	float WrapAndRespawn(float _coordinate, float _max);
+	//float WrapAndRespawn(float _coordinate, float _max);
 
 	PhysicsBody* m_PhysicsBody = nullptr;
 	

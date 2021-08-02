@@ -32,15 +32,15 @@ void Actor::Update(float _deltaTime)
 }
 
 // TODO
-float Actor::WrapAndRespawn(float _coordinate, float _max)
-{
-	//_coordinate %= _max + 1;
-	//if (_coordinate < 0)
-	//{
-	//	_coordinate += _max;
-	//}
-	//return _coordinate;
-}
+//float Actor::WrapAndRespawn(float _coordinate, float _max)
+//{
+//	_coordinate %= _max + 1;
+//	if (_coordinate < 0)
+//	{
+//		_coordinate += _max;
+//	}
+//	return _coordinate;
+//}
 
 void Actor::OnCollision(CollisionEvent _event)
 {
