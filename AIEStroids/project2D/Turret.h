@@ -28,12 +28,20 @@ public:
 
 private:
 
+	// -=-=- PLAYER INPUT FUNCTIONS -=-=-
 	//returns mouse pos
 	Vector2 GetMousePos();
+	//returns if mouse is clicked
+	bool IsLeftMouseClicked();
+
 	
 	//controller, changes variables based on player input
 	void Controller(float deltaTime);
+	void Rotate(float deltaTime);
+	void Fire(float deltaTime);
 
+	//Aesthetic targetted function, moves turret back and forth
+	void TurretKickback(float deltaTime); 
 
 	//Visual Aesthetic stuff
 	//Position of turret offset from 'player'
@@ -48,7 +56,7 @@ private:
 	//Automatically assigned based off fire rate
 	float m_timeBetweenBullets;
 	//Tracks time since last shot was fired
-	float m_lastShotTime;
+	float m_lastShotTimeDelta;
 
 	//Turret control variables - Adjustable
 	//How fast the turret can rotate (Probably per second, full rotation = 360, will update if I make sure this is how it works)
