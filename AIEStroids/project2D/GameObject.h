@@ -17,7 +17,7 @@ public:
 	GameObject(Vector2 _pos);
 	virtual ~GameObject();
 
-	virtual void Update();
+	virtual void Update(float _deltaTime);
 	virtual void Draw(aie::Renderer2D* _renderer2D);
 
 	GameObject* GetParent() { return m_Parent; }
@@ -43,12 +43,11 @@ public:
 	aie::Texture* GetTexture() { return m_Texture; }
 	void SetTexture(aie::Texture* _texture) { m_Texture = _texture; }
 
-	//virtual void OnCollision(CollisionEvent _event);
+	virtual void OnCollision(CollisionEvent _event);
 	
 protected:
 	GameObject* m_Parent = nullptr;
 	DynamicArray<GameObject*> m_Children;
-	PhysicsBody* m_PhysicsBody = nullptr;
 
 	Matrix3 m_GlobalTransform;
 	Matrix3 m_LocalTransform;

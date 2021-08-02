@@ -18,13 +18,21 @@ GameObject::~GameObject()
 	m_Texture = nullptr;
 }
 
-void GameObject::Update()
+void GameObject::Update(float _deltaTime)
 {
-
+	SetLocalPosition(GetLocalPosition() + (m_Velocity * _deltaTime));
 }
 
 void GameObject::Draw(aie::Renderer2D* _renderer2D)
 {
+	if (m_IsActive)
+	{
+		_renderer2D->DrawSprite(m_Texture, GetLocalPosition().x, GetLocalPosition().y, 0, 0, GetRotation());
+	}
+}
 
+void GameObject::OnCollision(CollisionEvent _event)
+{
+	// TODO
 }
 
