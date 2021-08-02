@@ -25,12 +25,16 @@ class CollisionManager
 {
 public:
 	//should be called every FIXED_TIME_STEP
+	static void CreateInstance();
+	static void DeleteInstance();
+	static CollisionManager* GetInstance();
+
 	void Update();
-	static CollisionManager& GetInstance();
 
 	CollisionManager(CollisionManager&) = delete;
 	CollisionManager(CollisionManager&&) = delete;
 private:
+	static CollisionManager* instance;
 	CollisionManager();
 
 	void ResolveCollisions();
