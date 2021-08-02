@@ -5,6 +5,7 @@ class StateMachine;
 class Renderer2D;
 
 class BaseState {
+public:
 	/// Constructor
 	BaseState() {}
 	/// Destructor
