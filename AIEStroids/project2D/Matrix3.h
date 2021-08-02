@@ -16,6 +16,7 @@ struct Matrix3 {
 	// constructors //
 	// ------------ //
 	Matrix3();
+	Matrix3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8);
 	Matrix3(const Matrix3& _other);
 	~Matrix3();
 
@@ -25,6 +26,7 @@ struct Matrix3 {
 	Matrix3 operator*(const Matrix3& _other);
 	Matrix3 operator=(const Matrix3& _other);
 	bool operator==(const Matrix3& _other);
+	Matrix3 operator*(float scalar);
 
 	// ------- //
 	// methods //
@@ -36,10 +38,12 @@ struct Matrix3 {
 	void SetScale(float _x, float _y);
 	void SetPosition(float _x, float _y);
 	void SetPosition(Vector2 _vec2);
-	Matrix3 Multiply(const Matrix3& _other);
 	Vector2 GetPosition() const;
 	Vector2 GetUp() const;
 	Vector2 GetRight() const;
+	Matrix3 Inverse() const;
+	Vector2 GetScale();
+	float GetRotation();
 
 	// --------- //
 	// debugging //

@@ -171,17 +171,69 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BulletManager.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Game2D.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="Heap.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix3.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Turret.cpp" />
+=======
+    <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="PhysicsBody.cpp" />
+    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
+>>>>>>> main
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="BaseState.h" />
+    <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="BinaryTreeNode.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BulletManager.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="DataContainers.h" />
+    <ClInclude Include="Dequeue.h" />
+    <ClInclude Include="DoubleLinkedList.h" />
+    <ClInclude Include="DoubleLinkedListNode.h" />
+    <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Game2D.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOverState.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="Heap.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="LinkedListNode.h" />
     <ClInclude Include="Matrix3.h" />
+<<<<<<< HEAD
     <ClInclude Include="Turret.h" />
+=======
+    <ClInclude Include="MenuState.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="Stack.h" />
+    <ClInclude Include="PhysicsBody.h" />
+    <ClInclude Include="StateMachine.h" />
+>>>>>>> main
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
