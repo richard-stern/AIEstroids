@@ -24,7 +24,6 @@ struct CollisionManifold
 class CollisionManager
 {
 public:
-	//should be called every FIXED_TIME_STEP
 	static void CreateInstance();
 	static void DeleteInstance();
 	static CollisionManager* GetInstance();
