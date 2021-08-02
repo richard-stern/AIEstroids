@@ -6,6 +6,8 @@ void CollisionManager::Update()
 	{
 		collisionObjects[i]->Update();
 	}
+
+	ResolveCollisions();
 }
 
 void CollisionManager::ResolveCollisions()

@@ -17,9 +17,9 @@ class CollisionManager
 public:
 	//should be called every FIXED_TIME_STEP
 	void Update();
-	void ResolveCollisions();
 
 private:
+	void ResolveCollisions();
 	static void ResolveCollision(CollisionManifold manifold);
 	static bool CheckAABBCollision(AABB& a, AABB& b);
 
