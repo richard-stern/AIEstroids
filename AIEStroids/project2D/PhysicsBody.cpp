@@ -63,7 +63,8 @@ void PhysicsBody::Update()
 		break;
 	}
 	
-	UpdateAABB();
+	if (collider != nullptr)
+		UpdateAABB();
 }
 
 void PhysicsBody::AddImpulse(Vector2 impulse)
