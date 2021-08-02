@@ -2,52 +2,50 @@
 #include "Renderer2D.h"
 #include "Font.h"
 #include "Input.h"
-#include "DynamicArray.h"
-#include "Vector2.h"
-
-class Button
-{
-	Vector2 position;
-};
-
+#include "Application.h"
+	
 class GUI
 {
 public:
-
-	
+	// GUI's creation
 	static void Create();
+
+	// Gui's destruction
 	static void Destroy();
 
+	// Returns the current instance
 	GUI* GetInstance();
 
-	void DrawGUI(aie::Renderer2D* renderer, aie::Font* font,  aie::Input* input, int index);
+	// Player setting health
+	void SetHealth(int health);
 
+	// Player setting score
+	void SetScore(int score);
+
+	// Player setting lives
+	void SetLives(int lives);
+
+	// Draws the Game UI
+	void Draw(aie::Renderer2D* renderer, aie::Font* font,  aie::Input* input);
 
 private:
 
+	// Constructor
 	GUI();
+
+	// Destructor
 	~GUI();
-	
-	void Update(aie::Input* input);
-	void Draw(aie::Renderer2D* renderer, aie::Font* font );
 
-	void GetHealth(int health);
-
-	void GetScore(int score);
-
-	void GetLives(int lives);
-
-	void DrawMenu(aie::Renderer2D* renderer, aie::Font* font);
-	void DrawGame(aie::Renderer2D* renderer, aie::Font* font);
-	void DrawEndScreen(aie::Renderer2D* renderer, aie::Font* font);
-
-	void DrawButton(aie::Renderer2D* renderer, aie::Font* font);
+	// The current instance
 	static GUI* m_Instance;
-	DynamicArray<Button*> m_ButtonList;
 
-	int m_GUIType;
+	// The Displayed health
 	int m_Health;
+
+	// The displayed score
 	int m_Score;
+
+	// The displayed lives
 	int m_lives;
 };
 
