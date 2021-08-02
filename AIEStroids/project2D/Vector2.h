@@ -54,6 +54,7 @@ struct Vector2 {
 	// -------------- //
 	// STATIC METHODS //
 	// -------------- //
+	static float Dot(Vector2 _vec1, Vector2 _vec2);
 	static Vector2 Scale(Vector2 _vec1, Vector2 vec2);
 	static float GetAngle(Vector2 _vec1, Vector2 _vec2);
 	static Vector2 ZERO() { return Vector2(); }
