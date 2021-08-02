@@ -19,12 +19,12 @@ Star::~Star()
 	//Not required
 }
 
-void GameObject::Update()
+void Star::Update(float deltaTime)
 {
 	//Does nothing
 }
 
-void GameObject::Draw(aie::Renderer2D* _renderer)
+void Star::Draw(aie::Renderer2D* _renderer)
 {
 	//Draw the sprite if the texture is loaded
 	if (m_Texture != nullptr)
