@@ -187,6 +187,7 @@
     <ClInclude Include="DoubleLinkedList.h" />
     <ClInclude Include="DoubleLinkedListNode.h" />
     <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game2D.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Matrix3.h" />
