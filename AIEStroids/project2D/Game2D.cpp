@@ -18,8 +18,7 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	player = new Player({ 30.0f, 30.0f });
 
 	//Create the camera controller
-	Camera::Create();
-	Camera::renderer = m_2dRenderer;
+	Camera::Create(m_2dRenderer, player);
 }
 
 Game2D::~Game2D()
