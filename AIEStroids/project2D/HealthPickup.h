@@ -6,6 +6,8 @@ public:
 	HealthPickup(int health,const char* textureName);
 	~HealthPickup();
 
+	void OnCollision(CollisionEvent _event) override;
+
 private:
 	int m_healthGained;
 };
