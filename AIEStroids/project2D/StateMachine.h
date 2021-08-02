@@ -6,6 +6,7 @@ class Renderer2D;
 class MenuState;
 class GameState;
 class GameOverState;
+class BaseState;
 
 // A finite state machine to control the overall game flow.
 // • Is created by Application2D.
