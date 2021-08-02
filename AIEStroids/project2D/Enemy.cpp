@@ -1,14 +1,14 @@
 #include "Enemy.h"
+#include "Player.h"
 #include "Application.h"
-#include "GameObject.h"
 
-Enemy::Enemy() : m_destroyed(false)
+Enemy::Enemy() : m_destroyed(false), Actor()
 {
 	m_v2Velocity = { 0, 0 };
-	//m_fDrag = ;
+	m_Drag = 1.0f;
 	//m_pCollider = ;
 	//m_pTexture = ;
-	m_m3LocalMatrix.ResetToIdenity();
+	m_LocalTransform.ResetToIdentity();
 	//m_pParent = ;
 	//m_Children = ;
 	//m_bVisible = ;
@@ -31,15 +31,19 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
-	m_player->m_GlobalTransform[0] = position.x;
-	m_player->m_GlobalTransform[4] = position.y;
+	Matrix3 globalTranform = GetGlobalTransform();
+
+	globalTranform.m[0] = m_position.x;
+	globalTranform.m[4] = m_position.y;
+
+	//SetTransform(globalTranform);
 
 	Seek(deltaTime);
 }
 
 void Enemy::Draw(aie::Renderer2D* renderer)
 {
-	renderer->DrawBox(position.x, position.y, 32, 48, 0, 1);
+	renderer->DrawBox(m_position.x, m_position.y, 32, 48, 0, 1);
 }
 
 void Enemy::OnCollision(GameObject* other)
@@ -50,13 +54,14 @@ void Enemy::OnCollision(GameObject* other)
 
 void Enemy::Seek(float deltaTime)
 {
-	m_position = { m_GlobalTransform[0], m_GlobalTransform[4] };
-	Vector2 playerPos = m_player->m_GlobalTransform[0], m_player->m_GlobalTransform[4];
+	m_position = { m_GlobalTransform.m[0], m_GlobalTransform.m[4] };
 
-	Vector2 difference = playerPos - enemyPos;
+	Vector2 playerPos = m_player->GetGlobalPosition();
 
-	float desiredVelocity = difference.get_normalised() * m_MaxVelocity;
-	float steeringForce = desiredVelocity - m_v2Velocity;
+	Vector2 difference = playerPos - m_position;
+
+	Vector2 desiredVelocity = difference.GetNormalised() * m_MaxVelocity;
+	Vector2 steeringForce = desiredVelocity - m_v2Velocity;
 	
 	// update the position of the enemy
 	m_v2Velocity += steeringForce * deltaTime;

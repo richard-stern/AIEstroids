@@ -3,11 +3,11 @@
 #include <time.h>
 #include "Matrix3.h"
 #include "Vector2.h"
+#include "Actor.h"
 
-class GameObject;
-class Actor;
+class Player;
 
-class Enemy : public Actor,
+class Enemy : public Actor
 {
 private:
 	bool m_destroyed;
@@ -18,9 +18,10 @@ public:
 	Enemy();
 	~Enemy();
 	void Update(float deltaTime) override;
-	void Draw(aie::Renderer2D* renderer);
+	void Draw(aie::Renderer2D* renderer) override;
 	void OnCollision(GameObject* other);
 	bool IsDestroyed() { return m_destroyed; }
+	Vector2 GetPosition();
 
 private:
 	void Seek(float deltaTime);

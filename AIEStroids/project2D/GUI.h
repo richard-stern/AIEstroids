@@ -14,8 +14,6 @@ public:
 
 	void SetHealth();
 
-	void SetHealth();
-
 	void AddScore();
 
 	void GetScore();

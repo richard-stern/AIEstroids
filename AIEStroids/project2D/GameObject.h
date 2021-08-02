@@ -26,6 +26,8 @@ public:
 
 	Vector2 GetLocalPosition() { return m_LocalTransform.GetPosition(); }
 	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
+	
+	Vector2 GetGlobalPosition() { return m_GlobalTransform.GetPosition(); }
 
 	Vector2 GetVelocity() { return m_Velocity; }
 	void SetVelocity(Vector2 _velocity) { m_Velocity = _velocity; }
@@ -41,7 +43,7 @@ public:
 
 	//virtual void OnCollision(CollisionEvent _event);
 
-private:
+protected:
 	GameObject* m_Parent = nullptr;
 	DynamicArray<GameObject*> m_Children;
 
