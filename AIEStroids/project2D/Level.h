@@ -32,6 +32,7 @@ public:
 	void Update(float deltaTime);
 	void Draw(aie::Renderer2D* renderer);
 	Actor** GetRocks() { return (Actor**) m_rockArray; }
+	Player* GetPlayer() { return m_player; }
 
 private:
 	// Window size
@@ -40,9 +41,9 @@ private:
 
 	// Objects
 	Player* m_player;
-	Rock* m_rockArray[ROCKS_COUNT];		// Doesn't exist yet
+	Rock* m_rockArray[ROCKS_COUNT];
 	Star* m_starArray[STARS_COUNT];	
-	DynamicArray<Enemy*> m_enemyArray();
+	DynamicArray<Enemy*> m_enemyArray;
 
 	// Misc.
 	float enemyTimer = ENEMY_RATE;

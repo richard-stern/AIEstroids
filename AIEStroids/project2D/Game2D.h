@@ -19,5 +19,4 @@ protected:
 	aie::Renderer2D*	m_2dRenderer;
 	Level* level;
 	std::vector<Enemy*> enemies;
-	Player* player;
 };

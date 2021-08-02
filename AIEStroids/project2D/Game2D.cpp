@@ -11,8 +11,10 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	// Initalise the 2D renderer.
 	m_2dRenderer = new aie::Renderer2D();
 
+	level = new Level();
+
 	//Create the camera controller
-	Camera::Create(m_2dRenderer, player);
+	Camera::Create(m_2dRenderer, level->GetPlayer());
 }
 
 Game2D::~Game2D()
@@ -40,8 +42,8 @@ void Game2D::Update(float deltaTime)
 		application->Quit();
 	}
 
-	player->Update(aie::Application::GetInstance()->GetDeltaTime());
-	player->GetPhysicsBody()->Update();
+	level->GetPlayer()->Update(aie::Application::GetInstance()->GetDeltaTime());
+	level->GetPlayer()->GetPhysicsBody()->Update();
 
 	//Call update on the camera
 	Camera::GetInstance()->Update(deltaTime);
