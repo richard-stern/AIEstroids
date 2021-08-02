@@ -6,10 +6,11 @@
 class Actor : public GameObject
 {
 public:
-	Actor();
+	Actor(Vector2 startPos);
 	virtual ~Actor();
 
-	virtual void Update(float _deltaTime);
+	virtual void Update();
+	//virtual void OnCollision(CollisionEvent collisionEvent) override;
 	virtual void Draw(aie::Renderer2D* _renderer2D);
 
 	bool GetWrapAndRespawn() { return m_WrapAndRespawn; }
