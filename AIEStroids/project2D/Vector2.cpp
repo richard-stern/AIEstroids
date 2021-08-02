@@ -124,6 +124,11 @@ void Vector2::SetRotation(float _radians) {
 	*this *= magnitude;
 }
 
+float Vector2::Dot(Vector2 _vec1, Vector2 _vec2)
+{
+	return _vec1.x * _vec2.x + _vec1.y * _vec2.y;
+}
+
 Vector2 Vector2::Scale(Vector2 _vec1, Vector2 _vec2)
 {
 	return Vector2(_vec1.x * _vec2.x, _vec1.y * _vec2.y);
