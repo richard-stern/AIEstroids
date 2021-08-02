@@ -6,6 +6,7 @@ TextureManager* TextureManager::m_Instance = nullptr;
 TextureManager::TextureManager()
 {
 	m_Textures = new std::unordered_map<const char*, aie::Texture*>();
+	m_Font = new std::unordered_map<const char*, aie::Font*>();
 }
 
 TextureManager::~TextureManager()
@@ -20,6 +21,15 @@ TextureManager::~TextureManager()
 		//delete iter->first;
 	}
 	delete m_Textures;
+
+	//Unload all fonts
+	for (auto iter = m_Font->begin(); iter != m_Font->end(); iter++)
+	{
+		delete iter->second;
+		//Maybe needed
+		//delete iter->first;
+	}
+	delete m_Font;
 
 }
 
