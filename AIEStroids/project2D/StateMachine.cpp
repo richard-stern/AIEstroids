@@ -25,7 +25,7 @@ void StateMachine::Update(float delta) {
 	};
 };
 ///
-void StateMachine::Draw(Renderer2D* renderer) {
+void StateMachine::Draw(aie::Renderer2D* renderer) {
 	if (current_state) {
 		current_state->Draw(renderer);
 	};
