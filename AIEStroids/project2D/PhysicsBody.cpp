@@ -44,6 +44,8 @@ void PhysicsBody::Update()
 		
 		//reset force
 		force = Vector2::ZERO();
+
+		UpdateAABB();
 	}
 		break;
 	case BodyType::KINEMATIC:
@@ -57,23 +59,25 @@ void PhysicsBody::Update()
 		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
 		//set rotation
 		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		
+		UpdateAABB();
 	}
 		break;
 	case BodyType::STATIC:
 	{
-		//do nothing
+		UpdateAABB();
 	}
 		break;
 	}
 }
 
-void PhysicsBody::addImpulse(Vector2 impulse)
+void PhysicsBody::AddImpulse(Vector2 impulse)
 {
 	//same as add velocity except impacted by mass
 	velocity += impulse * iMass;
 }
 
-void PhysicsBody::updateAABB()
+void PhysicsBody::UpdateAABB()
 {
 	auto& aabb = collider->shapeAABB;
 	//maxX
