@@ -43,7 +43,7 @@ void Player::Update(float deltaTime)
 
 	//Base thrust amount without any modification
 	float thrustAmount = PLAYER_THRUST;
-	float torqueAmount = PLAYER_TORQUE;
+	float torqueAmount = PLAYER_TORQUE * DEG2RAD;
 
 	//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
 	if (Vector2::Dot(playerForward, currentVelocity) < 0)
