@@ -6,6 +6,7 @@
 constexpr float PHYSICS_TIME_STEP = 1.0f / 60;
 
 class Actor;
+class CollisionManager;
 
 enum class BodyType : char
 {
@@ -58,6 +59,7 @@ public:
 	void UpdateAABB();
 
 private:
+	friend CollisionManager;
 	//Connected GameObject
 	Actor* actorObject;
 	Collider* collider;

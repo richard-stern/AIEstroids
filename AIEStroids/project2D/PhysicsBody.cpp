@@ -3,7 +3,7 @@
 #include "CollisionManager.h"
 
 PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider, float drag, float angularDrag, float mass)
-	: actorObject(connectedGameObject), type(type), collider(collider), drag(drag), angularDrag(angularDrag)
+	: actorObject(connectedGameObject), type(type), collider(collider), drag(drag), angularDrag(angularDrag), angularVelocity(0), velocity(Vector2()), force(Vector2()), torque(0)
 {
 	if (mass == 0)
 	{
