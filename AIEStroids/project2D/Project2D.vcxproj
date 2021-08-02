@@ -201,8 +201,6 @@
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Queue.h" />
-    <ClInclude Include="Stack.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
