@@ -11,6 +11,12 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	// Initalise the 2D renderer.
 	m_2dRenderer = new aie::Renderer2D();
 
+	//Did this so we could actually see
+	//-------------------------------------/
+	//		Singleton Initialisation
+	//___________________________________/
+	TextureManager::Get();
+
 	level = new Level();
 
 	//Create the camera controller
@@ -26,6 +32,8 @@ Game2D::~Game2D()
 	}
 
 	delete level;
+
+	TextureManager::Destroy();
 	// Delete the renderer.
 	delete m_2dRenderer;
 }
@@ -42,6 +50,7 @@ void Game2D::Update(float deltaTime)
 		application->Quit();
 	}
 
+	//Temporary
 	level->GetPlayer()->Update(aie::Application::GetInstance()->GetDeltaTime());
 	level->GetPlayer()->GetPhysicsBody()->Update();
 
@@ -60,10 +69,15 @@ void Game2D::Draw()
 	// Prepare the renderer. This must be called before any sprites are drawn.
 	m_2dRenderer->Begin();
 
+	//Temporary so we can see tha player
+	level->GetPlayer()->Draw(m_2dRenderer);
+
 	for (Enemy* enemy : enemies)
 	{
 		enemy->Draw(m_2dRenderer);
 	}
+	//Stars block it from drawing for now
+	//level->Draw(m_2dRenderer);
 
 	// Done drawing sprites. Must be called at the end of the Draw().
 	m_2dRenderer->End();
