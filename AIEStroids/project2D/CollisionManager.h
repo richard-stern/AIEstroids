@@ -2,6 +2,7 @@
 //Author: Connor
 
 #include "PhysicsBody.h"
+#include "Matrix3.h"
 #include "Application.h"
 #include <vector>
 #include <forward_list>
@@ -13,6 +14,12 @@ struct CollisionEvent
 	float penetration;
 };
 
+enum class CollisionType
+{
+	POLYGONPOLYGON,
+	POLYGONCIRCLE,
+	CIRCLECIRCLE
+};
 struct CollisionManifold
 {
 	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) {}
@@ -21,6 +28,13 @@ struct CollisionManifold
 	PhysicsBody* b;
 	Vector2 collisionNormal;
 	float penetration;
+	CollisionType type;
+};
+
+struct MinMax
+{
+	float min;
+	float max;
 };
 
 class CollisionManager
@@ -49,6 +63,9 @@ private:
 	static bool CheckAABBCollision(AABB& a, AABB& b);
 	//returns whether objects have collided or not, also sets colliison normal and penetration in manifold
 	static bool getCollisionInfo(CollisionManifold& manifold);
+	//gets the minimum and maximum values of all vertices projected onto an axis
+	//takes in local vertices
+	static MinMax GetProjectedMinMax(Vector2& axis, Vector2* vertices, int vertexCount);
 
 	std::vector<PhysicsBody*> collisionObjects;
 	std::vector<CollisionManifold> collisions;

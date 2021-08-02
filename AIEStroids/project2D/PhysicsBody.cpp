@@ -80,7 +80,7 @@ void PhysicsBody::UpdateAABB()
 {
 	auto& aabb = collider->shapeAABB;
 
-	switch (collider->shape->getType())
+	switch (collider->shape->GetType())
 	{
 	case ShapeType::CIRCLE:
 	{

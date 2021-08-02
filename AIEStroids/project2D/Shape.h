@@ -2,6 +2,7 @@
 
 #pragma once
 #include "Vector2.h"
+#include "Matrix3.h"
 #include <memory>
 
 struct AABB
@@ -18,8 +19,13 @@ enum class ShapeType
 
 struct Shape
 {
-	virtual ShapeType getType() = 0;
+	virtual ShapeType GetType() = 0;
 	Vector2 centrePoint;
+
+	virtual void CalculateGlobal(Matrix3& transform);
+	Vector2 getGlobalCentrePoint() { return globalCentrePoint; }
+protected:
+	Vector2 globalCentrePoint;
 };
 
 struct CircleShape : public Shape
@@ -32,7 +38,7 @@ struct CircleShape : public Shape
 		this->centrePoint = centrePoint;
 	}
 
-	ShapeType getType() { return ShapeType::CIRCLE; }
+	ShapeType GetType() { return ShapeType::CIRCLE; }
 };
 
 struct PolygonShape : public Shape
@@ -45,9 +51,18 @@ struct PolygonShape : public Shape
 		: vertices(vertices), normals(normals), count(count)
 	{
 		this->centrePoint = centrePoint;
+		globalVertices = new Vector2[count];
 	}
 	~PolygonShape();
 
-	ShapeType getType() { return ShapeType::POLYGON; }
+	ShapeType GetType() { return ShapeType::POLYGON; }
 	void CloneTo(PolygonShape& shape);
+
+	void CalculateGlobal(Matrix3& transform) override;
+
+	Vector2* GetGlobalVertices() { return globalVertices; };
+
+private:
+	//store these just because it is faster probably
+	Vector2* globalVertices;
 };
