@@ -31,11 +31,11 @@ public:
 
 	void Update();
 
-	CollisionManager(CollisionManager&) = delete;
-	CollisionManager(CollisionManager&&) = delete;
 private:
 	static CollisionManager* instance;
-	CollisionManager();
+	CollisionManager() = default;
+	CollisionManager(CollisionManager&&) = default;
+	CollisionManager(CollisionManager&) = default;
 
 	void ResolveCollisions();
 	static void ResolveCollision(CollisionManifold& manifold);
