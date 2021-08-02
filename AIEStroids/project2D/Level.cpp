@@ -43,25 +43,25 @@ Level::Level()
 Level::~Level()
 {
 	// Delete stars
-	for (int i = 0; i < STARS_COUNT; i++)
-	{
-		delete m_starArray[i];
-		m_starArray[i] = nullptr;
-	}
+	//for (int i = 0; i < STARS_COUNT; i++)
+	//{
+	//	delete m_starArray[i];
+	//	m_starArray[i] = nullptr;
+	//}
 
-	// Delete rocks
-	for (int i = 0; i < ROCKS_COUNT; i++)
-	{
-		delete m_rockArray[i];
-		m_rockArray[i] = nullptr;
-	}
+	//// Delete rocks
+	//for (int i = 0; i < ROCKS_COUNT; i++)
+	//{
+	//	delete m_rockArray[i];
+	//	m_rockArray[i] = nullptr;
+	//}
 
-	// Delete enemies
-	for (int i = 0; i < m_enemyArray.Count(); i++)
-	{
-		delete m_enemyArray[i];
-		m_enemyArray[i] = nullptr;
-	}
+	//// Delete enemies
+	//for (int i = 0; i < m_enemyArray.Count(); i++)
+	//{
+	//	delete m_enemyArray[i];
+	//	m_enemyArray[i] = nullptr;
+	//}
 
 	// Delete player
 	delete m_player;
@@ -69,7 +69,7 @@ Level::~Level()
 }
 
 // Update loop - Calls update on all objects
-void Update(float deltaTime)
+void Level::Update(float deltaTime)
 {
 	// Update player
 	m_player->Update(deltaTime);
@@ -102,14 +102,14 @@ void Update(float deltaTime)
 }
 
 // Draw loop - Calls draw on all objects
-void Draw(aie::Renderer2D* renderer)
+void Level::Draw(aie::Renderer2D* renderer)
 {
 	// Draw stars
 	/*for (int i = 0; i < STARS_COUNT; i++)
 		m_starArray[i]->Draw();*/
 
 	// Draw player
-	m_player->Draw();
+	m_player->Draw(renderer);
 
 	// Draw enemies
 	/*for (int i = 0; i < m_enemyArray.Count(); i++)
