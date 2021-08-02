@@ -207,6 +207,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletManager.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionLayers.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="DataContainers.h" />
     <ClInclude Include="Dequeue.h" />
