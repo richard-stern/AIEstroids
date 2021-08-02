@@ -1,3 +1,5 @@
+// Created by Cameron
+
 #pragma once
 #include "Application.h"
 #include "Renderer2D.h"
@@ -12,6 +14,7 @@
 
 #define ROCKS_COUNT		6		// Asteroids in the level
 #define STARS_COUNT		100		// Stars in the level
+#define ENEMY_RATE		6		// Seconds between enemy spawns
 
 /*
 Level Class
@@ -39,4 +42,7 @@ private:
 	Rock* m_rockArray[ROCKS_COUNT];
 	Star* m_starArray[STARS_COUNT];
 	DynamicArray<Enemy*> m_enemyArray();
+
+	// Misc.
+	float enemyTimer = ENEMY_RATE;
 };

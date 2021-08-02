@@ -1,3 +1,5 @@
+// Created by Cameron
+
 #include "Level.h"
 
 // Constructor - Spawn initial objects
@@ -9,14 +11,14 @@ Level::Level()
 	windowH = (float)(application->GetWindowHeight());
 
 	// Create player
-	float playerX = windowW * 0.5;
-	float playerY = windowH * 0.5;
-	m_player = new Player(playerX, playerY);
+	float playerX = windowW * 0.5f;
+	float playerY = windowH * 0.5f;
+	m_player = new Player({ playerX, playerY });
 
 	// Create stars
 	for (int i = 0; i < STARS_COUNT; i++)
 	{
-		m_starArray[i] = new Star(rand() % (int)windowW, rand() % (int)windowH);
+		m_starArray[i] = new Star({ rand() % (int)windowW, rand() % (int)windowH });
 	}
 
 	// Create rocks
@@ -31,7 +33,7 @@ Level::Level()
 		} while (spawnX > (playerX - 10) && spawnX < (playerX + 10) && spawnY >(playerY - 10) && spawnY < (playerY + 10));
 
 		// Create rock at the free position
-		m_rockArray[i] = new Rock(spawnX, spawnY);
+		m_rockArray[i] = new Rock({ spawnX, spawnY });
 	}
 }
 
@@ -78,7 +80,22 @@ void Update(float deltaTime)
 	for (int i = 0; i < ROCKS_COUNT; i++)
 		m_rockArray[i]->Update();
 
-	// UNFINISHED - Need to create enemies at a random interval...
+	// Create enemy if timer is reached, and reset timer
+	enemyTimer -= deltaTime;
+	if (enemyTimer <= 0.0f)
+	{
+		// Keep getting a random position while the generated position is colliding
+		float spawnX, spawnY;
+		do
+		{
+			spawnX = rand() % (int)windowW;
+			spawnY = rand() % (int)windowH;
+		} while (/* Colliding */);
+
+		m_enemyArray.Add(new Enemy({ spawnX, spawnY })));
+
+		enemyTimer = ENEMY_RATE;
+	}
 }
 
 // Draw loop - Calls draw on all objects

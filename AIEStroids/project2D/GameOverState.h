@@ -1,3 +1,5 @@
+// Created by Cameron
+
 #pragma once
 #include "Renderer2D.h"
 #include "Application.h"
