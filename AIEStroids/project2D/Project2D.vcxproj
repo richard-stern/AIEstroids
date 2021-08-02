@@ -171,7 +171,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game2D.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
@@ -186,7 +188,9 @@
     <ClInclude Include="DoubleLinkedList.h" />
     <ClInclude Include="DoubleLinkedListNode.h" />
     <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game2D.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverState.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="Level.h" />

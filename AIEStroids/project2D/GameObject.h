@@ -1,12 +1,13 @@
 #pragma once
 #include "Renderer2D.h"
 #include "Texture.h"
+#include "Vector2.h"
 
-class Vector2
+/*class Vector2
 {
 	float x;
 	float y;
-};
+};*/
 
 class CollisionEvent;
 
