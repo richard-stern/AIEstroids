@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Game2D.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="BinaryTreeNode.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="DataContainers.h" />
     <ClInclude Include="Dequeue.h" />
     <ClInclude Include="DoubleLinkedList.h" />

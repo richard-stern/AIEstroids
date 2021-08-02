@@ -13,6 +13,8 @@ private:
 	bool m_destroyed;
 	Player* m_player;
 	Vector2 m_position;
+	const float MAX_SEE_AHEAD = 10.0f;
+	const float MAX_AVOID_FORCE = 1.0f;
 
 public:
 	Enemy();
@@ -25,6 +27,10 @@ public:
 
 private:
 	void Seek(float deltaTime);
+	void Pursue(float deltaTime);
+	void AvoidObstacles(float deltaTime);
 	void SetRandomLocation();
 	Matrix3 GetRandomLocation();
+	Vector2 CollisionAvoidance();
+	GameObject* FindMostThreateningObstacle();
 };
