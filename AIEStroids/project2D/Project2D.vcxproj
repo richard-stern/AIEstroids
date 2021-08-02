@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game2D.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Heap.cpp" />
@@ -189,17 +190,14 @@
     <ClInclude Include="DoubleLinkedListNode.h" />
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Game2D.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameOverState.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedListNode.h" />
     <ClInclude Include="Matrix3.h" />
-    <ClInclude Include="Stack.h" />
     <ClInclude Include="Vector2.h" />
-    <ClInclude Include="Heap.h" />
-    <ClInclude Include="LinkedList.h" />
-    <ClInclude Include="LinkedListNode.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="TextureManager.h" />
