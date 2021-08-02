@@ -1,3 +1,5 @@
+//Author: Connor
+
 #pragma once
 #include "Vector2.h"
 #include "Collider.h"
@@ -22,9 +24,9 @@ class PhysicsBody
 {
 public:
 	//if you don't input a value for mass it will be automatically calculated based on shape
-	PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider = nullptr, float drag = 0, float angularDrag = 0, float mass = 0);
+	PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider = nullptr, float drag = 0, float angularDrag = 0, float mass = 0, bool addToManager = true);
 
-	void Update();
+	void Update(float deltaTime);
 
 	//getters
 	Collider*	GetCollider()			{ return collider; }

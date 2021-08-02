@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "CollisionManager.h"
 
-PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider, float drag, float angularDrag, float mass)
+PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider, float drag, float angularDrag, float mass, bool addToManager)
 	: actorObject(connectedGameObject), type(type), collider(collider), drag(drag), angularDrag(angularDrag), angularVelocity(0), velocity(Vector2()), force(Vector2()), torque(0)
 {
 	if (mass == 0)
@@ -20,9 +20,12 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 	{
 		iMass = 1.0f / mass;
 	}
+
+	if (addToManager)
+		CollisionManager::GetInstance()->AddBody(this);
 }
 
-void PhysicsBody::Update()
+void PhysicsBody::Update(float deltaTime)
 {
 	switch (type)
 	{

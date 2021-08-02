@@ -1,6 +1,8 @@
 #pragma once
-#include "PhysicsBody.h"
+//Author: Connor
 
+#include "PhysicsBody.h"
+#include "Application.h"
 #include <vector>
 #include <forward_list>
 
@@ -28,7 +30,10 @@ public:
 	static void DeleteInstance();
 	static CollisionManager* GetInstance();
 
+	//updates all physics bodies then resolves collisions
 	void Update();
+	//called by physics bodies to add themselves to the collision object list
+	void AddBody(PhysicsBody* body);
 
 private:
 	static CollisionManager* instance;
@@ -36,9 +41,13 @@ private:
 	CollisionManager(CollisionManager&&) = default;
 	CollisionManager(CollisionManager&) = default;
 
+	//finds and resolves all collisions
 	void ResolveCollisions();
+	//resolve a specific manifold
 	static void ResolveCollision(CollisionManifold& manifold);
+	//check if AABBs are colliding
 	static bool CheckAABBCollision(AABB& a, AABB& b);
+	//returns whether objects have collided or not, also sets colliison normal and penetration in manifold
 	static bool getCollisionInfo(CollisionManifold& manifold);
 
 	std::vector<PhysicsBody*> collisionObjects;
