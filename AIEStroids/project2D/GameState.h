@@ -3,8 +3,8 @@
 #pragma once
 #include "BaseState.h"
 
+#include "Renderer2D.h"
 class StateMachine;
-class Renderer2D;
 
 class GameState : public BaseState {
 public:
@@ -17,7 +17,7 @@ public:
 	/// Update the Level
 	void Update(float deltaTime, StateMachine* stateMachine) override;
 	/// Calls Draw() on the Level. Calls the Draw() function on the GUI
-	void Draw(Renderer2D* renderer) override;
+	void Draw(aie::Renderer2D* renderer) override;
 	/// Destroy the Level and GUI
 	void Exit() override;
 };
