@@ -3,8 +3,9 @@
 #pragma once
 #include "BaseState.h"
 
+#include "Renderer2D.h"
 class StateMachine;
-class Renderer2D;
+
 
 class MenuState : public BaseState {
 public:
@@ -16,7 +17,7 @@ public:
 	/// Process input and when the player has clicked the start button, you can start the game using pStatemachine->ChangeState(ESTATE_GAME);
 	void Update(float deltaTime, StateMachine* stateMachine) override;
 	/// Draw all the graphics for the menu
-	void Draw(Renderer2D* renderer) override;
+	void Draw(aie::Renderer2D* renderer) override;
 	/// Called when the state is exited. Deletes all assets used in menu and cleans up everything
 	void Exit() override;
 };

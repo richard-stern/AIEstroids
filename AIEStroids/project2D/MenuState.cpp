@@ -4,8 +4,9 @@
   // -------------------------------------------
  //           DRAW UI FUNCTIONS
 // -------------------------------------------
-namespace UI {
+namespace UI { // @incomplete move Rect into its own file?
 	
+
 };
 
   // -------------------------------------------
@@ -30,7 +31,7 @@ void MenuState::Update(float deltaTime, StateMachine* stateMachine) {
 };
 
 ///
-void MenuState::Draw(Renderer2D* renderer) {
+void MenuState::Draw(aie::Renderer2D* renderer) {
 	// @incomplete
 };
 ///

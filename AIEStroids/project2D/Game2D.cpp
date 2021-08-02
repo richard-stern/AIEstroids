@@ -18,7 +18,7 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	player = new Player({ 30.0f, 30.0f });
 
 	//Create the camera controller
-	Camera::Create();
+	Camera::Create(m_2dRenderer, player);
 }
 
 Game2D::~Game2D()
@@ -87,7 +87,7 @@ void Game2D::Draw()
 	m_2dRenderer->SetUVRect(frame * size, 0.0f, size, 1.0f);
 	m_2dRenderer->DrawSprite(m_texture, 900.0f, 200.0f, 100.0f, 100.0f);
 	m_2dRenderer->SetUVRect(0.0f, 0.0f, 1.0f, 1.0f);
-	
+
 	// Draw some text.
 	float windowHeight = (float)application->GetWindowHeight();
 	char fps[32];
