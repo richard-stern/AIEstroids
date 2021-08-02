@@ -3,7 +3,7 @@
 #include "CollisionManager.h"
 
 PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider, float drag, float angularDrag, float mass)
-	: actorObject(connectedGameObject), type(type), collider(collider), drag(drag), angularDrag(angularDrag)
+	: actorObject(connectedGameObject), type(type), collider(collider), drag(drag), angularDrag(angularDrag), angularVelocity(0), velocity(Vector2()), force(Vector2()), torque(0)
 {
 	if (mass == 0)
 	{
@@ -44,6 +44,8 @@ void PhysicsBody::Update()
 		
 		//reset force
 		force = Vector2::ZERO();
+
+		UpdateAABB();
 	}
 		break;
 	case BodyType::KINEMATIC:
@@ -57,23 +59,25 @@ void PhysicsBody::Update()
 		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
 		//set rotation
 		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		
+		UpdateAABB();
 	}
 		break;
 	case BodyType::STATIC:
 	{
-		//do nothing
+		UpdateAABB();
 	}
 		break;
 	}
 }
 
-void PhysicsBody::addImpulse(Vector2 impulse)
+void PhysicsBody::AddImpulse(Vector2 impulse)
 {
 	//same as add velocity except impacted by mass
 	velocity += impulse * iMass;
 }
 
-void PhysicsBody::updateAABB()
+void PhysicsBody::UpdateAABB()
 {
 	auto& aabb = collider->shapeAABB;
 	//maxX
