@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+// Author: James K
+
 class Actor : public GameObject
 {
 public:
@@ -11,9 +13,11 @@ public:
 	//virtual void OnCollision(CollisionEvent collisionEvent) override;
 	virtual void Draw(aie::Renderer2D* _renderer2D);
 
-	
-private:
+	bool GetWrapAndRespawn() { return m_WrapAndRespawn; }
+	void SetWrapAndRespawn(bool _active) { m_WrapAndRespawn = _active; }
 
+protected:
 	bool m_WrapAndRespawn = false;
+
 };
 

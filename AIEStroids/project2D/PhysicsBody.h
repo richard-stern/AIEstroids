@@ -5,7 +5,7 @@
 
 constexpr float PHYSICS_TIME_STEP = 1.0f / 60;
 
-class GameObject;
+class Actor;
 
 enum class BodyType : char
 {
@@ -21,31 +21,31 @@ class PhysicsBody
 {
 public:
 	//if you don't input a value for mass it will be automatically calculated based on shape
-	PhysicsBody(GameObject* connectedGameObject, BodyType type, Collider* collider = nullptr, float drag = 0, float angularDrag = 0, float mass = 0);
+	PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider = nullptr, float drag = 0, float angularDrag = 0, float mass = 0);
 	void Update();
 
 	//getters
-	Collider*	getCollider() { return collider; }
-	Vector2		getVelocity() { return velocity; }
-	Vector2		getForce() { return velocity; }
-	float		getDrag() { return drag; }
-	float		getAngularVelocity() { return angularVelocity; }
-	float		getTorque() { return torque; }
-	float		getAngularDrag() { return angularDrag; }
-	float		getInverseMass() { return iMass; }
+	Collider*	getCollider()			{ return collider; }
+	Vector2		getVelocity()			{ return velocity; }
+	Vector2		getForce()				{ return velocity; }
+	float		getDrag()				{ return drag; }
+	float		getAngularVelocity()	{ return angularVelocity; }
+	float		getTorque()				{ return torque; }
+	float		getAngularDrag()		{ return angularDrag; }
+	float		getInverseMass()		{ return iMass; }
 	float		getMass() { return 1.0f/iMass; }
-	GameObject* getConnectedGameObject() { return gameObject; }
+	Actor* getConnectedActor() { return actorObject; }
 	BodyType	getType() { return type; }
 
 	//setters
-	void setVelocity(Vector2 vel) { velocity = vel; }
-	void setForce(Vector2 force) { this->force = force; }
-	void setDrag(float drag) { this->drag = drag * PHYSICS_TIME_STEP < 1 ? drag : 1; }
+	void setVelocity(Vector2 vel)		{ velocity = vel; }
+	void setForce(Vector2 force)		{ this->force = force; }
+	void setDrag(float drag)			{ this->drag = drag * PHYSICS_TIME_STEP < 1 ? drag : 1; }
 	void setAngularVelocity(float aVel) { angularVelocity = angularVelocity; }
-	void setTorque(float torque) { this->torque = torque; }
-	void setAngularDrag(float aDrag) { angularDrag = aDrag * PHYSICS_TIME_STEP < 1 ? angularDrag : 1; }
-	void setMass(float mass) { iMass = 1.0f / mass; }
-	void setType(BodyType type) { this->type = type; }
+	void setTorque(float torque)		{ this->torque = torque; }
+	void setAngularDrag(float aDrag)	{ angularDrag = aDrag * PHYSICS_TIME_STEP < 1 ? angularDrag : 1; }
+	void setMass(float mass)			{ iMass = 1.0f / mass; }
+	void setType(BodyType type)			{ this->type = type; }
 	
 	//adders
 	void addImpulse(Vector2 impulse);
@@ -54,9 +54,11 @@ public:
 	void addAngularVelocity(float aVel) { angularVelocity += aVel; }
 	void addTorque(float torque) { this->torque += torque; }
 
+	void updateAABB();
+
 private:
 	//Connected GameObject
-	GameObject* gameObject;
+	Actor* actorObject;
 	Collider* collider;
 	Vector2 velocity;
 	Vector2 force;
