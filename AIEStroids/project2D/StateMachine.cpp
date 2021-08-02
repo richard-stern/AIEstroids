@@ -19,6 +19,6 @@ void StateMachine::Draw(Renderer2D* renderer) {
 	// @incomplete
 };
 ///
-void StateMachine::ChangeState(STATES state) {
+void StateMachine::ChangeState(int state) {
 	// @incomplete
 };
