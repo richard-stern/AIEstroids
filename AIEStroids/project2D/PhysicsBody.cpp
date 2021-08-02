@@ -33,7 +33,7 @@ void PhysicsBody::Update()
 		//add drag
 		velocity -= velocity * (drag * PHYSICS_TIME_STEP);
 		//set position
-		//gameObject->SetPosition(gameObject->GetPosition() + velocity * PHYSICS_TIME_STEP);
+		gameObject->SetLocalPosition(gameObject->GetLocalPosition() + velocity * PHYSICS_TIME_STEP);
 
 		//set angular velocity based on torque
 		angularVelocity += torque * PHYSICS_TIME_STEP;
@@ -51,8 +51,8 @@ void PhysicsBody::Update()
 		//add drag
 		velocity -= velocity * (drag * PHYSICS_TIME_STEP);
 		//set position
-		//gameObject->SetPosition(gameObject->GetPosition() + velocity * PHYSICS_TIME_STEP);
-		
+		gameObject->SetLocalPosition(gameObject->GetLocalPosition() + velocity * PHYSICS_TIME_STEP);
+
 		//add drag
 		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
 		//set rotation
