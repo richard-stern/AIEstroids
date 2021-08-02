@@ -186,14 +186,11 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix3.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="Turret.cpp" />
-=======
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="StateMachine.cpp" />
->>>>>>> main
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
@@ -222,16 +219,13 @@
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedListNode.h" />
     <ClInclude Include="Matrix3.h" />
-<<<<<<< HEAD
     <ClInclude Include="Turret.h" />
-=======
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="PhysicsBody.h" />
     <ClInclude Include="StateMachine.h" />
->>>>>>> main
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
