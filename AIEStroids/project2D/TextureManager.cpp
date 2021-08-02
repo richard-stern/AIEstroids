@@ -64,6 +64,7 @@ aie::Font* TextureManager::LoadFont(const char* filePath, int size = 24)
 
 	if (found == m_Font->end())
 	{
+		//
 		//Texture Not Found, Load it in
 		aie::Font* font = new aie::Font(filePath,size);
 		m_Font->emplace(filePath, font);
