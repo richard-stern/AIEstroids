@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2.h"
 #include "Shape.h"
+class PhysicsBody;
 
 class Collider
 {
@@ -10,7 +11,9 @@ public:
 	
 	~Collider();
 private:
+	friend PhysicsBody;
 	Shape* shape;
+	AABB shapeAABB;
 	unsigned short collisionLayer;
 	unsigned short collisionMask;
 	float restitution;

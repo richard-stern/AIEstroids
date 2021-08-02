@@ -2,6 +2,12 @@
 #include "Vector2.h"
 #include <memory>
 
+struct AABB
+{
+	Vector2 topLeft;
+	Vector2 bottomRight;
+};
+
 struct Shape
 {
 	Vector2* vertices;
@@ -13,6 +19,6 @@ struct Shape
 		: vertices(vertices), normals(normals), centrePoint(centrePoint), count(count)	{}
 	~Shape();
 
-	Shape&& clone();
+	void cloneTo(Shape& shape);
 	
 };
