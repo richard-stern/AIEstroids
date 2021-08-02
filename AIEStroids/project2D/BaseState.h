@@ -1,3 +1,5 @@
+// Author: Matin kamali
+
 #ifndef BASE_STATE_H
 #define BASE_STATE_H
 
@@ -9,7 +11,7 @@ public:
 	/// Constructor
 	BaseState() {}
 	/// Destructor
-	~BaseState() {}
+	virtual ~BaseState() {}
 
 	/// This will be called when the state is entered
 	void virtual Enter() = 0;
