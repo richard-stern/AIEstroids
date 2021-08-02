@@ -29,7 +29,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	m_v2Velocity = { 0, -200 };
 
 	//Sets the Velocity of the bullet
-	SetVelocity(m_v2Velocity);
+	//SetVelocity(m_v2Velocity);
 
 	//Set the rotation of the bullet when fired to face the way the turret faces
 	position.SetRotation(angle);
