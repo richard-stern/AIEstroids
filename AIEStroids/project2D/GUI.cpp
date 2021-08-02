@@ -30,6 +30,7 @@ GUI* GUI::GetInstance()
 // Draws the Game UI
 void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input)
 {
+	// Needs too be updated to look neater
 	int y = aie::Application::GetInstance()->GetWindowHeight() - 20;
 	int x = 20;
 
