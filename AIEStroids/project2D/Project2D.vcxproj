@@ -191,6 +191,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="String.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
@@ -226,6 +227,7 @@
     <ClInclude Include="Stack.h" />
     <ClInclude Include="PhysicsBody.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="String.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
