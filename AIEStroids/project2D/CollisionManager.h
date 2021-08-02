@@ -4,10 +4,19 @@
 #include <vector>
 #include <forward_list>
 
+struct CollisionEvent
+{
+	PhysicsBody* other;
+	Vector2 collisionNormal;
+	float penetration;
+};
+
 struct CollisionManifold
 {
-	Collider* a;
-	Collider* b;
+	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) {}
+
+	PhysicsBody* a;
+	PhysicsBody* b;
 	Vector2 collisionNormal;
 	float penetration;
 };

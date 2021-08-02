@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "Shape.h"
 class PhysicsBody;
+class CollisionManager;
 
 class Collider
 {
@@ -12,6 +13,8 @@ public:
 	~Collider();
 private:
 	friend PhysicsBody;
+	friend CollisionManager;
+
 	Shape* shape;
 	AABB shapeAABB;
 	unsigned short collisionLayer;
