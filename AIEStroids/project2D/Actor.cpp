@@ -26,7 +26,7 @@ void Actor::Update(float _deltaTime)
 	GameObject::Update(_deltaTime);
 }
 
-void Actor::OnCollision(CollisionManifold _event)
+void Actor::OnCollision(CollisionEvent _event)
 {
 
 }

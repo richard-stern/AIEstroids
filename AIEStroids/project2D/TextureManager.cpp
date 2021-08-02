@@ -69,13 +69,12 @@ aie::Texture* TextureManager::LoadTexture(const char* filePath)
 
 aie::Font* TextureManager::LoadFont(const char* filePath, int size)
 {
-	//Check if texture already exists
+	//Check if font already exists
 	auto found = m_Font->find(filePath);
 
 	if (found == m_Font->end())
 	{
-		//
-		//Texture Not Found, Load it in
+		//Font Not Found, Load it in
 		aie::Font* font = new aie::Font(filePath,size);
 		m_Font->emplace(filePath, font);
 		return font;
