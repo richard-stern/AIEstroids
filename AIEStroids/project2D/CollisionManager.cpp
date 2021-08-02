@@ -1,5 +1,7 @@
 #include "CollisionManager.h"
 
+CollisionManager* CollisionManager::instance = nullptr;
+
 void CollisionManager::Update()
 {
 	for (int i = 0; i < collisionObjects.size(); i++)
@@ -10,9 +12,23 @@ void CollisionManager::Update()
 	ResolveCollisions();
 }
 
-CollisionManager& CollisionManager::GetInstance()
+void CollisionManager::CreateInstance()
 {
-	static CollisionManager instance = CollisionManager();
+	if (instance != nullptr)
+	{
+		delete instance;
+	}
+	instance = new CollisionManager();
+}
+
+void CollisionManager::DeleteInstance()
+{
+	delete instance;
+	instance = nullptr;
+}
+
+CollisionManager* CollisionManager::GetInstance()
+{
 	return instance;
 }
 
@@ -22,19 +38,25 @@ void CollisionManager::ResolveCollisions()
 
 	for (int i = 0; i < collisionObjects.size() - 1; i++)
 	{
-		for (int j = 1; j < collisionObjects.size(); j++)
+		if (collisionObjects[i]->collider != nullptr)
 		{
-			//check if the objects can collide or not
-			if (collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
-				&& collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask)
+			for (int j = 1; j < collisionObjects.size(); j++)
 			{
-				//broad phase
-				//this checks if the AABBs are colliding
-				if (CheckAABBCollision(collisionObjects[i]->collider->shapeAABB, collisionObjects[j]->collider->shapeAABB))
+				if (collisionObjects[j]->collider != nullptr)
 				{
-					//in this case we need to check if collision is valid, and if so, resolve it
-					//we add it to collisions for this frame
-					collisions.push_back(CollisionManifold(collisionObjects[i], collisionObjects[j]));
+					//check if the objects can collide or not
+					if (collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
+						&& collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask)
+					{
+						//broad phase
+						//this checks if the AABBs are colliding
+						if (CheckAABBCollision(collisionObjects[i]->collider->shapeAABB, collisionObjects[j]->collider->shapeAABB))
+						{
+							//in this case we need to check if collision is valid, and if so, resolve it
+							//we add it to collisions for this frame
+							collisions.push_back(CollisionManifold(collisionObjects[i], collisionObjects[j]));
+						}
+					}
 				}
 			}
 		}

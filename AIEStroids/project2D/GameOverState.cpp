@@ -35,7 +35,7 @@ void GameOverState::Update(float deltaTime, StateMachine* stateMachine)
 {
 	// If Enter is pressed, restart game (set state)
 	if (aie::Input::GetInstance()->WasKeyPressed(aie::INPUT_KEY_ENTER))
-		stateMachine->ChangeState(ESTATE_GAME);
+		stateMachine->ChangeState(StateMachine::ESTATE_GAME);
 }
 
 // Draw loop - Draws the Game Over screen
