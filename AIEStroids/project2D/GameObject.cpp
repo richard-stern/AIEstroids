@@ -20,6 +20,3 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 {
 }
 
-//void GameObject::OnCollision(CollisionEvent _event)
-{
-}
