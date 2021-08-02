@@ -6,12 +6,15 @@
 Camera* Camera::instance = nullptr;
 
 //Singleton creation
-void Camera::Create()
+void Camera::Create(aie::Renderer2D* _renderer, Player* _player)
 {
-	//"There can be only one!" - 429 year old singleton
+	//"There can be only one!"
 	if (instance == nullptr)
 	{
 		instance = new Camera();
+
+		instance->renderer = _renderer;
+		instance->player = _player;
 	}
 }
 
@@ -28,9 +31,6 @@ void Camera::Destroy()
 //Gets an instance to the camera
 Camera* Camera::GetInstance()
 {
-	//If there is no instance yet, make one. (Create() checks if there is an instance already)
-	Create();
-
 	//Return the instance
 	return instance;
 }
@@ -59,7 +59,7 @@ void Camera::Update(float deltaTime)
 {
 	//Get the player's position
 	Vector2 playerPosition;
-	//playerPosition = player->GetPosition();
+	playerPosition = player->GetLocalPosition();
 
 	//Find the distance between the camera and the player
 	Vector2 distance = playerPosition - cameraPosition;
@@ -87,6 +87,9 @@ Camera::Camera()
 
 	//How far the camera moves towards its target in this frame (based on a percentage of the distance between them)
 	distancePercentPerFrame = 10;
+
+	renderer = nullptr;
+	player = nullptr;
 }
 
 //Private destructor
