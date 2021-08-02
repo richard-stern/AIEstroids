@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Renderer2D.h"
+#include "Player.h"
 
 class Game2D : public aie::Game
 {
@@ -19,4 +20,5 @@ protected:
 	aie::Texture*		m_texture;
 	aie::Texture*		m_texture2;
 	aie::Font*			m_font;
+	Player* player;
 };
