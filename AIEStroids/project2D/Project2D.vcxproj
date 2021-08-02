@@ -177,6 +177,7 @@
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseState.h" />
     <ClInclude Include="Game2D.h" />
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Vector2.h" />
