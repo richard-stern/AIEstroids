@@ -16,8 +16,7 @@ GameObject::GameObject(Vector2 _pos)
 
 GameObject::~GameObject()
 {
-	delete m_Texture;
-	m_Texture = nullptr;
+	
 }
 
 void GameObject::Update(float _deltaTime)
