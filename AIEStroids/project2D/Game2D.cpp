@@ -11,25 +11,29 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	// Initalise the 2D renderer.
 	m_2dRenderer = new aie::Renderer2D();
 
-	// Create some textures for testing.
-	m_texture = new aie::Texture("../bin/textures/hero.png");
-	m_texture2 = new aie::Texture("../bin/textures/ship.png");
-	m_font = new aie::Font("../bin/font/consolas.ttf", 24);
-	player = new Player({ 30.0f, 30.0f });
+	//Did this so we could actually see
+	//-------------------------------------/
+	//		Singleton Initialisation
+	//___________________________________/
+	TextureManager::Get();
+
+	level = new Level();
 
 	//Create the camera controller
-	Camera::Create();
-	Camera::renderer = m_2dRenderer;
+	Camera::Create(m_2dRenderer, level->GetPlayer());
 }
 
 Game2D::~Game2D()
 {
-	// Deleted the textures.
-	delete m_font;
-	delete m_texture;
-	delete m_texture2;
-	delete player;
+	for (Enemy* enemy : enemies)
+	{
+		delete enemy;
+		enemies.clear();
+	}
 
+	delete level;
+
+	TextureManager::Destroy();
 	// Delete the renderer.
 	delete m_2dRenderer;
 }
@@ -46,8 +50,9 @@ void Game2D::Update(float deltaTime)
 		application->Quit();
 	}
 
-	player->Update(aie::Application::GetInstance()->GetDeltaTime());
-	player->GetPhysicsBody()->Update();
+	//Temporary
+	level->GetPlayer()->Update(aie::Application::GetInstance()->GetDeltaTime());
+	level->GetPlayer()->GetPhysicsBody()->Update();
 
 	//Call update on the camera
 	Camera::GetInstance()->Update(deltaTime);
@@ -64,39 +69,15 @@ void Game2D::Draw()
 	// Prepare the renderer. This must be called before any sprites are drawn.
 	m_2dRenderer->Begin();
 
-	// Draw a thin line.
-	m_2dRenderer->DrawLine(150.0f, 400.0f, 250.0f, 500.0f, 2.0f);
+	//Temporary so we can see tha player
+	level->GetPlayer()->Draw(m_2dRenderer);
 
-	Vector2 pos = player->GetGlobalPosition();
-	// Draw a sprite
-	m_2dRenderer->SetRenderColour(1.0f, 1.0f, 1.0f, 1.0f);
-	m_2dRenderer->DrawSprite(m_texture2, pos.x, pos.y);
-
-	// Draw a moving purple circle.
-	m_2dRenderer->SetRenderColour(1.0f, 0.0f, 1.0f, 1.0f);
-	m_2dRenderer->DrawCircle((float)sin(time) * 100.0f + 450.0f, 200.0f, 50.0f);
-
-	// Draw a rotating sprite with no texture, coloured yellow.
-	m_2dRenderer->SetRenderColour(1.0f, 1.0f, 0.0f, 1.0f);
-	m_2dRenderer->DrawSprite(nullptr, 700.0f, 200.0f, 50.0f, 50.0f, time);
-	m_2dRenderer->SetRenderColour(1.0f, 1.0f, 1.0f, 1.0f);
-
-	// Demonstrate animation.
-	float animSpeed = 10.0f;
-	int frame = ((int)(time * animSpeed) % 6);
-	float size = 1.0f / 6.0f;
-	m_2dRenderer->SetUVRect(frame * size, 0.0f, size, 1.0f);
-	m_2dRenderer->DrawSprite(m_texture, 900.0f, 200.0f, 100.0f, 100.0f);
-	m_2dRenderer->SetUVRect(0.0f, 0.0f, 1.0f, 1.0f);
-
-	// Draw some text.
-	float windowHeight = (float)application->GetWindowHeight();
-	char fps[32];
-	sprintf_s(fps, 32, "FPS: %i", application->GetFPS());
-	m_2dRenderer->DrawText2D(m_font, fps, 15.0f, windowHeight - 32.0f);
-	m_2dRenderer->DrawText2D(m_font, "Arrow keys to move.", 15.0f, windowHeight - 64.0f);
-	m_2dRenderer->DrawText2D(m_font, "WASD to move camera.", 15.0f, windowHeight - 96.0f);
-	m_2dRenderer->DrawText2D(m_font, "Press ESC to quit!", 15.0f, windowHeight - 128.0f);
+	for (Enemy* enemy : enemies)
+	{
+		enemy->Draw(m_2dRenderer);
+	}
+	//Stars block it from drawing for now
+	//level->Draw(m_2dRenderer);
 
 	// Done drawing sprites. Must be called at the end of the Draw().
 	m_2dRenderer->End();
