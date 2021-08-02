@@ -171,7 +171,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletManager.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -214,6 +214,7 @@
     <ClInclude Include="DoubleLinkedList.h" />
     <ClInclude Include="DoubleLinkedListNode.h" />
     <ClInclude Include="DynamicArray.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Game2D.h" />
     <ClInclude Include="GameObject.h" />
