@@ -86,55 +86,61 @@ bool Vector2::operator!=(const Vector2& other) const {
 	return !(*this == other);
 }
 
-Vector2 Vector2::get_perpendicular() const {
+Vector2 Vector2::GetPerpendicular() const {
 	return Vector2(-y, x);
 }
 
-Vector2 Vector2::get_normalised() const {
+Vector2 Vector2::GetNormalised() const {
 	Vector2 result(x, y);
-	float magnitude = result.get_magnitude();
+	float magnitude = result.GetMagnitude();
 
 	if (magnitude != 0) {
-		result.x /= magnitude;
-		result.y /= magnitude;
+		result /= magnitude;
 	}
 
 	return result;
 }
 
-float Vector2::get_magnitude() const {
+float Vector2::GetMagnitude() const {
 	return sqrtf(x * x + y * y);
 }
 
-float Vector2::get_dot(Vector2 other) const {
+float Vector2::GetDot(Vector2 other) const {
 	return x * other.x + y * other.y;
 }
 
-float Vector2::get_angle() const {
+float Vector2::GetAngle() const {
 	return atan2(x, y);
 }
 
-float Vector2::get_angle_degree() const {
-	return get_angle() * 180 / (float)M_PI;
+float Vector2::GetAngleDegrees() const {
+	return GetAngle() * 180 / (float)M_PI;
 }
 
-void Vector2::rotate(float _radians) {
+void Vector2::SetRotation(float _radians) {
+	float magnitude = GetMagnitude();
 	x = cosf(_radians);
 	y = sinf(_radians);
+	*this *= magnitude;
 }
 
-float Vector2::get_angle_between(Vector2 _vec1, Vector2 _vec2) {
+Vector2 Vector2::Scale(Vector2 _vec1, Vector2 _vec2)
+{
+	return Vector2(_vec1.x * _vec2.x, _vec1.y * _vec2.y);
+}
+
+float Vector2::GetAngle(Vector2 _vec1, Vector2 _vec2) {
 	// get the dot product of the two vectors
-	_vec1 = _vec1.get_normalised();
-	_vec2 = _vec2.get_normalised();
-	float dot = _vec1.get_dot(_vec2);
+	_vec1 = _vec1.GetNormalised();
+	_vec2 = _vec2.GetNormalised();
+	float dot = _vec1.GetDot(_vec2);
 
 	// get angle
 	float angle = acosf(dot);
 
 	// get the dot product of one of the vectors and another vector at right angles
-	Vector2 perp_vec = _vec1.get_perpendicular();
-	float perp_dot = _vec2.get_dot(perp_vec);   // <!> double check if this should be _vec1.get_dot(...)
+	Vector2 perp_vec = _vec1.GetPerpendicular();
+	float perp_dot = _vec2.GetDot(perp_vec);   // <!> double check if this should be _vec1.get_dot(...)
 
 	if (perp_dot < 0) {
 		angle = angle * -1.0f;
@@ -143,6 +149,6 @@ float Vector2::get_angle_between(Vector2 _vec1, Vector2 _vec2) {
 	return angle;
 }
 
-float Vector2::get_distance_to(const Vector2& other) const {
-	return (other - *this).get_magnitude();
+float Vector2::GetDistance(const Vector2& other) const {
+	return (other - *this).GetMagnitude();
 }
