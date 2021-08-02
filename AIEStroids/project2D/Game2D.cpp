@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
+#include "Camera.h"
 
 Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game(title, width, height, fullscreen)
 {
@@ -14,6 +15,9 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	m_texture = new aie::Texture("./textures/hero.png");
 	m_texture2 = new aie::Texture("./textures/rock_large.png");
 	m_font = new aie::Font("./font/consolas.ttf", 24);
+
+	//Create the camera controller
+	Camera::Create();
 }
 
 Game2D::~Game2D()
@@ -31,24 +35,6 @@ void Game2D::Update(float deltaTime)
 {
 	// Input example: Update the camera position using the arrow keys.
 	aie::Input* input = aie::Input::GetInstance();
-	float camPosX;
-	float camPosY;
-
-	m_2dRenderer->GetCameraPos(camPosX, camPosY);
-
-	if (input->IsKeyDown(aie::INPUT_KEY_W))
-		camPosY += 500.0f * deltaTime;
-
-	if (input->IsKeyDown(aie::INPUT_KEY_S))
-		camPosY -= 500.0f * deltaTime;
-
-	if (input->IsKeyDown(aie::INPUT_KEY_A))
-		camPosX -= 500.0f * deltaTime;
-
-	if (input->IsKeyDown(aie::INPUT_KEY_D))
-		camPosX += 500.0f * deltaTime;
-
-	m_2dRenderer->SetCameraPos(camPosX, camPosY);
 
 	// Exit the application if escape is pressed.
 	if (input->IsKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -56,6 +42,9 @@ void Game2D::Update(float deltaTime)
 		aie::Application* application = aie::Application::GetInstance();
 		application->Quit();
 	}
+
+	//Call update on the camera
+	Camera::GetInstance()->Update(deltaTime);
 }
 
 void Game2D::Draw()
