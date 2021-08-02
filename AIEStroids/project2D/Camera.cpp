@@ -65,10 +65,10 @@ void Camera::Update(float deltaTime)
 	Vector2 distance = playerPosition - cameraPosition;
 
 	//If the distance is significant enough to warrant moving the camera
-	if (abs(distance.GetMagnitude()) * distancePercentPerFrame > minMoveDistance)
+	if (abs(distance.GetMagnitude()) * distancePercentPerFrame * deltaTime > minMoveDistance)
 	{
 		//Move the camera toward the player by the distance fraction
-		cameraPosition += (distance * distancePercentPerFrame);
+		cameraPosition += (distance * distancePercentPerFrame * deltaTime);
 	}
 
 	//Apply the member Vector2 to the renderer's camera
@@ -86,11 +86,11 @@ Camera::Camera()
 	minMoveDistance = 0.0f;
 
 	//How far the camera moves towards its target in this frame (based on a percentage of the distance between them)
-	distancePercentPerFrame = 5;
+	distancePercentPerFrame = 10;
 }
 
 //Private destructor
 Camera::~Camera()
 {
-
+	//Not required
 }
