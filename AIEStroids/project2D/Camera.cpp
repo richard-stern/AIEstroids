@@ -72,7 +72,7 @@ void Camera::Update(float deltaTime)
 	}
 
 	//Apply the member Vector2 to the renderer's camera
-	renderer->SetCameraPos(cameraPosition.x, cameraPosition.y);
+	//renderer->SetCameraPos(cameraPosition.x, cameraPosition.y);
 }
 
 //Private constructor

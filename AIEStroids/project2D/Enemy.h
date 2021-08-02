@@ -6,6 +6,7 @@
 #include "Actor.h"
 
 class Player;
+class Level;
 
 class Enemy : public Actor
 {
@@ -15,6 +16,7 @@ private:
 	Vector2 m_position;
 	const float MAX_SEE_AHEAD = 10.0f;
 	const float MAX_AVOID_FORCE = 1.0f;
+	Level* level;
 
 public:
 	Enemy();

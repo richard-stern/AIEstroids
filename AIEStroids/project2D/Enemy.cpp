@@ -1,6 +1,8 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "Application.h"
+#include "Level.h"
+//#include "Rock.h"
 
 Enemy::Enemy() : m_destroyed(false), Actor()
 {
@@ -90,7 +92,7 @@ void Enemy::Pursue(float deltaTime)
 
 void Enemy::AvoidObstacles(float deltaTime)
 {
-	Vector2 newPos = GetPosition() + CollisionAvoidance() * deltaTime;
+	Vector2 newPos = GetGlobalPosition() + CollisionAvoidance() * deltaTime;
 
 	SetGlobalPosition(newPos);
 }
@@ -121,18 +123,19 @@ Vector2 Enemy::CollisionAvoidance()
 
 GameObject* Enemy::FindMostThreateningObstacle()
 {
-	GameObject* mostThreatening = nullptr;
-	Vector2 position = GetPosition();
+	Actor* mostThreatening = nullptr;
+	Vector2 position = GetGlobalPosition();
+	Actor** asteroids = level->GetRocks();
 
-	for (GameObject* obstacle : level.GetGameObjects()) {
+	for (int i = 0; i < ROCKS_COUNT; i++) {
 		bool collision;// = lineIntersectsCircle(ahead, ahead2, obstacle);
 
 		// "position" is the character's current position
 		if ((collision && mostThreatening == nullptr) ||
-			position.GetDistance(obstacle->GetGlobalPosition()) < 
+			position.GetDistance(asteroids[i]->GetGlobalPosition()) <
 			position.GetDistance(mostThreatening->GetGlobalPosition()))
 		{
-			mostThreatening = obstacle;
+			mostThreatening = asteroids[i];
 		}
 	}
 
