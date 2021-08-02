@@ -1,3 +1,5 @@
+// Author: Matin Kamali
+
 #include "String.h"
 #include "Math.h"
 #include <iostream>

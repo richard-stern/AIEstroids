@@ -2,7 +2,7 @@
 
 #pragma once
 
-class Renderer2D;
+#include "Renderer2D.h"
 class MenuState;
 class GameState;
 class GameOverState;
@@ -26,7 +26,7 @@ public:
 	/// Calls Update() on the active state
 	void Update(float deltaTime);
 	/// Calls Draw() on the active state
-	void Draw(Renderer2D* renderer);
+	void Draw(aie::Renderer2D* renderer);
 	/// Change to the specified state
 	void ChangeState(int state);
 
