@@ -14,11 +14,6 @@ void CollisionManager::ResolveCollisions()
 {
 	collisions.clear();
 
-	//for (int i = 0; i < .size(); i++)
-	//{
-	//
-	//}
-
 	for (int i = 0; i < collisionObjects.size() - 1; i++)
 	{
 		
@@ -27,10 +22,10 @@ void CollisionManager::ResolveCollisions()
 		{
 
 			//broad phase
-			//if (CheckAABBCollision(aabb1, collisionObjects[j]->getAABB()))
-			//{
-			//
-			//}
+			/*if (CheckAABBCollision(collisionObjects[j]->getAABB(), collisionObjects[j]->getAABB()))
+			{
+			
+			}*/
 		}
 	}
 }
