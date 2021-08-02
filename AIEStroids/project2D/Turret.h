@@ -1,5 +1,5 @@
 //
-// Author: Matin Kamali
+// Author: Keira
 //
 
 #pragma once
@@ -7,6 +7,8 @@
 #include "Vector2.h"
 #include "Matrix3.h"
 #include "Input.h"
+#include "BulletManager.h"
+
 
 class Turret :
 	public Actor
@@ -21,10 +23,10 @@ public:
 	~Turret();
 
 	//Empty
-	void Update();
+	void Update(float deltaTime);
 
 	//Empty
-	void Draw();
+	//void Draw();
 
 private:
 
@@ -67,6 +69,7 @@ private:
 	float m_mass;
 
 	//Turret Movement Variables
+	Matrix3 movement;
 	Vector2 m_posChange;
 	float m_speed;
 	float m_momentum;
@@ -78,8 +81,10 @@ private:
 	Matrix3 m_globalTransform;
 	Matrix3 m_localTransform;
 
-
+	//For input stuff, obv.
 	aie::Input* m_input;
 
-};
+	//Bullet manager
+	BulletManager* m_bulletManager;
 
+};

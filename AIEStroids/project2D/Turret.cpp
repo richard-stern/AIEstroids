@@ -7,8 +7,6 @@
 
 Turret::Turret() {
 
-	
-
 	// -=-=- ADJUSTABLE VARIABLES -=-=- all values are floats unless stated otherwise
 
 	// -=-=- FUNCTIONALITY -=-=-
@@ -57,22 +55,29 @@ Turret::Turret() {
 
 	m_input = aie::Input::GetInstance();
 
+	//more initialization
+	m_momentum = 0;
+	m_rotation = 0;
+	m_speed = 0;
+	m_velocity = 0;
+
+	//m_bulletManager = new BulletManager(/*Enter amount of bullets here, once functionality is added*/);
 }
 
 Turret::~Turret() {
 
 };
 
-void Turret::Update() {
-
+void Turret::Update(float deltaTime) {
+	Controller(deltaTime);
 }
 
-void Turret::Draw() {
-
-}
+//void Turret::Draw() {
+//
+//}
 
 Vector2 Turret::GetMousePos() {
-	return Vector2(m_input->GetMouseX(), m_input->GetMouseY());
+	return Vector2((float)m_input->GetMouseX(), (float)m_input->GetMouseY());
 }
 
 bool Turret::IsLeftMouseClicked() {
@@ -125,7 +130,6 @@ void Turret::Rotate(float deltaTime) {
 		//Apply friction to slow down
 		m_rotation -= m_rotation * m_rotateFriction * deltaTime;
 
-		Matrix3 movement;
 		movement.ResetToIdentity();
 		movement.SetRotateZ(m_rotation * deltaTime);
 		m_localTransform = m_localTransform * movement;
@@ -138,8 +142,11 @@ void Turret::Fire(float deltaTime) {
 
 	if (IsLeftMouseClicked() && m_lastShotTimeDelta >= m_timeBetweenBullets) 
 	{
-		//Call BulletManager here to create a bullet -=-=- MISSING FUNCTION HERE -=-=-
-		//CreateBullet(m_globalTransform.GetPosition(), m_globalTransform.GetRotation());
+		//Call BulletManager here to create a bullet -=-=- MISSING FUNCTION CALL HERE -=-=-
+		
+		//BulletManager->Shoot(m_globalTransform.GetPosition(), m_globalTransform.GetRotation());
+
+		//Also move bullet forwards some amount so it doesn't spawn on top of the turret
 		m_lastShotTimeDelta = 0;
 	}
 
@@ -172,7 +179,6 @@ void Turret::TurretKickback(float deltaTime)
 
 	if (m_kickBackPos != 0) 
 	{
-		Matrix3 movement;
 		movement.ResetToIdentity();
 		movement.SetPosition(0, m_kickBackPos);
 		m_localTransform = m_localTransform * movement;
