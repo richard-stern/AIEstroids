@@ -24,37 +24,26 @@ GUI* GUI::GetInstance()
 	return m_Instance;
 }
 
-void GUI::Draw(aie::Renderer2D* renderer, int index)
+void GUI::DrawGUI(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input, int index)
 {
-	switch (index)
-	{
-	case 0: 
-		DrawMenu(renderer);
-		break;
-
-	case 1:
-		DrawGame(renderer);
-		break;
-
-	case 2:
-		DrawEndScreen(renderer);
-	}
+	m_GUIType = index;
+	//Update();
+	Draw(renderer, font);
 }
 
-void GUI::SetHealth()
+void GUI::GetHealth(int health)
 {
+	m_Health = health;
 }
 
-void GUI::AddScore()
+void GUI::GetScore(int score)
 {
+	m_Score = score;
 }
 
-void GUI::GetScore()
+void GUI::GetLives(int lives)
 {
-}
-
-void GUI::SetLives()
-{
+	m_lives = lives;
 }
 
 GUI::GUI()
@@ -65,19 +54,61 @@ GUI::~GUI()
 {
 }
 
-void GUI::DrawMenu(aie::Renderer2D* renderer)
+void GUI::Update(aie::Input* input)
 {
-	
+	// Checks for button click
+	if (m_GUIType == 0)
+	{
+		int x = input->GetMouseX();
+		int y = input->GetMouseY();
+
+		for (int i = 0; i < m_ButtonList.Count(); i++)
+		{
+			
+
+		}
+
+	}
 }
 
-void GUI::DrawGame(aie::Renderer2D* renderer)
+void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font)
 {
+
+	switch (m_GUIType)
+	{
+	case 0:
+		DrawMenu(renderer, font);
+		break;
+
+	case 1:
+		DrawGame(renderer, font);
+		break;
+
+	case 2:
+		DrawEndScreen(renderer, font);
+	}
 }
 
-void GUI::DrawEndScreen(aie::Renderer2D* renderer)
+void GUI::DrawMenu(aie::Renderer2D* renderer, aie::Font* font)
 {
+	renderer->SetRenderColour(0, 0, 1, 1);
+	renderer->DrawBox(100, 100, 50, 50, 0.0f, 0.0f);
+
+	renderer->SetRenderColour(1, 0, 0, 1);
+	renderer->DrawText2D(font, "Menu", 100, 100, 0.0f);
 }
 
-void GUI::DrawButton(aie::Renderer2D* renderer)
+void GUI::DrawGame(aie::Renderer2D* renderer, aie::Font* font)
 {
+
+}
+
+void GUI::DrawEndScreen(aie::Renderer2D* renderer, aie::Font* font)
+{
+
+}
+
+void GUI::DrawButton(aie::Renderer2D* renderer, aie::Font* font)
+{
+
 }
