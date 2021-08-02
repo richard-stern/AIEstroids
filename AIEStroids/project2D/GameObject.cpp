@@ -22,7 +22,7 @@ GameObject::~GameObject()
 
 void GameObject::Update(float _deltaTime)
 {
-	SetLocalPosition(GetLocalPosition() + (m_Velocity * _deltaTime));
+	
 }
 
 void GameObject::Draw(aie::Renderer2D* _renderer2D)
@@ -33,7 +33,7 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 	}
 }
 
-void GameObject::OnCollision(CollisionManifold _event)
+void GameObject::OnCollision(CollisionEvent _event)
 {
 	// TODO
 }
