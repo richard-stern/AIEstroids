@@ -1,12 +1,8 @@
 #pragma once
 #include "Renderer2D.h"
 #include "Texture.h"
-
-class Vector2
-{
-	float x;
-	float y;
-};
+#include "Matrix3.h"
+#include "Vector2.h"
 
 class CollisionEvent;
 
@@ -23,12 +19,13 @@ public:
 	Vector2 GetPosition() { return m_Position; }
 	void SetPosition(Vector2 _pos) { m_Position = _pos; }
 
+
 	//virtual void OnCollision(CollisionEvent _event);
 
 
 private:
+	Matrix3 m_GlobalTransform;
 	Vector2 m_Position;
-
 	aie::Texture* m_Texture;
 	bool m_IsActive;
 };
