@@ -24,14 +24,17 @@ struct CollisionManifold
 class CollisionManager
 {
 public:
-	//should be called every FIXED_TIME_STEP
-	void Update();
-	static CollisionManager& GetInstance();
+	static void CreateInstance();
+	static void DeleteInstance();
+	static CollisionManager* GetInstance();
 
-	CollisionManager(CollisionManager&) = delete;
-	CollisionManager(CollisionManager&&) = delete;
+	void Update();
+
 private:
-	CollisionManager();
+	static CollisionManager* instance;
+	CollisionManager() = default;
+	CollisionManager(CollisionManager&&) = default;
+	CollisionManager(CollisionManager&) = default;
 
 	void ResolveCollisions();
 	static void ResolveCollision(CollisionManifold& manifold);

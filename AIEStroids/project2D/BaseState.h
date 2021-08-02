@@ -3,8 +3,8 @@
 #ifndef BASE_STATE_H
 #define BASE_STATE_H
 
+#include "Renderer2D.h"
 class StateMachine;
-class Renderer2D;
 
 class BaseState {
 public:
@@ -18,7 +18,7 @@ public:
 	/// This will be called each frame
 	void virtual Update(float deltaTime, StateMachine* stateMachine) = 0;
 	/// This will draw all the graphics for the menu
-	void virtual Draw(Renderer2D* renderer) = 0;
+	void virtual Draw(aie::Renderer2D* renderer) = 0;
 	/// This will be called when the state is exited
 	void virtual Exit() = 0;
 };
