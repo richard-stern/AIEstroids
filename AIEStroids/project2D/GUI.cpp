@@ -1,7 +1,8 @@
 #include "GUI.h"
-
+// Sets the instance to nullptr
 GUI* GUI::m_Instance = nullptr;
 
+// Creates the GUI if there isn't an existing instance
 void GUI::Create()
 {
 	if (m_Instance == nullptr)
@@ -10,6 +11,7 @@ void GUI::Create()
 	}
 }
 
+// Destroys the GUI if there is an existing instance
 void GUI::Destroy()
 {
 	if (m_Instance != nullptr)
@@ -19,65 +21,49 @@ void GUI::Destroy()
 	}
 }
 
+// Retruns the instance
 GUI* GUI::GetInstance()
 {
 	return m_Instance;
 }
 
-void GUI::Draw(aie::Renderer2D* renderer, int index)
+// Draws the Game UI
+void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input)
 {
-	switch (index)
-	{
-	case 0: 
-		DrawMenu(renderer);
-		break;
+	// Needs too be updated to look neater
+	int y = aie::Application::GetInstance()->GetWindowHeight() - 20;
+	int x = 20;
 
-	case 1:
-		DrawGame(renderer);
-		break;
-
-	case 2:
-		DrawEndScreen(renderer);
-	}
+	renderer->SetRenderColour(1.0f, 0.0f, 0.0f, 1.0f);
+	renderer->DrawText2D(font, "Health" + m_Health, x, y, 0.0f);
+	renderer->DrawText2D(font, "Score" + m_Score, x, (y - 30), 0.0f);
+	renderer->DrawText2D(font, "Lives" + m_lives, x, (y - 60), 0.0f);
 }
 
-void GUI::SetHealth()
+// The player's health input
+void GUI::SetHealth(int health)
 {
+	m_Health = health;
 }
 
-void GUI::AddScore()
+// The player's score input
+void GUI::SetScore(int score)
 {
+	m_Score = score;
 }
 
-void GUI::GetScore()
+// The player's lives input
+void GUI::SetLives(int lives)
 {
+	m_lives = lives;
 }
 
-void GUI::SetLives()
-{
-}
-
+// Constructor
 GUI::GUI()
 {
 }
 
+// Destructor
 GUI::~GUI()
-{
-}
-
-void GUI::DrawMenu(aie::Renderer2D* renderer)
-{
-	
-}
-
-void GUI::DrawGame(aie::Renderer2D* renderer)
-{
-}
-
-void GUI::DrawEndScreen(aie::Renderer2D* renderer)
-{
-}
-
-void GUI::DrawButton(aie::Renderer2D* renderer)
 {
 }

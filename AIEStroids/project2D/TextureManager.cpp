@@ -6,6 +6,7 @@ TextureManager* TextureManager::m_Instance = nullptr;
 TextureManager::TextureManager()
 {
 	m_Textures = new std::unordered_map<const char*, aie::Texture*>();
+	m_Font = new std::unordered_map<const char*, aie::Font*>();
 }
 
 TextureManager::~TextureManager()
@@ -20,6 +21,15 @@ TextureManager::~TextureManager()
 		//delete iter->first;
 	}
 	delete m_Textures;
+
+	//Unload all fonts
+	for (auto iter = m_Font->begin(); iter != m_Font->end(); iter++)
+	{
+		delete iter->second;
+		//Maybe needed
+		//delete iter->first;
+	}
+	delete m_Font;
 
 }
 
@@ -57,15 +67,14 @@ aie::Texture* TextureManager::LoadTexture(const char* filePath)
 		return found->second;
 }
 
-aie::Font* TextureManager::LoadFont(const char* filePath, int size = 24)
+aie::Font* TextureManager::LoadFont(const char* filePath, int size)
 {
-	//Check if texture already exists
+	//Check if font already exists
 	auto found = m_Font->find(filePath);
 
 	if (found == m_Font->end())
 	{
-		//
-		//Texture Not Found, Load it in
+		//Font Not Found, Load it in
 		aie::Font* font = new aie::Font(filePath,size);
 		m_Font->emplace(filePath, font);
 		return font;

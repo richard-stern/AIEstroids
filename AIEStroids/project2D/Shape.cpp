@@ -1,17 +1,19 @@
 #include "Shape.h"
 
-Shape::~Shape()
+
+
+PolygonShape::~PolygonShape()
 {
 	delete[] vertices;
 	delete[] normals;
 }
 
-Shape&& Shape::clone()
+void PolygonShape::CloneTo(PolygonShape& shape)
 {
-	auto vertices = new Vector2[count];
-	auto normals = new Vector2[count];
-	memcpy(vertices, this->vertices, count * sizeof(Vector2));
-	memcpy(normals, this->normals, count * sizeof(Vector2));
-
-	return Shape(vertices, normals, centrePoint, count);
+	shape.vertices = new Vector2[count];
+	shape.normals = new Vector2[count];
+	memcpy(shape.vertices, this->vertices, count * sizeof(Vector2));
+	memcpy(shape.normals, this->normals, count * sizeof(Vector2));
+	shape.centrePoint = centrePoint;
+	shape.count = count;
 }

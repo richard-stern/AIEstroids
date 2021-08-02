@@ -4,10 +4,19 @@
 #include <vector>
 #include <forward_list>
 
+struct CollisionEvent
+{
+	PhysicsBody* other;
+	Vector2 collisionNormal;
+	float penetration;
+};
+
 struct CollisionManifold
 {
-	Collider* a;
-	Collider* b;
+	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) {}
+
+	PhysicsBody* a;
+	PhysicsBody* b;
 	Vector2 collisionNormal;
 	float penetration;
 };
@@ -15,13 +24,24 @@ struct CollisionManifold
 class CollisionManager
 {
 public:
-	//should be called every FIXED_TIME_STEP
+	static void CreateInstance();
+	static void DeleteInstance();
+	static CollisionManager* GetInstance();
+
 	void Update();
 
 private:
-	std::vector<PhysicsBody*> collisionObjects;
-	std::vector<CollisionManifold> potentialCollisions;
+	static CollisionManager* instance;
+	CollisionManager() = default;
+	CollisionManager(CollisionManager&&) = default;
+	CollisionManager(CollisionManager&) = default;
 
-	
+	void ResolveCollisions();
+	static void ResolveCollision(CollisionManifold& manifold);
+	static bool CheckAABBCollision(AABB& a, AABB& b);
+	static bool getCollisionInfo(CollisionManifold& manifold);
+
+	std::vector<PhysicsBody*> collisionObjects;
+	std::vector<CollisionManifold> collisions;
 };
 

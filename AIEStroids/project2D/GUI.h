@@ -1,40 +1,51 @@
 #pragma once
 #include "Renderer2D.h"
-
+#include "Font.h"
+#include "Input.h"
+#include "Application.h"
+	
 class GUI
 {
 public:
-
+	// GUI's creation
 	static void Create();
+
+	// Gui's destruction
 	static void Destroy();
 
+	// Returns the current instance
 	GUI* GetInstance();
 
-	void Draw(aie::Renderer2D* renderer, int index);
+	// Player setting health
+	void SetHealth(int health);
 
-	void SetHealth();
+	// Player setting score
+	void SetScore(int score);
 
-	void SetHealth();
+	// Player setting lives
+	void SetLives(int lives);
 
-	void AddScore();
-
-	void GetScore();
-
-	void SetLives();
-
+	// Draws the Game UI
+	void Draw(aie::Renderer2D* renderer, aie::Font* font,  aie::Input* input);
 
 private:
 
+	// Constructor
 	GUI();
+
+	// Destructor
 	~GUI();
-	
-	void DrawMenu(aie::Renderer2D* renderer);
-	void DrawGame(aie::Renderer2D* renderer);
-	void DrawEndScreen(aie::Renderer2D* renderer);
 
-	void DrawButton(aie::Renderer2D* renderer);
+	// The current instance
 	static GUI* m_Instance;
-	aie::Renderer2D* renderer;
 
+	// The Displayed health
+	int m_Health;
+
+	// The displayed score
+	int m_Score;
+
+	// The displayed lives
+	int m_lives;
 };
 

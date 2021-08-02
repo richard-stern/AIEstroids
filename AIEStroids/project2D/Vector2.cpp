@@ -44,6 +44,12 @@ Vector2 Vector2::operator*(float _value) const {
 	return Vector2(x * _value, y * _value);
 }
 
+Vector2 Vector2::operator*(const Matrix3& mat) const
+{
+	return Vector2(mat.m[0] * x + mat.m[3] * y,
+		mat.m[1] * x + mat.m[4] * y);
+}
+
 void Vector2::operator*=(const Vector2& other) {
 	x *= other.x;
 	y *= other.y;
@@ -122,6 +128,11 @@ void Vector2::SetRotation(float _radians) {
 	x = cosf(_radians);
 	y = sinf(_radians);
 	*this *= magnitude;
+}
+
+float Vector2::Dot(Vector2 _vec1, Vector2 _vec2)
+{
+	return _vec1.x * _vec2.x + _vec1.y * _vec2.y;
 }
 
 Vector2 Vector2::Scale(Vector2 _vec1, Vector2 _vec2)
