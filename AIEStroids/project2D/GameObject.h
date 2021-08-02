@@ -17,7 +17,7 @@ public:
 	GameObject(Vector2 _pos);
 	virtual ~GameObject();
 
-	virtual void Update();
+	virtual void Update(float _deltaTime);
 	virtual void Draw(aie::Renderer2D* _renderer2D);
 
 	GameObject* GetParent() { return m_Parent; }

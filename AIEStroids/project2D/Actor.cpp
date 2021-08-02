@@ -19,9 +19,9 @@ Actor::~Actor()
 	m_PhysicsBody = nullptr;
 }
 
-void Actor::Update()
+void Actor::Update(float _deltaTime)
 {
-	
+	GameObject::Update(float _deltaTime);
 }
 
 void Actor::OnCollision(CollisionEvent _event)

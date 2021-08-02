@@ -12,7 +12,7 @@ public:
 	Actor(Vector2 _pos);
 	virtual ~Actor();
 
-	virtual void Update() override;
+	virtual void Update(float _deltaTime) override;
 
 	int GetHealth() { return m_Health; }
 	void SetHealth(int _health) { m_Health = _health; }
