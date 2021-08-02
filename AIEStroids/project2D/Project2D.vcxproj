@@ -173,28 +173,37 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Game2D.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Heap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="BinaryTreeNode.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="DataContainers.h" />
     <ClInclude Include="Dequeue.h" />
     <ClInclude Include="DoubleLinkedList.h" />
     <ClInclude Include="DoubleLinkedListNode.h" />
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Game2D.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOverState.h" />
     <ClInclude Include="Heap.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedListNode.h" />
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="Stack.h" />
+    <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
