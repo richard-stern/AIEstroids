@@ -172,10 +172,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game2D.cpp" />
+    <ClCompile Include="Heap.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="BinaryTreeNode.h" />
+    <ClInclude Include="DataContainers.h" />
+    <ClInclude Include="Dequeue.h" />
+    <ClInclude Include="DoubleLinkedList.h" />
+    <ClInclude Include="DoubleLinkedListNode.h" />
+    <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Game2D.h" />
+    <ClInclude Include="Heap.h" />
+    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="LinkedListNode.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="Stack.h" />
+    <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

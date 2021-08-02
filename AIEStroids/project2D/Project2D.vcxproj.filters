@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="DataStructures">
+      <UniqueIdentifier>{5b9a5129-b1c5-46e3-9681-3fb1bf8217b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,9 +24,54 @@
     <ClCompile Include="Game2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Heap.cpp">
+      <Filter>DataStructures</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTreeNode.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataContainers.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Dequeue.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleLinkedList.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleLinkedListNode.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicArray.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedListNode.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
