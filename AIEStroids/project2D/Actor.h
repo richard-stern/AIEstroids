@@ -5,6 +5,9 @@
 
 // Author: James K
 
+class CollisionManifold;
+class PhysicsBody;
+
 class Actor : public GameObject
 {
 public:
@@ -23,8 +26,7 @@ public:
 	void AddPhysicsBody(PhysicsBody* _body) { m_PhysicsBody = _body; }
 	void RemovePhysicsBody() { m_PhysicsBody = nullptr; }
 
-
-	virtual void OnCollision(CollisionEvent _event);
+	virtual void OnCollision(CollisionManifold _event);
 
 protected:
 	PhysicsBody* m_PhysicsBody = nullptr;

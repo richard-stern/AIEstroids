@@ -1,5 +1,7 @@
 #include "Actor.h"
 #include "Application.h"
+#include "PhysicsBody.h"
+#include "CollisionManager.h"
 
 Actor::Actor()
 {
@@ -24,7 +26,7 @@ void Actor::Update(float _deltaTime)
 	GameObject::Update(_deltaTime);
 }
 
-void Actor::OnCollision(CollisionEvent _event)
+void Actor::OnCollision(CollisionManifold _event)
 {
 
 }
