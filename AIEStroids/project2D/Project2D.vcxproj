@@ -172,12 +172,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game2D.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix3.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game2D.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>
