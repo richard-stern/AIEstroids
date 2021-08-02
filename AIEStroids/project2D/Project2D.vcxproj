@@ -172,10 +172,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game2D.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game2D.h" />
+    <ClInclude Include="GameOverState.h" />
+    <ClInclude Include="Level.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
