@@ -16,6 +16,21 @@
     <Filter Include="DataStructures">
       <UniqueIdentifier>{5b9a5129-b1c5-46e3-9681-3fb1bf8217b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math Library">
+      <UniqueIdentifier>{a0fd87be-4fda-485b-adca-a08a4b83f915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MathLibrary">
+      <UniqueIdentifier>{0ecf8de8-dcc9-4875-bb49-b972426cfcc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Container Classes">
+      <UniqueIdentifier>{f3d87e84-8ad3-457c-8289-4890d6ccb36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game Objects">
+      <UniqueIdentifier>{257c5f54-b0e9-48f7-ba0e-48bfd5a1dd9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Objects">
+      <UniqueIdentifier>{73f32736-1d1e-4566-b05c-213214ba3708}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,43 +39,40 @@
     <ClCompile Include="Game2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Turret.cpp">
-=======
     <ClCompile Include="GUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Actor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Source Files\MathLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix3.cpp">
+      <Filter>Source Files\MathLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="Heap.cpp">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Level.cpp">
@@ -69,23 +81,7 @@
     <ClCompile Include="Shape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StateMachine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState.cpp">
->>>>>>> main
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimatedSprite.cpp">
+    <ClCompile Include="Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HealthPickup.cpp">
@@ -94,16 +90,16 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Star.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rect.cpp">
+    <ClCompile Include="Rock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -111,101 +107,85 @@
     <ClInclude Include="Game2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BinaryTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BinaryTreeNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataContainers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dequeue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DoubleLinkedList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DoubleLinkedListNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Turret.h">
-=======
     <ClInclude Include="GUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsBody.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Actor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Vector2.h">
+      <Filter>Header Files\Math Library</Filter>
     </ClInclude>
-    <ClInclude Include="GameOverState.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Matrix3.h">
+      <Filter>Header Files\Math Library</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTree.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryTreeNode.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="DataContainers.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Dequeue.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicArray.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleLinkedListNode.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleLinkedList.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseState.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Header Files\Container Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedListNode.h">
+      <Filter>Header Files\Container Classes</Filter>
     </ClInclude>
     <ClInclude Include="Heap.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Container Classes</Filter>
     </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkedListNode.h">
+    <ClInclude Include="PhysicsBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MenuState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
->>>>>>> main
+    <ClInclude Include="Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedSprite.h">
@@ -214,7 +194,7 @@
     <ClInclude Include="HealthPickup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="Rect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Star.h">
@@ -223,7 +203,7 @@
     <ClInclude Include="String.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rect.h">
+    <ClInclude Include="Rock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CollisionLayers.h">

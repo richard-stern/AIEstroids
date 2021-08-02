@@ -8,9 +8,9 @@
 #include "DynamicArray.h"
 #include "GameObject.h"
 #include "Player.h"
-//#include "Rock.h"		// Doesn't exist yet
-//#include "Star.h"		// Doesn't exist yet
-//#include "Enemy.h"	// Doesn't exist yet
+#include "Rock.h"
+#include "Star.h"
+#include "Enemy.h"
 
 #define ROCKS_COUNT		6		// Asteroids in the level
 #define STARS_COUNT		100		// Stars in the level
@@ -31,6 +31,7 @@ public:
 
 	void Update(float deltaTime);
 	void Draw(aie::Renderer2D* renderer);
+	Actor** GetRocks() { return (Actor**) m_rockArray; }
 
 private:
 	// Window size
@@ -39,9 +40,9 @@ private:
 
 	// Objects
 	Player* m_player;
-	//Rock* m_rockArray[ROCKS_COUNT];		// Doesn't exist yet
-	//Star* m_starArray[STARS_COUNT];		// Doesn't exist yet
-	//DynamicArray<Enemy*> m_enemyArray();	// Doesn't exist yet
+	Rock* m_rockArray[ROCKS_COUNT];		// Doesn't exist yet
+	Star* m_starArray[STARS_COUNT];	
+	DynamicArray<Enemy*> m_enemyArray();
 
 	// Misc.
 	float enemyTimer = ENEMY_RATE;
