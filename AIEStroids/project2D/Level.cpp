@@ -16,25 +16,27 @@ Level::Level()
 	m_player = new Player({ playerX, playerY });
 
 	// Create stars
-	for (int i = 0; i < STARS_COUNT; i++)
+	// UNFINISHED - Stars don't exist yet
+	/*for (int i = 0; i < STARS_COUNT; i++)
 	{
 		m_starArray[i] = new Star({ rand() % (int)windowW, rand() % (int)windowH });
-	}
+	}*/
 
 	// Create rocks
-	for (int i = 0; i < ROCKS_COUNT; i++)
-	{
-		// Keep getting a random position while the generated position is near player
-		float spawnX, spawnY;
-		do
-		{
-			spawnX = rand() % (int)windowW;
-			spawnY = rand() % (int)windowH;
-		} while (spawnX > (playerX - 10) && spawnX < (playerX + 10) && spawnY >(playerY - 10) && spawnY < (playerY + 10));
+	// UNFINISHED - Rocks don't exist yet
+	//for (int i = 0; i < ROCKS_COUNT; i++)
+	//{
+	//	// Keep getting a random position while the generated position is near player
+	//	float spawnX, spawnY;
+	//	do
+	//	{
+	//		spawnX = rand() % (int)windowW;
+	//		spawnY = rand() % (int)windowH;
+	//	} while (spawnX > (playerX - 10) && spawnX < (playerX + 10) && spawnY >(playerY - 10) && spawnY < (playerY + 10));
 
-		// Create rock at the free position
-		m_rockArray[i] = new Rock({ spawnX, spawnY });
-	}
+	//	// Create rock at the free position
+	//	m_rockArray[i] = new Rock({ spawnX, spawnY });
+	//}
 }
 
 // Destructor - Delete all objects
@@ -72,47 +74,48 @@ void Update(float deltaTime)
 	// Update player
 	m_player->Update(deltaTime);
 
+	// UNFINISHED - Enemies and Rocks don't exist yet
 	// Update enemies
-	for (int i = 0; i < m_enemyArray.Count(); i++)
-		m_enemyArray[i]->Update(deltaTime);
+	/*for (int i = 0; i < m_enemyArray.Count(); i++)
+		m_enemyArray[i]->Update(deltaTime);*/
 
 	// Update rocks
-	for (int i = 0; i < ROCKS_COUNT; i++)
-		m_rockArray[i]->Update();
+	/*for (int i = 0; i < ROCKS_COUNT; i++)
+		m_rockArray[i]->Update();*/
 
 	// Create enemy if timer is reached, and reset timer
-	enemyTimer -= deltaTime;
-	if (enemyTimer <= 0.0f)
-	{
-		// Keep getting a random position while the generated position is colliding
-		float spawnX, spawnY;
-		do
-		{
-			spawnX = rand() % (int)windowW;
-			spawnY = rand() % (int)windowH;
-		} while (/* Colliding */);
+	//enemyTimer -= deltaTime;
+	//if (enemyTimer <= 0.0f)
+	//{
+	//	// Keep getting a random position while the generated position is colliding
+	//	float spawnX, spawnY;
+	//	do
+	//	{
+	//		spawnX = rand() % (int)windowW;
+	//		spawnY = rand() % (int)windowH;
+	//	} while (/* Colliding */);
 
-		m_enemyArray.Add(new Enemy({ spawnX, spawnY })));
+	//	m_enemyArray.Add(new Enemy({ spawnX, spawnY })));
 
-		enemyTimer = ENEMY_RATE;
-	}
+	//	enemyTimer = ENEMY_RATE;
+	//}
 }
 
 // Draw loop - Calls draw on all objects
 void Draw(aie::Renderer2D* renderer)
 {
 	// Draw stars
-	for (int i = 0; i < STARS_COUNT; i++)
-		m_starArray[i]->Draw();
+	/*for (int i = 0; i < STARS_COUNT; i++)
+		m_starArray[i]->Draw();*/
 
 	// Draw player
 	m_player->Draw();
 
 	// Draw enemies
-	for (int i = 0; i < m_enemyArray.Count(); i++)
-		m_enemyArray[i]->Draw();
+	/*for (int i = 0; i < m_enemyArray.Count(); i++)
+		m_enemyArray[i]->Draw();*/
 
 	// Draw all rocks
-	for (int i = 0; i < ROCKS_COUNT; i++)
-		m_rockArray[i]->Draw();
+	/*for (int i = 0; i < ROCKS_COUNT; i++)
+		m_rockArray[i]->Draw();*/
 }
