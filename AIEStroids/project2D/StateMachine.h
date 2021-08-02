@@ -3,6 +3,9 @@
 #pragma once
 
 class Renderer2D;
+class MenuState;
+class GameState;
+class GameOverState;
 
 // A finite state machine to control the overall game flow.
 // • Is created by Application2D.
@@ -10,20 +13,25 @@ class Renderer2D;
 
 class StateMachine {
 public:
-	enum class STATES {	// usecase: STATES::ESTATE_MENU / StateMchine::STATES::ESTATE_MENU
+	enum {
 		ESTATE_MENU,
 		ESTATE_GAME,
 		ESTATE_GAMEOVER
 	};
 
 	StateMachine();
-	~StateMachine();
+	virtual ~StateMachine();
 
 	/// Calls Update() on the active state
 	void Update(float deltaTime);
 	/// Calls Draw() on the active state
 	void Draw(Renderer2D* renderer);
 	/// Change to the specified state
-	void ChangeState(STATES state);
-};
+	void ChangeState(int state);
 
+private:
+	BaseState* current_state; // <!> just a pointer to one of the following states:
+	MenuState* menu_state;
+	GameState* game_state;
+	GameOverState* game_over_state;
+};

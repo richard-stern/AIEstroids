@@ -4,10 +4,19 @@
 #include <vector>
 #include <forward_list>
 
+struct CollisionEvent
+{
+	PhysicsBody* other;
+	Vector2 collisionNormal;
+	float penetration;
+};
+
 struct CollisionManifold
 {
-	Collider* a;
-	Collider* b;
+	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) {}
+
+	PhysicsBody* a;
+	PhysicsBody* b;
 	Vector2 collisionNormal;
 	float penetration;
 };
@@ -19,9 +28,11 @@ public:
 	void Update();
 
 private:
-	std::vector<PhysicsBody*> collisionObjects;
-	std::vector<CollisionManifold> potentialCollisions;
+	void ResolveCollisions();
+	static void ResolveCollision(CollisionManifold manifold);
+	static bool CheckAABBCollision(AABB& a, AABB& b);
 
-	
+	std::vector<PhysicsBody*> collisionObjects;
+	std::vector<CollisionManifold> collisions;
 };
 
