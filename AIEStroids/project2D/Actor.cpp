@@ -14,7 +14,7 @@ void Actor::Update(float _deltaTime)
 {
 	if (m_WrapAndRespawn)
 	{
-		//if()
+		
 	}
 }
 

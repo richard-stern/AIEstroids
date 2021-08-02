@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
+// Author: James K
+
 class Actor : public GameObject
 {
 public:
@@ -12,6 +14,8 @@ public:
 	Matrix3 GetGlobalTransform() { return m_GlobalTransform; }
 	Matrix3 GetLocalTransform() { return m_LocalTransform; }
 
+	bool GetWrapAndRespawn() { return m_WrapAndRespawn; }
+	void SetWrapAndRespawn(bool _active) { m_WrapAndRespawn = _active; }
 protected:
 	Vector2 m_v2Velocity;
 	Vector2 m_MaxVelocity;
@@ -20,6 +24,8 @@ protected:
 	
 private:
 
+protected:
 	bool m_WrapAndRespawn = false;
+
 };
 
