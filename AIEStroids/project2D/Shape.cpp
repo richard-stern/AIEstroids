@@ -1,12 +1,14 @@
 #include "Shape.h"
 
-Shape::~Shape()
+
+
+PolygonShape::~PolygonShape()
 {
 	delete[] vertices;
 	delete[] normals;
 }
 
-void Shape::cloneTo(Shape& shape)
+void PolygonShape::CloneTo(PolygonShape& shape)
 {
 	shape.vertices = new Vector2[count];
 	shape.normals = new Vector2[count];
