@@ -1,5 +1,7 @@
 #include "CollisionManager.h"
 
+CollisionManager* CollisionManager::instance = nullptr;
+
 void CollisionManager::Update()
 {
 	for (int i = 0; i < collisionObjects.size(); i++)
@@ -10,9 +12,19 @@ void CollisionManager::Update()
 	ResolveCollisions();
 }
 
-CollisionManager& CollisionManager::GetInstance()
+void CollisionManager::CreateInstance()
 {
-	static CollisionManager instance = CollisionManager();
+	instance = new CollisionManager();
+}
+
+void CollisionManager::DeleteInstance()
+{
+	delete instance;
+	instance = nullptr;
+}
+
+CollisionManager* CollisionManager::GetInstance()
+{
 	return instance;
 }
 
