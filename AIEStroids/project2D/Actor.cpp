@@ -21,7 +21,7 @@ Actor::~Actor()
 
 void Actor::Update(float _deltaTime)
 {
-	GameObject::Update(float _deltaTime);
+	GameObject::Update(_deltaTime);
 }
 
 void Actor::OnCollision(CollisionEvent _event)
