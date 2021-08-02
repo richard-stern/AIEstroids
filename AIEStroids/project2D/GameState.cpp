@@ -18,7 +18,7 @@ void GameState::Update(float deltaTime, StateMachine* state) {
 	// @incomplete
 };
 ///
-void GameState::Draw(Renderer2D* renderer) {
+void GameState::Draw(aie::Renderer2D* renderer) {
 	// @incomplete
 };
 ///

@@ -41,7 +41,7 @@ public:
 	aie::Texture* GetTexture() { return m_Texture; }
 	void SetTexture(aie::Texture* _texture) { m_Texture = _texture; }
 
-	virtual void OnCollision(CollisionManifold _event);
+	virtual void OnCollision(CollisionEvent _event);
 	
 protected:
 	GameObject* m_Parent = nullptr;

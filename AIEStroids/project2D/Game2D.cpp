@@ -12,12 +12,13 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	m_2dRenderer = new aie::Renderer2D();
 
 	// Create some textures for testing.
-	m_texture = new aie::Texture("./textures/hero.png");
-	m_texture2 = new aie::Texture("./textures/rock_large.png");
-	m_font = new aie::Font("./font/consolas.ttf", 24);
+	m_texture = new aie::Texture("../bin/textures/hero.png");
+	m_texture2 = new aie::Texture("../bin/textures/ship.png");
+	m_font = new aie::Font("../bin/font/consolas.ttf", 24);
+	player = new Player({ 30.0f, 30.0f });
 
 	//Create the camera controller
-	Camera::Create();
+	Camera::Create(m_2dRenderer, player);
 }
 
 Game2D::~Game2D()
@@ -26,6 +27,7 @@ Game2D::~Game2D()
 	delete m_font;
 	delete m_texture;
 	delete m_texture2;
+	delete player;
 
 	// Delete the renderer.
 	delete m_2dRenderer;
@@ -42,6 +44,9 @@ void Game2D::Update(float deltaTime)
 		aie::Application* application = aie::Application::GetInstance();
 		application->Quit();
 	}
+
+	player->Update(aie::Application::GetInstance()->GetDeltaTime());
+	player->GetPhysicsBody()->Update();
 
 	//Call update on the camera
 	Camera::GetInstance()->Update(deltaTime);
@@ -61,8 +66,10 @@ void Game2D::Draw()
 	// Draw a thin line.
 	m_2dRenderer->DrawLine(150.0f, 400.0f, 250.0f, 500.0f, 2.0f);
 
+	Vector2 pos = player->GetGlobalPosition();
 	// Draw a sprite
-	m_2dRenderer->DrawSprite(m_texture2, 200.0f, 200.0f);
+	m_2dRenderer->SetRenderColour(1.0f, 1.0f, 1.0f, 1.0f);
+	m_2dRenderer->DrawSprite(m_texture2, pos.x, pos.y);
 
 	// Draw a moving purple circle.
 	m_2dRenderer->SetRenderColour(1.0f, 0.0f, 1.0f, 1.0f);
@@ -80,7 +87,7 @@ void Game2D::Draw()
 	m_2dRenderer->SetUVRect(frame * size, 0.0f, size, 1.0f);
 	m_2dRenderer->DrawSprite(m_texture, 900.0f, 200.0f, 100.0f, 100.0f);
 	m_2dRenderer->SetUVRect(0.0f, 0.0f, 1.0f, 1.0f);
-	
+
 	// Draw some text.
 	float windowHeight = (float)application->GetWindowHeight();
 	char fps[32];

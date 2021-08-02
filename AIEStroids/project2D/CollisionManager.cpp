@@ -1,5 +1,7 @@
 #include "CollisionManager.h"
 
+CollisionManager* CollisionManager::instance = nullptr;
+
 void CollisionManager::Update()
 {
 	for (int i = 0; i < collisionObjects.size(); i++)
@@ -8,6 +10,22 @@ void CollisionManager::Update()
 	}
 
 	ResolveCollisions();
+}
+
+void CollisionManager::CreateInstance()
+{
+	instance = new CollisionManager();
+}
+
+void CollisionManager::DeleteInstance()
+{
+	delete instance;
+	instance = nullptr;
+}
+
+CollisionManager* CollisionManager::GetInstance()
+{
+	return instance;
 }
 
 void CollisionManager::ResolveCollisions()
@@ -41,12 +59,18 @@ void CollisionManager::ResolveCollisions()
 	}
 }
 
-void CollisionManager::ResolveCollision(CollisionManifold manifold)
+void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 {
 
 }
 
 bool CollisionManager::CheckAABBCollision(AABB& a, AABB& b)
 {
-	
+	return (a.bottomRight.x > b.topLeft.x&& a.bottomRight.y > b.topLeft.x
+		&& a.topLeft.x < b.bottomRight.x && a.topLeft.y < b.bottomRight.y);
+}
+
+bool CollisionManager::getCollisionInfo(CollisionManifold& manifold)
+{
+	return false;
 }
