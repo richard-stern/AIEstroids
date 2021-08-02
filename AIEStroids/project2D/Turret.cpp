@@ -81,7 +81,7 @@ Vector2 Turret::GetMousePos() {
 }
 
 bool Turret::IsLeftMouseClicked() {
-	m_input->IsMouseButtonDown(aie::INPUT_MOUSE_BUTTON_LEFT);
+	return m_input->IsMouseButtonDown(aie::INPUT_MOUSE_BUTTON_LEFT);
 }
 
 void Turret::Controller(float deltaTime) {
