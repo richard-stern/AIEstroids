@@ -10,6 +10,12 @@ void CollisionManager::Update()
 	ResolveCollisions();
 }
 
+CollisionManager& CollisionManager::GetInstance()
+{
+	static CollisionManager instance = CollisionManager();
+	return instance;
+}
+
 void CollisionManager::ResolveCollisions()
 {
 	collisions.clear();
@@ -41,12 +47,18 @@ void CollisionManager::ResolveCollisions()
 	}
 }
 
-void CollisionManager::ResolveCollision(CollisionManifold manifold)
+void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 {
 
 }
 
 bool CollisionManager::CheckAABBCollision(AABB& a, AABB& b)
 {
-	
+	return (a.bottomRight.x > b.topLeft.x&& a.bottomRight.y > b.topLeft.x
+		&& a.topLeft.x < b.bottomRight.x && a.topLeft.y < b.bottomRight.y);
+}
+
+bool CollisionManager::getCollisionInfo(CollisionManifold& manifold)
+{
+	return false;
 }
