@@ -1,37 +1,59 @@
 #include "GameOverState.h"
 
-// Constructor
+// Constructor - Does nothing
 GameOverState::GameOverState()
 {
-	// To be written...
 }
 
-// Destructor
+// Destructor - Does nothing
 GameOverState::~GameOverState()
 {
-	// To be written...
 }
 
-// Called when the state is entered, and initializes
+// Called when state is entered - Initializes private variables
 void GameOverState::Enter()
 {
-	// To be written...
+	// Get and store game window size
+	aie::Application* application = aie::Application::GetInstance();
+	windowW = (float)(application->GetWindowWidth());
+	windowH = (float)(application->GetWindowHeight());
+
+	// Load and store fonts to draw text with
+	TextureManager* tm = TextureManager::Get();
+	fontHeader = tm->LoadFont("bin/font/consolas.ttf", 46);
+	fontText = tm->LoadFont("./font/consolas.ttf", 20);
+
+	// Calculate and store horizontal text positions to draw from (to center text)
+	posHeader = (windowW * 0.5) - (fontHeader->GetStringWidth(strHeader) * 0.5);
+	posText = (windowW * 0.5) - (fontHeader->GetStringWidth(strText) * 0.5);
 }
 
-// Called each frame to update input
-void GameOverState::Update(float deltaTime, StateMachine* state)
+// Update loop - Resets to game state when Enter is pressed
+void GameOverState::Update(float deltaTime, StateMachine* stateMachine)
 {
-	// To be written...
+	// If Enter is pressed, restart game (set state)
+	if (aie::Input::GetInstance()->WasKeyPressed(aie::INPUT_KEY_ENTER))
+		stateMachine->ChangeState(ESTATE_GAME);
 }
 
-// Called each frame to draw everything in this state
+// Draw loop - Draws the Game Over screen
 void GameOverState::Draw(aie::Renderer2D* renderer)
 {
-	// To be written...
+	// Draw a black box over the screen
+	renderer->SetRenderColour(0x000000FF);
+	renderer->DrawBox(windowW * 0.5, windowH * 0.5, windowW, windowH, 0);
+
+	// Draw text
+	renderer->SetRenderColour(0xAA0000FF);
+	renderer->DrawText2D(fontHeader, strHeader, posHeader, (windowH * 0.5));
+	renderer->SetRenderColour(0xFFFFFFFF);
+	renderer->DrawText2D(fontText, strText, posText, (windowH * 0.25));
+
+	// Reset render colour to white
+	renderer->SetRenderColour(0xFFFFFFFF);
 }
 
-// Called when the state is exited, and cleans up everything
+// Called when state is exited - Does nothing
 void GameOverState::Exit()
 {
-	// To be written...
 }
