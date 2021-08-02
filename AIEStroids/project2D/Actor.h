@@ -5,7 +5,7 @@
 
 // Author: James K
 
-class CollisionEvent;
+struct CollisionEvent;
 class PhysicsBody;
 
 class Actor : public GameObject
