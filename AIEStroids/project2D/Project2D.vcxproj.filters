@@ -36,13 +36,13 @@
     <ClCompile Include="Vector2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Heap.cpp">
-      <Filter>DataStructures</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
+    <ClCompile Include="GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
+    <ClCompile Include="PhysicsBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
@@ -98,46 +98,13 @@
     <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BinaryTree.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="BinaryTreeNode.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="DataContainers.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="Dequeue.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="DoubleLinkedList.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="DoubleLinkedListNode.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicArray.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="Heap.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkedList.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkedListNode.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="Queue.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="Stack.h">
-      <Filter>DataStructures</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
+    <ClInclude Include="GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
+    <ClInclude Include="PhysicsBody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
