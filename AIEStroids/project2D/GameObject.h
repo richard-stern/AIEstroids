@@ -1,14 +1,12 @@
 #pragma once
 #include "Renderer2D.h"
 #include "Texture.h"
+#include "DynamicArray.h"
 #include "Matrix3.h"
 #include "Vector2.h"
-#include "DynamicArray.h"
-#include "PhysicsBody.h"
+#include "CollisionManager.h"
 
 // Author: James K
-
-class CollisionEvent;
 
 class GameObject
 {
@@ -43,7 +41,7 @@ public:
 	aie::Texture* GetTexture() { return m_Texture; }
 	void SetTexture(aie::Texture* _texture) { m_Texture = _texture; }
 
-	virtual void OnCollision(CollisionEvent _event);
+	virtual void OnCollision(CollisionManifold _event);
 	
 protected:
 	GameObject* m_Parent = nullptr;

@@ -1,4 +1,6 @@
 #include "GameObject.h"
+#include "PhysicsBody.h"
+
 
 GameObject::GameObject()
 {
@@ -31,7 +33,7 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 	}
 }
 
-void GameObject::OnCollision(CollisionEvent _event)
+void GameObject::OnCollision(CollisionManifold _event)
 {
 	// TODO
 }
