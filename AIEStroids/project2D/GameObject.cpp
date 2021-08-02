@@ -3,6 +3,7 @@
 GameObject::GameObject()
 {
 	SetActive(true);
+	m_GlobalTransform.SetPosition({ 0, 0 });
 }
 
 GameObject::GameObject(Vector2 _pos)
@@ -17,9 +18,9 @@ GameObject::~GameObject()
 	m_Texture = nullptr;
 }
 
-void GameObject::Update(float _deltaTime)
+void GameObject::Update()
 {
-	
+
 }
 
 void GameObject::Draw(aie::Renderer2D* _renderer2D)
