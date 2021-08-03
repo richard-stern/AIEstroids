@@ -24,6 +24,10 @@ public:
 	void SetRestitution(float restitution) { this->restitution = restitution; }
 	void SetTrigger(bool value) { isTrigger = value; }
 
+	Collider(const Collider& other) = delete;
+	Collider(Collider&& other) = delete;
+	Collider& operator=(const Collider& other) = delete;
+	Collider& operator=(Collider&& other) = delete;
 	~Collider();
 private:
 	friend PhysicsBody;
