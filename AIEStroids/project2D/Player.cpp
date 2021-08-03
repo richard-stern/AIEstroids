@@ -13,17 +13,12 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	m_WrapAndRespawn = false;
 
 	//Assign ship texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/ship.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
+	m_LocalTransform.SetScale(3.0f, 3.0f);
 	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
-	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
-	//Collide with everything but player
-	unsigned int layermask = (unsigned int)CollisionLayer::ALL ^ (unsigned int)CollisionLayer::PLAYER;
-	//Create collider
-	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
-	//Create the physics body using the generated collider
-	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	GeneratePhysicsBody(32, 32, CollisionLayer::PLAYER, (unsigned int)CollisionLayer::ALL);
 	m_PhysicsBody->SetDrag(PLAYER_DRAG);
 
 	//------------------CREATE TURRET----------------------//
@@ -88,7 +83,7 @@ void Player::Update(float deltaTime)
 		//-------------------------P O S I T I O N----------------------------------------------------
 		if (inputVector.y != 0)
 		{
-			m_PhysicsBody->AddForce(playerForward * inputVector.y * thrustAmount);
+			m_PhysicsBody->AddVelocity(playerForward * inputVector.y * thrustAmount);
 		}
 
 		//Limit player speed
