@@ -104,6 +104,14 @@ void PolygonShape::GenerateNormals()
 	
 }
 
+void CircleShape::CalculateGlobal(Matrix3& transform)
+{
+	globalCentrePoint = centrePoint * transform;
+	globalCentrePoint += transform.GetPosition();
+	auto scale = transform.GetScale();
+	globalRadius = radius * std::max(scale.x, scale.y);
+}
+
 float CircleShape::GetArea()
 {
 	return M_PI * radius * radius;
