@@ -138,13 +138,8 @@ void Matrix3::SetRotateZ(float _radians) {
 	// Z doesn't change
 	m[0] = cos(_radians);
 	m[1] = sin(_radians);
-	m[2] = 0;
 	m[3] = -sin(_radians);
 	m[4] = cos(_radians);
-	m[5] = 0;
-	m[6] = 0;
-	m[7] = 0;
-	m[8] = 1;
 }
 
 void Matrix3::SetScale(float _x, float _y) {
