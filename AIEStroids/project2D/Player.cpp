@@ -1,11 +1,8 @@
 #include "Player.h"
 #include "Application.h"
 #include "GUI.h"
-<<<<<<< HEAD
 #include <cmath>
-=======
 #include "TextureManager.h"
->>>>>>> main
 
 //Author Rahul J. (BEANMEISTER)
 
