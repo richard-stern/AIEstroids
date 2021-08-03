@@ -10,6 +10,10 @@ Level::Level(aie::Renderer2D* renderer)
 	windowW = (float)(application->GetWindowWidth());
 	windowH = (float)(application->GetWindowHeight());
 
+	// Create systems
+	Camera::Create(renderer, m_player);
+	CollisionManager::CreateInstance();
+
 	// Create player
 	float playerX = windowW * 0.5f;
 	float playerY = windowH * 0.5f;
@@ -17,9 +21,7 @@ Level::Level(aie::Renderer2D* renderer)
 
 	// Create stars
 	for (int i = 0; i < STARS_COUNT; i++)
-	{
 		m_starArray[i] = new Star((float)(rand() % (int)windowW), (float)(rand() % (int)windowH));
-	}
 
 	// Create rocks
 	// UNFINISHED - Rocks don't exist yet
@@ -37,11 +39,7 @@ Level::Level(aie::Renderer2D* renderer)
 	//	m_rockArray[i] = new Rock({ spawnX, spawnY });
 	//}
 
-	// Create camera
-	Camera::Create(renderer, m_player);
-
-	// Create collision manager
-	CollisionManager::CreateInstance();
+	
 }
 
 // Destructor - Delete all objects
@@ -55,6 +53,7 @@ Level::~Level()
 	}
 
 	// Delete rocks
+	// UNFINISHED - Rocks don't exist yet
 	/*for (int i = 0; i < ROCKS_COUNT; i++)
 	{
 		delete m_rockArray[i];
@@ -72,7 +71,7 @@ Level::~Level()
 	delete m_player;
 	m_player = nullptr;
 
-	// Delete camera and collisions
+	// Delete systems
 	CollisionManager::GetInstance()->DeleteInstance();
 	Camera::Destroy();
 }
@@ -110,8 +109,8 @@ void Level::Update(float deltaTime)
 void Level::Draw(aie::Renderer2D* renderer)
 {
 	// Draw stars
-	for (int i = 0; i < STARS_COUNT; i++)
-		m_starArray[i]->Draw(renderer);
+	//for (int i = 0; i < STARS_COUNT; i++)
+		//m_starArray[i]->Draw(renderer);
 
 	// Draw player
 	m_player->Draw(renderer);
