@@ -13,7 +13,8 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	m_WrapAndRespawn = false;
 
 	//Assign ship texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/ship.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
+	m_LocalTransform.SetScale(3.0f, 3.0f);
 	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
