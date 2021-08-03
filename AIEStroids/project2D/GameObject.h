@@ -57,7 +57,7 @@ protected:
 	Vector2 m_Velocity = { 0, 0 };
 	float m_Drag = 0;
 
-	aie::Texture* m_Texture;
+	aie::Texture* m_Texture = nullptr;
 	bool m_IsActive = false;
 	bool m_WrapAndRespawn = false;
 };

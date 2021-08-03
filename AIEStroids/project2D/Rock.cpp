@@ -1,11 +1,21 @@
 #include "Rock.h"
 #include "Application.h"
 #include "TextureManager.h"
+#include "CollisionLayers.h"
 Rock::Rock() : Actor()
 {
 	AddPhysicsBody(new PhysicsBody(this, BodyType::DYNAMIC));
+	//--------- COLLIDER GENERATION ----------------------//
+	//Create a box that is the same dimensions as the texture
+	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
+	//Collide with everything
+	unsigned int layermask = (unsigned int)CollisionLayer::ALL;
+	//Create collider
+	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::ROCK, layermask);
+	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/rock_large.png");
 	SetRandomPath();
+	
 }
 
 Rock::~Rock()

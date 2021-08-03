@@ -24,6 +24,7 @@ void GUI::Destroy()
 // Retruns the instance
 GUI* GUI::GetInstance()
 {
+	Create(); // make sure we have an instance
 	return m_Instance;
 }
 
