@@ -100,7 +100,10 @@ void PhysicsBody::UpdateAABB()
 		CircleShape* circleShape = (CircleShape*)collider->shape;
 		float radius = circleShape->GetRadius();
 
-		//aabb.bottomRight.x = radius + 
+		aabb.bottomRight.x = radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.topLeft.x = -radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.topLeft.y = -radius + circleShape->GetGlobalCentrePoint().y;
+		aabb.bottomRight.y = radius + circleShape->GetGlobalCentrePoint().y;
 	}
 		break;
 	case ShapeType::POLYGON:
