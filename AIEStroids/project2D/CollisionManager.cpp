@@ -20,6 +20,11 @@ void CollisionManager::AddBody(PhysicsBody* body)
 		body->GetCollider()->GetShape()->CalculateGlobal(body->actorObject->GetGlobalTransform());
 }
 
+void CollisionManager::RemoveBody(PhysicsBody* body)
+{
+	collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
+}
+
 void CollisionManager::CreateInstance()
 {
 	if (instance != nullptr)
@@ -53,12 +58,8 @@ void CollisionManager::ResolveCollisions()
 
 		for (int j = 1; j < collisionObjects.size(); j++)
 		{
-			if (collisionObjects[i]->collider == nullptr)
-			{
-				continue;
-			}
-			//check if the objects are compatible layer wise
-			if (collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
+			//check if the objects are compatible layer wise, if collider exists, and 
+			if (collisionObjects[j]->collider != nullptr && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
 				&& collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask)
 			{
 				//broad phase
@@ -142,23 +143,41 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//		POLYGON-CIRCLE COLLISION
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		float penetrationSquared = INFINITY;
 		Vector2 normal;
 
 		//polygon will be A
 		PolygonShape* a = (PolygonShape*)manifold.a->collider->shape;
 		CircleShape* b = (CircleShape*)manifold.b->collider->shape;
-
+		auto polygonVertices = a->GetGlobalVertices();
+		float pRadius = b->GetRadius() * b->GetRadius();
 		int count = a->GetCount();
 
 		//loop through all vertices and get the one with the min distance to the circle
-		for (size_t i = 0; i < count; i++)
+		for (int i = 0; i < count; i++)
 		{
-
+			auto deltaVector = (polygonVertices[i] - b->GetGlobalCentrePoint());
+			float dist = deltaVector.x * deltaVector.x + deltaVector.y * deltaVector.y;
+			if (dist < pRadius)
+			{
+				pRadius = dist;
+				normal = deltaVector;
+			}
 		}
+		
+		//return results
+		if (pRadius < b->GetRadius() * b->GetRadius())
+		{
+			manifold.penetration = sqrtf(pRadius);
+			manifold.collisionNormal = normal.GetNormalised();
+			return true;
+		}
+		else
+			return false;
+
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
 	}
 	break;
 	case CollisionType::POLYGONPOLYGON:
