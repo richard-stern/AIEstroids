@@ -10,12 +10,12 @@ GameState::GameState() {
 };
 /// Destory the level and GUI
 GameState::~GameState() {
-	delete level;
-	// delete gui; // @incomplete gui is a singleton, we shouldn't be deleting it
+	Exit(); // @incomplete why are we exiting twice? As in we can call Exit() and then delete game_state
 };
 /// Load and initialise the level and GUI
 void GameState::Enter() {
 	level = new Level();
+	GUI::Create(); // @incomplete fix this shit
 	gui   = GUI::GetInstance();
 };
 ///
@@ -27,13 +27,14 @@ void GameState::Update(float deltaTime, StateMachine* state) {
 ///
 void GameState::Draw(aie::Renderer2D* renderer) {
 	level->Draw(renderer);
-	// @incomplete ask GUI.h to not take in input, it's a singleton and they should get it themselves
 	aie::Input* input = aie::Input::GetInstance();
-	// @incomplete ask GUI.h to not take in font, they should be handling the font and not the GameState
-	auto font = TextureManager::Get()->LoadFont(""); // @incomplete pass a file path
+	auto font = TextureManager::Get()->LoadFont("font\\consolas.ttf"); // @incomplete ask Jaden to have a bunch of #define s that point to fonts and textures that we have
 	gui->Draw(renderer, font, input);
 };
 ///
 void GameState::Exit() {
-	// @incomplete
+	delete level;
+	// delete gui; // @incomplete gui is a singleton, we shouldn't be deleting it
+	level = nullptr;
+	gui   = nullptr;
 };
