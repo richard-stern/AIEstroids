@@ -14,17 +14,17 @@ class Player;
 class Level;
 class Rock;
 
-#define MAX_ENEMY_VELOCITY 500
+#define MAX_ENEMY_VELOCITY 100
 
 class Enemy : public Actor
 {
 private:
 	bool m_destroyed;
 	Player* m_player;
-	const float MAX_SEE_AHEAD = 10.0f;
-	const float MAX_AVOID_FORCE = 1.0f;
+	const float MAX_SEE_AHEAD = 100.0f;
+	const float MAX_AVOID_FORCE = 10.0f;
 	Rock** m_rocks;
-	const int radius = 100;
+	const int radius = 10;
 	Vector2 steeringForce;
 
 public:
@@ -36,7 +36,7 @@ public:
 	bool IsDestroyed() { return (m_CurrentHealth <= 0); }
 
 private:
-	void Seek(float deltaTime);
+	void Seek(Actor* target, float deltaTime);
 	void Pursue(float deltaTime);
 	void SetRandomLocation();
 	void CollisionAvoidance(float deltaTime);

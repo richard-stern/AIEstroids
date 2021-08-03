@@ -24,7 +24,7 @@ Rock::~Rock()
 
 void Rock::OnCollision(GameObject* other)
 {
-	SetRandomPath();
+	//SetRandomPath();
 } 
 
 void Rock::SetRandomPath()
@@ -55,8 +55,8 @@ void Rock::SetRandomPath()
 	Vector2 direction(((rand() % 200) - 100) / 100.0f, ((rand() % 200) - 100) / 100.0f);
 	SetPosition(position);
 	SetRotation((rand() % 360) * DEG2RAD);
-	m_PhysicsBody->SetVelocity(direction.GetNormalised() * (25 + (rand() % 50)));
-	m_PhysicsBody->SetAngularVelocity(1);
+	//m_PhysicsBody->SetVelocity(direction.GetNormalised() * (25 + (rand() % 50)));
+	//m_PhysicsBody->SetAngularVelocity(1);
 }
 void Rock::Update(float deltaTime)
 {

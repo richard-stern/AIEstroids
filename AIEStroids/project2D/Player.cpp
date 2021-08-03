@@ -144,7 +144,7 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 		if (collisionEvent.other->GetCollider()->GetCollisionLayer() == (unsigned int)CollisionLayer::ROCK)
 		{
 			//Get component of velocity that is pointing away from the normal (toward the rock)
-			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
+			/*float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
 		
 			//Instakill player cos they hit the rock too hard
 			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
@@ -155,7 +155,7 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 			else if (impactSpeed > PLAYER_IMPACT_SPEED)
 			{
 				SetHealth(GetHealth() - PLAYER_IMPACT_DAMAGE);
-			}
+			}*/
 		}
 	}
 }

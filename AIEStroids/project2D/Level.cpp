@@ -26,6 +26,8 @@ Level::Level(aie::Renderer2D* renderer)
 		m_rockArray[i] = new Rock();
 	#pragma endregion
 
+	m_enemyArray.Add(new Enemy({ 640, 360 }, m_player, m_rockArray));
+
 	// Create Camera
 	Camera::Create(renderer, m_player);
 }
@@ -87,12 +89,12 @@ void Level::Update(float deltaTime)
 	#pragma endregion
 
 	// Process Enemy timer (creates Enemy whenever timer reaches 0, then resets timer)
-	enemyTimer -= deltaTime;
+	/*enemyTimer -= deltaTime;
 	if (enemyTimer <= 0.0f)
 	{
 		m_enemyArray.Add(new Enemy(m_player, m_rockArray));
 		enemyTimer = ENEMY_RATE;
-	}
+	}*/
 
 	#pragma region Update Object Transforms
 	// Update Player Transforms
