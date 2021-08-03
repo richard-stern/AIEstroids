@@ -23,7 +23,7 @@ Level::Level(aie::Renderer2D* renderer)
 
 	// Create Rocks (rocks automatically randomise position)
 	for (int i = 0; i < ROCKS_COUNT; i++)
-		m_rockArray[i] = new Rock();
+		m_rockArray[i] = new Rock(m_player);
 	#pragma endregion
 
 	// Create Camera
@@ -144,4 +144,6 @@ void Level::Draw(aie::Renderer2D* renderer)
 	// Draw Enemies
 	for (int i = 0; i < m_enemyArray.Count(); i++)
 		m_enemyArray[i]->Draw(renderer);
+
+	CollisionManager::GetInstance()->DebugDraw(renderer);
 }

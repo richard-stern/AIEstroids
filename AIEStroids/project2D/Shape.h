@@ -27,6 +27,7 @@ public:
 	void SetCentrePoint(Vector2 centrePoint) { this->centrePoint = centrePoint; }
 	Vector2 GetCentrePoint() { return centrePoint; }
 
+	virtual float GetArea() = 0;
 	virtual ~Shape() = default;
 	Shape() = default;
 	Shape(Shape& other ) = delete;
@@ -48,12 +49,16 @@ public:
 		this->centrePoint = centrePoint;
 	}
 
+	void CalculateGlobal(Matrix3& transform);
+	float GetArea();
 	ShapeType GetType() { return ShapeType::CIRCLE; }
 	float GetRadius() { return radius; }
+	float GetGlobalRadius() { return radius; }
 	int SetRadius(float rad) { radius = rad; }
 
 private:
 	float radius;
+	float globalRadius;
 };
 
 class PolygonShape : public Shape
@@ -79,6 +84,7 @@ public:
 	Vector2* GetNormals() { return normals; };
 	int GetCount() { return count; };
 
+	float GetArea();
 	//reletive centrepoint is relative to the global position of the actor
 	static PolygonShape* CreateBox(float hx, float hy, Vector2 relativeCentrePoint);
 	static PolygonShape* CreatePoly(float vertexCount, float radius, Vector2 relativeCentrePoint);
