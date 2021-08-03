@@ -192,8 +192,23 @@ void Camera::Update(float deltaTime)
 
 	#pragma endregion
 
-	//Apply the Vector2 to the renderer's camera
+	#pragma region Dynamic Zooming
+
+	float velocityValue = abs(player->GetPhysicsBody()->GetVelocity().GetMagnitude()) / 100.0f;
+	
+	//Clamping
+	if (velocityValue < 0)
+		velocityValue = 0;
+	else if (velocityValue > 12)
+		velocityValue = 12;
+
+	float zoomScale = (float)(sqrt(velocityValue + 4.0f) / 2.0f); //Ranges from 1 to 2
+
+	#pragma endregion
+
+	//Apply the position and scale to the renderer's camera
 	renderer->SetCameraPos(shakenPosition.x, shakenPosition.y);
+	renderer->SetCameraScale(zoomScale);
 }
 
 //Called to initialise a screenshake, if duration is set to 0, the shake is force-stopped
