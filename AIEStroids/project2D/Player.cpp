@@ -30,7 +30,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	//turret->SetParent(this);
 	AddChild(turret);
 	//turret->SetPos(1000.0f, 0.0f);
-	turret->SetLocalPosition(Vector2(100.0f, 0.0f));
+	turret->SetPosition(Vector2(100.0f, 0.0f));
 
 
 	gui = GUI::GetInstance();
@@ -192,5 +192,5 @@ void Player::Respawn()
 	SetRotation(0.0f);
 
 	//Set back to spawn
-	SetLocalPosition(Vector2::ZERO()/*Spawn point to be added*/);
+	SetPosition(Vector2::ZERO()/*Spawn point to be added*/);
 }
