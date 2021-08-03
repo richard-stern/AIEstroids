@@ -42,6 +42,7 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 		{
 			if (collisionObjects[i]->collider != nullptr)
 			{
+				//Draw AABB
 				AABB& aabb = collisionObjects[i]->collider->shapeAABB;
 				renderer->SetRenderColour(1, 1, 0, 1);
 				renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.max.x, aabb.min.y, 1.5f);
@@ -49,10 +50,12 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 				renderer->DrawLine(aabb.max.x, aabb.max.y, aabb.min.x, aabb.max.y, 1.5f);
 				renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.min.x, aabb.max.y, 1.5f);
 
+				//Draw Shape
 				switch (collisionObjects[i]->collider->shape->GetType())
 				{
 				case ShapeType::CIRCLE:
 					{
+						//just draw as a high point count polygon
 						auto shape = (CircleShape*)collisionObjects[i]->collider->shape;
 						Vector2 position = shape->GetGlobalCentrePoint();
 						renderer->SetRenderColour(1, 0, 1, 1);
@@ -170,15 +173,23 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		//resolve collision
 		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
 		float projectedRV = manifold.collisionNormal.GetDot(rV);
-		float impulseMagnitude = -(1 + std::min(manifold.a->collider->restitution, manifold.b->collider->restitution) * projectedRV) / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+		//velocities are seperating
+		//BREAKING THIS DOWN INTO IT'S PARTS TO TRY TO FIND THE PROBLEM
+		//bounce factor (minimum of the two in this case)
+		float restitution = std::min(manifold.a->collider->restitution, manifold.b->collider->restitution);
+		//the impulse magnitude
+		float impulseMagnitude = -(1 + restitution * projectedRV);
+		//divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
+		impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+		//turn into vector
 		Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
 		manifold.a->AddImpulse(impulse* -1);
-		manifold.b->AddImpulse(impulse );
+		manifold.b->AddImpulse(impulse);
 		if (manifold.a->type == BodyType::DYNAMIC)
-			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration/2));
+			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass()) * manifold.a->GetInverseMass()));
 		if (manifold.b->type == BodyType::DYNAMIC)
-			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration /2));
+			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass()) * manifold.b->GetInverseMass()));
 	}
 }
 
