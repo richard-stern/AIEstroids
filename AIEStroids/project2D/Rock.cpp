@@ -33,7 +33,7 @@ void Rock::OnCollision(GameObject* other)
 void Rock::SetRandomPath()
 {
 	aie::Application* app = aie::Application::GetInstance();
-	int edge = rand() % 5;
+	int edge = rand() % 4;
 	int x = 0;
 	int y = 0;
 	switch (edge) {
@@ -61,15 +61,15 @@ void Rock::SetRandomPath()
 	SetRotation((rand() % 360) * DEG2RAD);
 	m_PhysicsBody->SetVelocity(direction.GetNormalised() * (25 + (rand() % 50)));
 	//m_PhysicsBody->SetVelocity(Vector2());
-	m_PhysicsBody->SetAngularVelocity(1);
+	m_PhysicsBody->SetAngularVelocity((rand() % 5)-2.5);
 }
 void Rock::Update(float deltaTime)
 {
 	aie::Application* app = aie::Application::GetInstance();
-	if (abs(GetPosition().x - _player->GetPosition().x) > app->GetWindowWidth()*1.5) {
+	if (abs(GetPosition().x - _player->GetPosition().x) > app->GetWindowWidth()*2) {
 		SetRandomPath();
 	}
-	if (abs(GetPosition().y - _player->GetPosition().y) > app->GetWindowHeight()*1.5) {
+	if (abs(GetPosition().y - _player->GetPosition().y) > app->GetWindowHeight()*2) {
 		SetRandomPath();
 	}
 }
