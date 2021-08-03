@@ -44,7 +44,7 @@ void Star::Draw(aie::Renderer2D* _renderer)
 	}
 	else
 	{
-		Vector2 position = GetLocalPosition();
+		Vector2 position = GetPosition();
 		_renderer->DrawCircle(position.x, position.y, 1.0f, 0.1f);
 	}
 
