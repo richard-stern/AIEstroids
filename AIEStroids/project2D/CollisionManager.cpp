@@ -59,7 +59,7 @@ void CollisionManager::ResolveCollisions()
 		for (int j = 1; j < collisionObjects.size(); j++)
 		{
 			//check if the objects are compatible layer wise, if collider exists, and 
-			if (collisionObjects[i]->collider != nullptr && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
+			if (collisionObjects[j]->collider != nullptr && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
 				&& collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask)
 			{
 				//broad phase

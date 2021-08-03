@@ -30,6 +30,7 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 
 PhysicsBody::~PhysicsBody()
 {
+	CollisionManager::GetInstance()->RemoveBody(this);
 	delete collider;
 }
 
