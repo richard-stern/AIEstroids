@@ -11,7 +11,7 @@ struct AABB
 	Vector2 bottomRight;
 };
 
-enum class ShapeType
+enum class ShapeType : char
 {
 	CIRCLE,
 	POLYGON
