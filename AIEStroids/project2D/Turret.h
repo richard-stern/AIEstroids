@@ -19,11 +19,13 @@ public:
 	//Done for now - Need parts from other people (Texture import, setting parent, etc)
 	Turret();
 
-	//Empty
+	//Deletes bullet manager
 	~Turret();
 
 	//Empty
 	void Update(float deltaTime);
+
+	void SetPos(float x, float y);
 
 	//Empty
 	//void Draw();
@@ -35,12 +37,12 @@ private:
 	Vector2 GetMousePos();
 	//returns if mouse is clicked
 	bool IsLeftMouseClicked();
-
 	
 	//controller, changes variables based on player input
 	void Controller(float deltaTime);
 	void Rotate(float deltaTime);
 	void Fire(float deltaTime);
+
 
 	//Aesthetic targetted function, moves turret back and forth
 	void TurretKickback(float deltaTime); 

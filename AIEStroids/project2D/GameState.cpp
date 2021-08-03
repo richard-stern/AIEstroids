@@ -4,9 +4,10 @@
 #include "Level.h"
 
 /// init level and GUI to nullptr
-GameState::GameState() {
+GameState::GameState(aie::Renderer2D* _renderer) {
 	level = nullptr;
 	gui   = nullptr;
+	renderer = _renderer;
 };
 /// Destory the level and GUI
 GameState::~GameState() {
@@ -14,8 +15,7 @@ GameState::~GameState() {
 };
 /// Load and initialise the level and GUI
 void GameState::Enter() {
-	level = new Level();
-	GUI::Create(); // @incomplete fix this shit
+	level = new Level(renderer);
 	gui   = GUI::GetInstance();
 };
 ///
