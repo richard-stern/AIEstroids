@@ -209,6 +209,18 @@ float Matrix3::GetRotation()
 	return std::atan2(right.y, right.x);
 }
 
+void Matrix3::SetRotation(float radians)
+{
+	Vector2 scale = GetScale();
+
+	SetRotateZ(radians);
+
+	m[0] *= scale.x;
+	m[1] *= scale.x;
+	m[3] *= scale.y;
+	m[4] *= scale.y;
+}
+
 void Matrix3::Print() {
 	std::cout << "\nmatrix\n";
 	for (int i = 0; i < 9; ++i) {

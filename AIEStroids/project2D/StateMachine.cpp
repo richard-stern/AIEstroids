@@ -8,14 +8,14 @@
 ///
 StateMachine::StateMachine() {
 	menu_state      = new MenuState();
-	game_state      = new GameState();
-	game_over_state = new GameOverState();
+	//game_state      = new GameState();
+	//game_over_state = new GameOverState();
 	current_state = menu_state;
 };
 ///
 StateMachine::~StateMachine() {
 	delete menu_state;
-	delete game_state;
+	//delete game_state;
 	delete game_over_state;
 };
 ///
