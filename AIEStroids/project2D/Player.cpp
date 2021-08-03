@@ -24,13 +24,14 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
 	//Create the physics body using the generated collider
 	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	m_PhysicsBody->SetAngularDrag(50.0f);
 
 	//------------------CREATE TURRET----------------------//
 	turret = new Turret();
 	//turret->SetParent(this);
 	AddChild(turret);
 	//turret->SetPos(1000.0f, 0.0f);
-	turret->SetLocalPosition(Vector2(100.0f, 0.0f));
+	turret->SetPosition(Vector2(100.0f, 0.0f));
 
 
 	gui = GUI::GetInstance();
@@ -192,5 +193,5 @@ void Player::Respawn()
 	SetRotation(0.0f);
 
 	//Set back to spawn
-	SetLocalPosition(Vector2::ZERO()/*Spawn point to be added*/);
+	SetPosition(Vector2::ZERO()/*Spawn point to be added*/);
 }
