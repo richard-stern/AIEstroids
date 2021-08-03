@@ -10,6 +10,8 @@
 #define PLAYER_INPUT_RIGHT aie::INPUT_KEY_D
 #define PLAYER_INPUT_LEFT aie::INPUT_KEY_A
 
+#define PLAYER_MAX_HEALTH 100
+
 #define PLAYER_MAXSPEED 350.0f
 #define PLAYER_MAXROTATIONSPEED 250.0f
 #define PLAYER_THRUST 700.0f
@@ -20,7 +22,6 @@
 #define PLAYER_ROTATIONAL_DRAG 3.5f
 #define PLAYER_DRAG 0.4f
 
-#define PLAYER_MAX_HEALTH 100
 
 #define PLAYER_IMPACT_SPEED 350.0f
 #define PLAYER_IMPACT_INSTAKILL 700.0f
@@ -46,7 +47,6 @@ public:
 	void SetLives(int lives);
 
 	void SetGUI(GUI* gui);
-	void SetRenderer(aie::Renderer2D* renderer);
 
 	void UpdateGUI();
 
