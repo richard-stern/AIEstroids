@@ -24,6 +24,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
 	//Create the physics body using the generated collider
 	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	m_PhysicsBody->SetAngularDrag(50.0f);
 
 	//------------------CREATE TURRET----------------------//
 	turret = new Turret();
