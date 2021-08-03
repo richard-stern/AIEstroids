@@ -14,7 +14,7 @@ public:
 	static void Destroy();
 
 	// Returns the current instance
-	GUI* GetInstance();
+	static GUI* GetInstance();
 
 	// Player setting health
 	void SetHealth(int health);

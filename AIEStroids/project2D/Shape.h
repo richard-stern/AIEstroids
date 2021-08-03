@@ -27,6 +27,8 @@ public:
 	void SetCentrePoint(Vector2 centrePoint) { this->centrePoint = centrePoint; }
 	Vector2 GetCentrePoint() { return centrePoint; }
 
+	virtual ~Shape() = default;
+
 protected:
 	Vector2 centrePoint;
 	Vector2 globalCentrePoint;
