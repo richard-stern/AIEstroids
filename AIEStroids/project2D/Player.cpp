@@ -20,6 +20,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	//Create a box that is the same dimensions as the texture
 	GeneratePhysicsBody(32, 32, CollisionLayer::PLAYER, (unsigned int)CollisionLayer::ALL);
 	m_PhysicsBody->SetDrag(PLAYER_DRAG);
+	m_PhysicsBody->GetCollider()->SetRestitution(1.0f);
 
 	//------------------CREATE TURRET----------------------//
 	turret = new Turret();
