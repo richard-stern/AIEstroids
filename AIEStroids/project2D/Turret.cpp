@@ -41,7 +41,7 @@ Turret::Turret() {
 
 
 	//Assign turret texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Turret-1.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
 
 	// - DO NOT TOUCH - Waiting on other stuff to be completed  to uncomment
 	m_WrapAndRespawn = false; //Should be m_bWarpAndRespawn >:(
@@ -78,7 +78,7 @@ Turret::~Turret() {
 void Turret::Update(float deltaTime) {
 	Controller(deltaTime);
 	//m_globalTransform = /*parent * */ m_localTransform * m_m3Offset;
-	m_localTransform = m_localTransform* m_m3Offset;
+	m_LocalTransform = m_LocalTransform* m_m3Offset;
 }
 
 //void Turret::Draw() {
@@ -104,14 +104,14 @@ void Turret::Controller(float deltaTime) {
 }
 
 void Turret::Rotate(float deltaTime) {
-	Vector2 turretPos = m_globalTransform.GetPosition();
+	Vector2 turretPos = m_GlobalTransform.GetPosition();
 	Vector2 mousePos = GetMousePos();
 	Vector2 diffPos = turretPos - mousePos;
 
 	float mouseAngle = atan2(diffPos.y, diffPos.x);
 
 	//should work, if it doesn't check here first
-	float turretAngle = atan2(m_globalTransform.GetUp().y, m_globalTransform.GetUp().x);
+	float turretAngle = atan2(m_GlobalTransform.GetUp().y, m_GlobalTransform.GetUp().x);
 
 	float rotate = mouseAngle - turretAngle;
 
@@ -145,7 +145,7 @@ void Turret::Rotate(float deltaTime) {
 
 		movement.ResetToIdentity();
 		movement.SetRotateZ(m_rotation * deltaTime);
-		m_localTransform = m_localTransform * movement;
+		m_LocalTransform = m_LocalTransform * movement;
 	}
 }
 
@@ -194,7 +194,7 @@ void Turret::TurretKickback(float deltaTime)
 	{
 		movement.ResetToIdentity();
 		movement.SetPosition(0, m_kickBackPos);
-		m_localTransform = m_localTransform * movement;
+		m_LocalTransform = m_LocalTransform * movement;
 	}
 
 
