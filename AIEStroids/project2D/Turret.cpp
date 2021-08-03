@@ -6,7 +6,7 @@
 #define CENTER_SCREEN
 
 //Shooting currently throws an exception in Bullet.cpp, change from DISABLE_SHOOTING to ENABLE_SHOOTING to test it.
-#define DISABLE_SHOOTING
+#define ENABLE_SHOOTING
 
 #include "Turret.h"
 #include "TextureManager.h"
