@@ -4,9 +4,10 @@
 #include "Level.h"
 
 /// init level and GUI to nullptr
-GameState::GameState() {
+GameState::GameState(aie::Renderer2D* _renderer) {
 	level = nullptr;
 	gui   = nullptr;
+	renderer = _renderer;
 };
 /// Destory the level and GUI
 GameState::~GameState() {
@@ -14,8 +15,7 @@ GameState::~GameState() {
 };
 /// Load and initialise the level and GUI
 void GameState::Enter() {
-	level = new Level();
-	GUI::Create(); // @incomplete fix this shit
+	level = new Level(renderer);
 	gui   = GUI::GetInstance();
 };
 ///
@@ -28,7 +28,7 @@ void GameState::Update(float deltaTime, StateMachine* state) {
 void GameState::Draw(aie::Renderer2D* renderer) {
 	level->Draw(renderer);
 	aie::Input* input = aie::Input::GetInstance();
-	auto font = TextureManager::Get()->LoadFont("font\\consolas.ttf"); // @incomplete ask Jaden to have a bunch of #define s that point to fonts and textures that we have
+	auto font = TextureManager::Get()->LoadFont("..\\bin\\font\\consolas.ttf"); // @incomplete ask Jaden to have a bunch of #define s that point to fonts and textures that we have
 	gui->Draw(renderer, font, input);
 };
 ///

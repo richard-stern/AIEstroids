@@ -38,7 +38,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	position.SetRotation(angle);
 
 	//Set the local position of the bullet
-	SetLocalPosition(position);
+	SetPosition(position);
 
 }
 

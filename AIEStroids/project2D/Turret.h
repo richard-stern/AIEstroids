@@ -19,11 +19,13 @@ public:
 	//Done for now - Need parts from other people (Texture import, setting parent, etc)
 	Turret();
 
-	//Empty
+	//Deletes bullet manager
 	~Turret();
 
 	//Empty
 	void Update(float deltaTime);
+
+	void SetPos(float x, float y);
 
 	//Empty
 	//void Draw();
@@ -35,12 +37,12 @@ private:
 	Vector2 GetMousePos();
 	//returns if mouse is clicked
 	bool IsLeftMouseClicked();
-
 	
 	//controller, changes variables based on player input
 	void Controller(float deltaTime);
 	void Rotate(float deltaTime);
 	void Fire(float deltaTime);
+
 
 	//Aesthetic targetted function, moves turret back and forth
 	void TurretKickback(float deltaTime); 
@@ -70,6 +72,7 @@ private:
 
 	//Turret Movement Variables
 	Matrix3 movement;
+	Matrix3 prevMovement;
 	Vector2 m_posChange;
 	float m_speed;
 	float m_momentum;
@@ -78,8 +81,8 @@ private:
 
 	//Hopefully temporary vars that will be in gameobject/actor once implemented
 	//GameObject m_parent;
-	Matrix3 m_globalTransform;
-	Matrix3 m_localTransform;
+	//Matrix3 m_globalTransform;
+	//Matrix3 m_localTransform;
 
 	//For input stuff, obv.
 	aie::Input* m_input;

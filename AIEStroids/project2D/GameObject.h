@@ -29,10 +29,10 @@ public:
 	Matrix3 GetGlobalTransform() { return  m_GlobalTransform; }
 	Matrix3 GetLocalTransform() { return  m_LocalTransform; }
 	Vector2 GetGlobalPosition() { return  m_GlobalTransform.GetPosition(); }
-	Vector2 GetLocalPosition() { return  m_LocalTransform.GetPosition(); }
+	Vector2 GetPosition() { return  m_LocalTransform.GetPosition(); }
 
 	void SetLocalTransform(Matrix3 _transform) { m_LocalTransform = _transform; }
-	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
+	void SetPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
 	float GetRotation() { return m_LocalTransform.GetRotation(); }
 	void SetRotation(float _radians) { m_LocalTransform.SetRotation(_radians); }
 
@@ -41,6 +41,7 @@ public:
 
 	aie::Texture* GetTexture() { return m_Texture; }
 	void SetTexture(aie::Texture* _texture) { m_Texture = _texture; }
+	void SetSpriteDepth(int _depth);
 
 	virtual void OnCollision(CollisionEvent _event);
 	
@@ -56,6 +57,7 @@ protected:
 	float m_Drag = 0;
 
 	aie::Texture* m_Texture = nullptr;
+	int m_SpriteDepth = 0;
 	bool m_IsActive = false;
 	bool m_WrapAndRespawn = false;
 };

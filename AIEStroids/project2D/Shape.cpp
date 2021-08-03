@@ -38,9 +38,25 @@ void PolygonShape::CalculateGlobal(Matrix3& transform)
 
 	for (int i = 0; i < count; i++)
 	{
-		globalVertices[i] = globalVertices[i] * transform;
+		globalVertices[i] = vertices[i] * transform;
 		globalVertices[i] += globalCentrePoint;
 	}
+}
+
+float PolygonShape::GetArea()
+{
+	//this only returns accurate area if centrepoint is inside the shape
+	float area = 0;
+	for (int i = 0; i < count; i++)
+	{
+		Vector2 baseVector = vertices[(i + 1) % count] - vertices[i];
+		//height should be perpendicular to bade
+		float height = abs(Vector2::Dot(baseVector.GetPerpendicular().GetNormalised(), vertices[i] - centrePoint));
+		float base = baseVector.GetMagnitude();
+		//triangle area
+		area += base * height * 0.5f;
+	}
+	return area;
 }
 
 PolygonShape* PolygonShape::CreateBox(float hx, float hy, Vector2 relativeCentrePoint)
@@ -83,6 +99,20 @@ void PolygonShape::GenerateNormals()
 		{
 			normals[i] = (vertices[i] - vertices[i + 1]).GetNormalised().GetPerpendicular();
 		}
+		normals[count -1] = (vertices[count - 1] - vertices[0]).GetNormalised().GetPerpendicular();
 	}
 	
+}
+
+void CircleShape::CalculateGlobal(Matrix3& transform)
+{
+	globalCentrePoint = centrePoint * transform;
+	globalCentrePoint += transform.GetPosition();
+	auto scale = transform.GetScale();
+	globalRadius = radius * std::max(scale.x, scale.y);
+}
+
+float CircleShape::GetArea()
+{
+	return M_PI * radius * radius;
 }

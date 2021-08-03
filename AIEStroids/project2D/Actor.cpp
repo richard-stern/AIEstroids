@@ -5,19 +5,19 @@
 
 Actor::Actor()
 {
-	m_GlobalTransform.SetPosition({ 0, 0 });
+	SetPosition({ 0, 0 });
 	SetHealth(m_MaxHealth);
 }
 
 Actor::Actor(Vector2 _pos, GameObject* _parent)
 {
-	m_GlobalTransform.SetPosition(_pos);
+	SetPosition(_pos);
 	SetHealth(m_MaxHealth);
 }
 
 Actor::~Actor()
 {
-	delete m_PhysicsBody;
+ 	delete m_PhysicsBody;
 	m_PhysicsBody = nullptr;
 }
 
@@ -30,25 +30,25 @@ void Actor::Update(float _deltaTime)
 	{
 		int h = application->GetWindowHeight();
 		int w = application->GetWindowWidth();
-		Vector2 pos = GetLocalPosition();
+		Vector2 pos = GetPosition();
 
 		// if actor moves off the screen horizontally
 		if (pos.x > w)
 		{
-			SetLocalPosition({ (float)-w, pos.y });
+			SetPosition({ (float)-w, pos.y });
 		}
 		else if (pos.x < 0)
 		{
-			SetLocalPosition({ (float)w, pos.y });
+			SetPosition({ (float)w, pos.y });
 		}
 		// vertically
 		if (pos.y > h)
 		{
-			SetLocalPosition({ pos.x, (float)-h });
+			SetPosition({ pos.x, (float)-h });
 		}
 		else if (pos.x < 0)
 		{
-			SetLocalPosition({ pos.x, (float)-h });
+			SetPosition({ pos.x, (float)-h });
 		}
 	}
 	

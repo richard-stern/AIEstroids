@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include "Turret.h"
 
 //Author Rahul J. (BEANMEISTER)
 
@@ -9,17 +10,21 @@
 #define PLAYER_INPUT_RIGHT aie::INPUT_KEY_D
 #define PLAYER_INPUT_LEFT aie::INPUT_KEY_A
 
-#define PLAYER_MAXSPEED 250.0f
-#define PLAYER_MAXROTATIONSPEED 90.0f
-#define PLAYER_THRUST 10000.0f
-#define PLAYER_TORQUE 10000.0f
-#define PLAYER_COUNTERFORCE_MULT 2.5f
-#define PLAYER_COUNTERTORQUE_MULT 1.5f
-
 #define PLAYER_MAX_HEALTH 100
 
-#define PLAYER_IMPACT_SPEED 250.0f
-#define PLAYER_IMPACT_INSTAKILL 500.0f
+#define PLAYER_MAXSPEED 350.0f
+#define PLAYER_MAXROTATIONSPEED 250.0f
+#define PLAYER_THRUST 700.0f
+#define PLAYER_TORQUE 750.0f
+#define PLAYER_REVERSE_THRUST 400.0f
+#define PLAYER_COUNTERFORCE_MULT 1.5f
+#define PLAYER_COUNTERTORQUE_MULT 2.5f
+#define PLAYER_ROTATIONAL_DRAG 3.5f
+#define PLAYER_DRAG 0.4f
+
+
+#define PLAYER_IMPACT_SPEED 350.0f
+#define PLAYER_IMPACT_INSTAKILL 700.0f
 #define PLAYER_IMPACT_DAMAGE 25
 
 #define PLAYER_DEATH_IMPULSE 300.0f
@@ -53,6 +58,7 @@ protected:
 	bool playerAlive = true;
 	float respawnTimer = 0;
 	int lives = LIVES;
+	Turret* turret = nullptr;
 	GUI* gui = nullptr;
 };
 

@@ -6,6 +6,7 @@
 #include "Application.h"
 #include <vector>
 #include <forward_list>
+#include "Renderer2D.h"
 
 struct CollisionEvent
 {
@@ -23,7 +24,8 @@ enum class CollisionType
 
 struct CollisionManifold
 {
-	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) { collisionNormal = Vector2::ZERO(); penetration = 0; }
+	//penetration and type definitions are just there to clear up warnings, they will be immediately overwritten
+	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) { penetration = 0; type = (CollisionType)0; }
 
 	PhysicsBody* a;
 	PhysicsBody* b;
@@ -32,6 +34,8 @@ struct CollisionManifold
 	CollisionType type;
 };
 
+//just a pair of floats
+//used internally for collision
 struct MinMax
 {
 	float min;
@@ -51,6 +55,8 @@ public:
 	void AddBody(PhysicsBody* body);
 	//called by physics body to remove self from list (expensive!!)
 	void RemoveBody(PhysicsBody* body);
+
+	void DebugDraw(aie::Renderer2D* renderer);
 
 private:
 	static CollisionManager* instance;
@@ -73,5 +79,6 @@ private:
 
 	std::vector<PhysicsBody*> collisionObjects;
 	std::vector<CollisionManifold> collisions;
+	bool drawDebug = false;
 };
 

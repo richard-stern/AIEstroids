@@ -4,6 +4,7 @@
 #include <cmath>
 #include "TextureManager.h"
 #include "CollisionLayers.h"
+#include <iostream>
 
 //Author Rahul J. (BEANMEISTER)
 
@@ -13,17 +14,23 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	m_WrapAndRespawn = false;
 
 	//Assign ship texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/ship.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
+	m_LocalTransform.SetScale(3.0f, 3.0f);
 	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
-	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
-	//Collide with everything but player
-	unsigned int layermask = (unsigned int)CollisionLayer::ALL ^ (unsigned int)CollisionLayer::PLAYER;
-	//Create collider
-	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
-	//Create the physics body using the generated collider
-	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	GeneratePhysicsBody(32, 32, CollisionLayer::PLAYER, (unsigned int)CollisionLayer::ALL);
+	m_PhysicsBody->SetDrag(PLAYER_DRAG);
+	m_PhysicsBody->GetCollider()->SetRestitution(1.0f);
+
+	//------------------CREATE TURRET----------------------//
+	turret = new Turret();
+	turret->SetParent(this);
+	AddChild(turret);
+	//turret->SetPos(1000.0f, 0.0f);
+	turret->SetPosition(Vector2(100.0f, 0.0f));
+
+
 	gui = GUI::GetInstance();
 }
 
@@ -33,9 +40,9 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
+	Actor::Update(deltaTime);
 	if (playerAlive)
 	{
-
 		//Calculate input vectors
 		//------------------------------------
 		// 	  + Y
@@ -64,34 +71,58 @@ void Player::Update(float deltaTime)
 		float thrustAmount = PLAYER_THRUST;
 		float torqueAmount = PLAYER_TORQUE * DEG2RAD;
 
-		//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
-		if (Vector2::Dot(playerForward, currentVelocity) < 0)
-			thrustAmount *= PLAYER_COUNTERFORCE_MULT;
+		if (inputVector.y > 0)
+		{
+			//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
+			//Also only do this if player is accelerating forward
+			if (Vector2::Dot(playerForward, currentVelocity) < 0)
+				thrustAmount *= PLAYER_COUNTERFORCE_MULT;
+		}
+		else
+		{
+			thrustAmount = PLAYER_REVERSE_THRUST;
+		}
 
 		//Scale up torque amount if rotating away from current rotational velocity
-		if (currentAngularVelocity * inputVector.x < 0)
+		if (currentAngularVelocity * -inputVector.x < 0)
 			torqueAmount *= PLAYER_COUNTERTORQUE_MULT;
 
 		//--------------
 		//	Add forces
 		//--------------
-		m_PhysicsBody->AddForce(playerForward * std::abs(inputVector.y) * thrustAmount * deltaTime);
+		//-------------------------P O S I T I O N----------------------------------------------------
+		m_PhysicsBody->AddVelocity(playerForward * inputVector.y * thrustAmount * deltaTime);
+
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
 		if (currentVelocity.GetMagnitude() > PLAYER_MAXSPEED)
 			m_PhysicsBody->SetVelocity(currentVelocity.GetNormalised() * PLAYER_MAXSPEED);
 
-		m_PhysicsBody->AddTorque(inputVector.x * torqueAmount * deltaTime);
+		//-------------------------R O T A T I O N----------------------------------------------------
+		if (inputVector.x != 0)
+		{
+			//Remove drag so rotation doesn't get hampered
+			m_PhysicsBody->SetAngularDrag(0.0f);
+			m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * deltaTime);
+		}
+		else
+		{
+			m_PhysicsBody->SetAngularDrag(PLAYER_ROTATIONAL_DRAG);
+		}
+		
 		//Limit angular velocity
 		currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
 		float absoluteValue = std::abs(currentAngularVelocity);
-		if (absoluteValue > PLAYER_MAXROTATIONSPEED)
+		if (absoluteValue > (PLAYER_MAXROTATIONSPEED * DEG2RAD))
 			//Dividing angular velocity by its absolute value will give the sign of the value
-			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED);
+			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
+
 
 		//Check tha health
 		if (m_CurrentHealth <= 0)
 			KillPlayer();
+
+		turret->Update(deltaTime);
 
 	}
 	else
@@ -116,6 +147,7 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 		{
 			//Get component of velocity that is pointing away from the normal (toward the rock)
 			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
+			std::cout << impactSpeed << std::endl;
 		
 			//Instakill player cos they hit the rock too hard
 			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
@@ -149,7 +181,7 @@ void Player::SetGUI(GUI* gui)
 void Player::UpdateGUI()
 {
 	gui->SetHealth(m_CurrentHealth);
-	gui->SetLives(this->lives);
+	gui->SetLives(m_PhysicsBody->GetVelocity().GetMagnitude());
 }
 
 PhysicsBody* Player::GetPhysicsBody()
@@ -178,5 +210,5 @@ void Player::Respawn()
 	SetRotation(0.0f);
 
 	//Set back to spawn
-	SetLocalPosition(Vector2::ZERO()/*Spawn point to be added*/);
+	SetPosition(Vector2::ZERO()/*Spawn point to be added*/);
 }
