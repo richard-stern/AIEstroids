@@ -1,3 +1,5 @@
+//Written by Jayden Hunter
+//		-- Get Outta 'Ere
 #include "TextureManager.h"
 
 //Singleton
@@ -17,8 +19,6 @@ TextureManager::~TextureManager()
 		iter->second->Unload();
 
 		delete iter->second;
-		//Maybe needed
-		//delete iter->first;
 	}
 	delete m_Textures;
 
@@ -26,20 +26,24 @@ TextureManager::~TextureManager()
 	for (auto iter = m_Font->begin(); iter != m_Font->end(); iter++)
 	{
 		delete iter->second;
-		//Maybe needed
-		//delete iter->first;
 	}
 	delete m_Font;
 
+}
+
+void TextureManager::Create()
+{
+	if (!m_Instance)
+	{
+		TextureManager::m_Instance = new TextureManager();
+	}
 }
 
 //Gets an instance, creates it if it doesn't already exist
 TextureManager* TextureManager::Get()
 {
 	if (!m_Instance)
-	{
-		TextureManager::m_Instance = new TextureManager();
-	}
+		return nullptr;
 
 	return m_Instance;
 }

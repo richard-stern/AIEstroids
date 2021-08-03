@@ -3,6 +3,7 @@
 //
 
 #include "Turret.h"
+#include "TextureManager.h"
 #include <cmath>
 
 Turret::Turret() {
@@ -24,7 +25,7 @@ Turret::Turret() {
 	m_firerate = 5;
 
 	// -=-=- POSITION -=-=- To change where turret sits on 'player'
-	// - ADJUSTABLE - Only change if turrets position is wrong.
+	// - ADJUSTABLE - Only change if turrets position is wrong. // This is now accessed via "Turret.SetPos(x, y);
 	float xOffset = 0;
 	float yOffset = 0;
 	
@@ -38,9 +39,14 @@ Turret::Turret() {
 
 	// -=-=- Other config stuff -=-=-
 
+
+	//Assign turret texture
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Turret-1.png");
+
 	// - DO NOT TOUCH - Waiting on other stuff to be completed  to uncomment
-	//m_bWrapAndRespawn = false;
-	//m_bVisible = true;
+	m_WrapAndRespawn = false; //Should be m_bWarpAndRespawn >:(
+	//m_Visible = true;
+	
 
 	// - DO NOT TOUCH - Automatically assigned based off fire rate
 	m_timeBetweenBullets = 1/m_firerate;
@@ -51,7 +57,7 @@ Turret::Turret() {
 
 	// - DO NOT TOUCH - Position correction of turret on 'player'
 	m_m3Offset.ResetToIdentity();
-	m_m3Offset.SetPosition(xOffset, yOffset);
+	//m_m3Offset.SetPosition(xOffset, yOffset); //Will instead be changeable via "SetPos(x, y);" so turrets position can change and have more then 1.
 
 	m_input = aie::Input::GetInstance();
 
@@ -65,16 +71,23 @@ Turret::Turret() {
 }
 
 Turret::~Turret() {
+	delete (m_bulletManager);
 
 };
 
 void Turret::Update(float deltaTime) {
 	Controller(deltaTime);
+	//m_globalTransform = /*parent * */ m_localTransform * m_m3Offset;
+	m_localTransform = m_localTransform* m_m3Offset;
 }
 
 //void Turret::Draw() {
 //
 //}
+
+void Turret::SetPos(float x, float y) {
+	m_m3Offset.SetPosition(x, y);
+}
 
 Vector2 Turret::GetMousePos() {
 	return Vector2((float)m_input->GetMouseX(), (float)m_input->GetMouseY());

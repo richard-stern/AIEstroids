@@ -10,7 +10,7 @@ class GUI;
 
 class GameState : public BaseState {
 public:
-	GameState();
+	GameState(aie::Renderer2D* renderer);
 	/// Destroys the Level and GUI
 	virtual ~GameState();
 
@@ -26,5 +26,6 @@ public:
 private:
 	Level* level;
 	GUI* gui;
+	aie::Renderer2D* renderer;
 };
 
