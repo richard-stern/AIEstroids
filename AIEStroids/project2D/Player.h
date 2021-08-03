@@ -16,6 +16,16 @@
 #define PLAYER_COUNTERFORCE_MULT 2.5f
 #define PLAYER_COUNTERTORQUE_MULT 1.5f
 
+#define PLAYER_MAX_HEALTH 100
+
+#define PLAYER_IMPACT_SPEED 250.0f
+#define PLAYER_IMPACT_INSTAKILL 500.0f
+#define PLAYER_IMPACT_DAMAGE 25
+
+#define PLAYER_DEATH_IMPULSE 300.0f
+#define PLAYER_DEATH_SPIN 45.0f
+#define PLAYER_RESPAWN_TIME 3.0f
+
 class GUI;
 
 class Player :
@@ -38,6 +48,10 @@ public:
 	PhysicsBody* GetPhysicsBody();
 
 protected:
+	void KillPlayer();
+	void Respawn();
+	bool playerAlive = true;
+	float respawnTimer = 0;
 	int lives = LIVES;
 	GUI* gui = nullptr;
 };
