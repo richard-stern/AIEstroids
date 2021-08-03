@@ -9,7 +9,7 @@ class CollisionManager;
 class Collider
 {
 public:
-	Collider(Shape* shape, unsigned short collisionLayer, unsigned short collisionMask, float density = 1, float restitution = 0, bool isTrigger = false);
+	Collider(Shape* shape, unsigned short collisionLayer, unsigned short collisionMask, float density = 1, float restitution = 0);
 	float CalculateMass();
 	
 	Shape* GetShape() { return shape; };
@@ -17,12 +17,10 @@ public:
 	unsigned short GetCollisionLayer() { return collisionLayer; }
 	unsigned short GetCollisionMask() { return collisionMask; }
 	float GetDensity() { return density; }
-	bool CheckIsTrigger() { return isTrigger; }
 
 	void SetCollisionLayer(unsigned short layer) { collisionLayer = layer; };
 	void SetCollisionMask(unsigned short mask) { collisionMask = mask; }
 	void SetRestitution(float restitution) { this->restitution = restitution; }
-	void SetTrigger(bool value) { isTrigger = value; }
 
 	Collider(const Collider& other) = delete;
 	Collider(Collider&& other) = delete;
@@ -39,7 +37,6 @@ private:
 	unsigned short collisionMask;
 	//bounciness
 	float restitution;
-	bool isTrigger;
 	float density;
 };
 
