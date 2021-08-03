@@ -177,11 +177,11 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
 		manifold.a->AddImpulse(impulse* -1);
-		manifold.b->AddImpulse(impulse );
+		manifold.b->AddImpulse(impulse);
 		if (manifold.a->type == BodyType::DYNAMIC)
-			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration/2));
+			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass()) * manifold.a->GetInverseMass()));
 		if (manifold.b->type == BodyType::DYNAMIC)
-			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration /2));
+			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass()) * manifold.b->GetInverseMass()));
 	}
 }
 
