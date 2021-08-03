@@ -94,8 +94,36 @@ void Level::Update(float deltaTime)
 		enemyTimer = ENEMY_RATE;
 	}
 
-	// Update Collision and Camera systems
+	#pragma region Update Object Transforms
+	// Update Player Transforms
+	m_player->UpdateTransforms();
+
+	// Update Rocks Transforms
+	for (int i = 0; i < ROCKS_COUNT; i++)
+		m_rockArray[i]->UpdateTransforms();
+
+	// Update Enemies Transforms
+	for (int i = 0; i < m_enemyArray.Count(); i++)
+		m_enemyArray[i]->UpdateTransforms();
+	#pragma endregion
+
+	// Update Collision system
 	CollisionManager::GetInstance()->Update();
+
+	#pragma region Re-update Object Transforms
+	// Update Player Transforms
+	m_player->UpdateTransforms();
+
+	// Update Rocks Transforms
+	for (int i = 0; i < ROCKS_COUNT; i++)
+		m_rockArray[i]->UpdateTransforms();
+
+	// Update Enemies Transforms
+	for (int i = 0; i < m_enemyArray.Count(); i++)
+		m_enemyArray[i]->UpdateTransforms();
+	#pragma endregion
+
+	// Update Camera system
 	Camera::GetInstance()->Update(deltaTime);
 }
 
