@@ -2,6 +2,9 @@
 
 #include "Game.h"
 #include "Renderer2D.h"
+#include "Level.h"
+#include "Enemy.h"
+#include <vector>
 
 class Game2D : public aie::Game
 {
@@ -14,9 +17,6 @@ public:
 
 protected:
 	aie::Renderer2D*	m_2dRenderer;
-
-	// Example textures.
-	aie::Texture*		m_texture;
-	aie::Texture*		m_texture2;
-	aie::Font*			m_font;
+	Level* level;
+	DynamicArray<Enemy*> enemies;
 };
