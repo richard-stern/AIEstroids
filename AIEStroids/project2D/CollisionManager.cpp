@@ -16,7 +16,8 @@ void CollisionManager::Update()
 void CollisionManager::AddBody(PhysicsBody* body)
 {
 	collisionObjects.push_back(body);
-	body->GetCollider()->GetShape()->CalculateGlobal(body->actorObject->GetGlobalTransform());
+	if (body->GetCollider() != nullptr)
+		body->GetCollider()->GetShape()->CalculateGlobal(body->actorObject->GetGlobalTransform());
 }
 
 void CollisionManager::CreateInstance()

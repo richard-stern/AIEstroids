@@ -26,7 +26,6 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 		CollisionManager::GetInstance()->AddBody(this);
 	}
 
-
 }
 
 void PhysicsBody::Update(float deltaTime)
