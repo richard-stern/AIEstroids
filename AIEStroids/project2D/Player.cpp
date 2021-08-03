@@ -28,7 +28,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 
 	//------------------CREATE TURRET----------------------//
 	turret = new Turret();
-	//turret->SetParent(this);
+	turret->SetParent(this);
 	AddChild(turret);
 	//turret->SetPos(1000.0f, 0.0f);
 	turret->SetPosition(Vector2(100.0f, 0.0f));
@@ -46,7 +46,6 @@ void Player::Update(float deltaTime)
 	Actor::Update(deltaTime);
 	if (playerAlive)
 	{
-
 		//Calculate input vectors
 		//------------------------------------
 		// 	  + Y
@@ -87,7 +86,11 @@ void Player::Update(float deltaTime)
 		//	Add forces
 		//--------------
 		//-------------------------P O S I T I O N----------------------------------------------------
-		m_PhysicsBody->AddForce(playerForward * std::abs(inputVector.y) * thrustAmount);
+		if (inputVector.y != 0)
+		{
+			m_PhysicsBody->AddForce(playerForward * inputVector.y * thrustAmount);
+		}
+
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
 		if (currentVelocity.GetMagnitude() > PLAYER_MAXSPEED)
@@ -96,19 +99,21 @@ void Player::Update(float deltaTime)
 		//-------------------------R O T A T I O N----------------------------------------------------
 		if (inputVector.x != 0)
 		{
+			//Remove drag so rotation doesn't get hampered
 			m_PhysicsBody->SetAngularDrag(0.0f);
 			m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * deltaTime);
-			//Limit angular velocity
-			currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
-			float absoluteValue = std::abs(currentAngularVelocity);
-			if (absoluteValue > (PLAYER_MAXROTATIONSPEED * DEG2RAD))
-				//Dividing angular velocity by its absolute value will give the sign of the value
-				m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
 		}
 		else
 		{
 			m_PhysicsBody->SetAngularDrag(PLAYER_ROTATIONAL_DRAG);
 		}
+		
+		//Limit angular velocity
+		currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
+		float absoluteValue = std::abs(currentAngularVelocity);
+		if (absoluteValue > (PLAYER_MAXROTATIONSPEED * DEG2RAD))
+			//Dividing angular velocity by its absolute value will give the sign of the value
+			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
 
 
 		//Check tha health
