@@ -2,14 +2,12 @@
 #include "PhysicsBody.h"
 
 
-GameObject::GameObject()
-{
-	SetActive(true);
-	m_GlobalTransform.SetPosition({ 0, 0 });
-}
+GameObject::GameObject() : GameObject::GameObject(Vector2()) {}
 
 GameObject::GameObject(Vector2 _pos)
 {
+	m_GlobalTransform = Matrix3();
+	m_LocalTransform = Matrix3();
 	SetActive(true);
 	m_GlobalTransform.SetPosition(_pos);
 }
