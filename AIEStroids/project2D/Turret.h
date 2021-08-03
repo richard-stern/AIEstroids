@@ -28,7 +28,7 @@ public:
 	void SetPos(float x, float y);
 
 	//Empty
-	//void Draw();
+	void Draw(aie::Renderer2D* _renderer2D) override;
 
 private:
 

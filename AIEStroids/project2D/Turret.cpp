@@ -76,7 +76,7 @@ Turret::Turret() {
 	//Sprite layer
 	SetSpriteDepth(-1);
 
-	//m_bulletManager = new BulletManager(/*Enter amount of bullets here, once functionality is added*/);
+	m_bulletManager = new BulletManager(); /*Enter amount of bullets here, once functionality is added*/
 }
 
 Turret::~Turret() {
@@ -98,6 +98,12 @@ void Turret::SetPos(float x, float y) {
 	m_m3Offset.SetPosition(x, y);
 }
 
+void Turret::Draw(aie::Renderer2D* _renderer2D)
+{
+	GameObject::Draw(_renderer2D);
+	m_bulletManager->Draw(_renderer2D);
+}
+
 Vector2 Turret::GetMousePos() {
 	return Vector2((float)m_input->GetMouseX(), (float)m_input->GetMouseY());
 }
@@ -108,6 +114,7 @@ bool Turret::IsLeftMouseClicked() {
 
 void Turret::Controller(float deltaTime) {
 	Rotate(deltaTime);
+	m_bulletManager->Update(deltaTime);
 	Fire(deltaTime);
 	TurretKickback(deltaTime);
 }
