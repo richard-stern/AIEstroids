@@ -78,7 +78,7 @@ Turret::~Turret() {
 void Turret::Update(float deltaTime) {
 	Controller(deltaTime);
 	//m_globalTransform = /*parent * */ m_localTransform * m_m3Offset;
-	m_LocalTransform = m_LocalTransform* m_m3Offset;
+	//m_LocalTransform = m_LocalTransform* m_m3Offset;
 }
 
 //void Turret::Draw() {
@@ -99,8 +99,8 @@ bool Turret::IsLeftMouseClicked() {
 
 void Turret::Controller(float deltaTime) {
 	Rotate(deltaTime);
-	Fire(deltaTime);
-	TurretKickback(deltaTime);
+	//Fire(deltaTime);
+	//TurretKickback(deltaTime);
 }
 
 void Turret::Rotate(float deltaTime) {
@@ -108,10 +108,17 @@ void Turret::Rotate(float deltaTime) {
 	Vector2 mousePos = GetMousePos();
 	Vector2 diffPos = turretPos - mousePos;
 
+	float directionFix = M_PI / 2;
+
+
 	float mouseAngle = atan2(diffPos.y, diffPos.x);
 
 	//should work, if it doesn't check here first
-	float turretAngle = atan2(m_GlobalTransform.GetUp().y, m_GlobalTransform.GetUp().x);
+	float turretAngle = atan2(m_GlobalTransform.GetUp().y, m_GlobalTransform.GetUp().x) + directionFix;
+
+	if (turretAngle > 1 * M_PI) {
+		turretAngle -= 2 * M_PI;
+	}
 
 	float rotate = mouseAngle - turretAngle;
 
