@@ -12,6 +12,7 @@
 #include "Star.h"
 #include "Enemy.h"
 #include "Camera.h"
+#include "GUI.h"
 
 #define ROCKS_COUNT		6		// Asteroids in the level
 #define STARS_COUNT		100		// Stars in the level

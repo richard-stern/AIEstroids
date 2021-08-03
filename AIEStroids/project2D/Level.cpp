@@ -13,6 +13,7 @@ Level::Level(aie::Renderer2D* renderer)
 	// Create systems
 	Camera::Create(renderer, m_player);
 	CollisionManager::CreateInstance();
+	GUI::Create();
 
 	// Create player
 	float playerX = windowW * 0.5f;
