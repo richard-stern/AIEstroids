@@ -25,13 +25,15 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 	{
 		CollisionManager::GetInstance()->AddBody(this);
 	}
-
 }
 
 PhysicsBody::~PhysicsBody()
 {
 	CollisionManager::GetInstance()->RemoveBody(this);
-	delete collider;
+	if (collider != nullptr)
+	{
+		delete collider;
+	}
 }
 
 void PhysicsBody::Update(float deltaTime)
@@ -71,8 +73,8 @@ void PhysicsBody::Update(float deltaTime)
 	case BodyType::STATIC:
 		break;
 	}
-	
-	//finally update global shape points and AABB
+
+	//update global shape points and AABB
 	if (collider != nullptr)
 	{
 		collider->GetShape()->CalculateGlobal(actorObject->GetGlobalTransform());
