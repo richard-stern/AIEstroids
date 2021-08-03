@@ -144,4 +144,6 @@ void Level::Draw(aie::Renderer2D* renderer)
 	// Draw Enemies
 	for (int i = 0; i < m_enemyArray.Count(); i++)
 		m_enemyArray[i]->Draw(renderer);
+
+	CollisionManager::GetInstance()->DebugDraw(renderer);
 }
