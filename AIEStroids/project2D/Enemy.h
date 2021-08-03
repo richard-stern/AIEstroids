@@ -24,6 +24,7 @@ private:
 	const float MAX_AVOID_FORCE = 1.0f;
 	Rock** m_rocks;
 	unsigned int m_Health;
+	const int radius = 100;
 
 public:
 	Enemy(Player* player, Rock** rocks);
@@ -32,16 +33,13 @@ public:
 	void Update(float deltaTime) override;
 	void Draw(aie::Renderer2D* renderer) override;
 	void OnCollision(GameObject* other);
-	bool IsDestroyed() { return m_destroyed; }
-	Vector2 GetPosition();
+	bool IsDestroyed() { return (m_Health <= 0); }
 
 private:
 	void Seek(float deltaTime);
 	void Pursue(float deltaTime);
-	void AvoidObstacles(float deltaTime);
 	void SetRandomLocation();
-	Matrix3 GetRandomLocation();
-	Vector2 CollisionAvoidance();
-	GameObject* FindMostThreateningObstacle();
+	void CollisionAvoidance(float deltaTime);
+	GameObject* FindMostThreateningObstacle(Vector2 ahead, Vector2 ahead2);
 	bool LineIntersectsCircle(Vector2 a, Vector2 b, GameObject* obstacle);
 };

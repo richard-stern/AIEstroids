@@ -23,7 +23,8 @@ public:
 	Vector2 GetVelocity() { return m_Velocity; }
 
 	virtual void OnCollision(CollisionEvent _event);
-	void AddPhysicsBody(PhysicsBody* _body) { m_PhysicsBody = _body; }
+	void AddPhysicsBody(PhysicsBody* _body);
+	
 	void RemovePhysicsBody() { m_PhysicsBody = nullptr; }
 
 protected:
