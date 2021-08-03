@@ -79,5 +79,6 @@ private:
 
 	std::vector<PhysicsBody*> collisionObjects;
 	std::vector<CollisionManifold> collisions;
+	bool drawDebug = false;
 };
 
