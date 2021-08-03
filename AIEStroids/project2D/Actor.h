@@ -22,12 +22,12 @@ public:
 	void SetWrapAndRespawn(bool _active) { m_WrapAndRespawn = _active; }
 	Vector2 GetVelocity() { return m_Velocity; }
 
-protected:
-	PhysicsBody* m_PhysicsBody = nullptr;
+	virtual void OnCollision(CollisionEvent _event);
 	void AddPhysicsBody(PhysicsBody* _body) { m_PhysicsBody = _body; }
 	void RemovePhysicsBody() { m_PhysicsBody = nullptr; }
 
-	virtual void OnCollision(CollisionEvent _event);
+protected:
+	PhysicsBody* m_PhysicsBody = nullptr;
 
 	const int m_MaxHealth = 100;
 	int m_CurrentHealth;
