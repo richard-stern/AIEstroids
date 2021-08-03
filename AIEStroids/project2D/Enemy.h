@@ -13,7 +13,7 @@ class Player;
 class Level;
 class Rock;
 
-#define MAX_ENEMY_VELOCITY 100
+#define MAX_ENEMY_VELOCITY 500
 
 class Enemy : public Actor
 {
@@ -24,6 +24,7 @@ private:
 	const float MAX_AVOID_FORCE = 1.0f;
 	Rock** m_rocks;
 	const int radius = 100;
+	Vector2 steeringForce;
 
 public:
 	Enemy(Player* player, Rock** rocks);
