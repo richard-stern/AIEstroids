@@ -54,7 +54,8 @@ void Rock::SetRandomPath()
 	Vector2 position(x, y);
 	Vector2 direction(((rand() % 200) - 100) / 100.0f, ((rand() % 200) - 100) / 100.0f);
 	SetPosition(position);
-	m_PhysicsBody->SetVelocity(direction.GetNormalised() * 50);
+	SetRotation((rand() % 360) * DEG2RAD);
+	m_PhysicsBody->SetVelocity(direction.GetNormalised() * (25 + (rand() % 50)));
 	m_PhysicsBody->SetAngularVelocity(1);
 }
 void Rock::Update(float deltaTime)
