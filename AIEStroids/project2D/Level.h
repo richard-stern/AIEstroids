@@ -11,6 +11,8 @@
 #include "Rock.h"
 #include "Star.h"
 #include "Enemy.h"
+#include "Camera.h"
+#include "GUI.h"
 
 #define ROCKS_COUNT		6		// Asteroids in the level
 #define STARS_COUNT		100		// Stars in the level
@@ -26,13 +28,11 @@ Calls update and draw on all objects each frame
 class Level : GameObject
 {
 public:
-	Level();
+	Level(aie::Renderer2D* renderer);
 	~Level();
 
 	void Update(float deltaTime);
 	void Draw(aie::Renderer2D* renderer);
-	Actor** GetRocks() { return (Actor**) m_rockArray; }
-	Player* GetPlayer() { return m_player; }
 
 private:
 	// Window size

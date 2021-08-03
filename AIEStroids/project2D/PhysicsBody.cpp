@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "CollisionManager.h"
 
-PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider, float drag, float angularDrag, float mass)
+PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider, float drag, float angularDrag, float mass, bool addToManager)
 	: actorObject(connectedGameObject), type(type), collider(collider), drag(drag), angularDrag(angularDrag), angularVelocity(0), velocity(Vector2()), force(Vector2()), torque(0)
 {
 	if (mass == 0)
@@ -20,27 +20,39 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 	{
 		iMass = 1.0f / mass;
 	}
+
+	if (addToManager)
+	{
+		CollisionManager::GetInstance()->AddBody(this);
+	}
+
 }
 
-void PhysicsBody::Update()
+PhysicsBody::~PhysicsBody()
+{
+	CollisionManager::GetInstance()->RemoveBody(this);
+	delete collider;
+}
+
+void PhysicsBody::Update(float deltaTime)
 {
 	switch (type)
 	{
 	case BodyType::DYNAMIC:
 	{
 		//set velocity based on force
-		velocity += force * (PHYSICS_TIME_STEP * iMass);
+		velocity += force * (deltaTime * iMass);
 		//add drag
-		velocity -= velocity * (drag * PHYSICS_TIME_STEP);
+		velocity -= velocity * (drag * deltaTime);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * PHYSICS_TIME_STEP);
+		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
 
 		//set angular velocity based on torque
-		angularVelocity += torque * PHYSICS_TIME_STEP;
+		angularVelocity += torque * deltaTime;
 		//add drag
-		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
+		angularVelocity -= angularVelocity * angularDrag * deltaTime;
 		//set rotation
-		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
 		
 		//reset force
 		force = Vector2::ZERO();
@@ -48,78 +60,81 @@ void PhysicsBody::Update()
 		break;
 	case BodyType::KINEMATIC:
 	{
-		//add drag
-		velocity -= velocity * (drag * PHYSICS_TIME_STEP);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * PHYSICS_TIME_STEP);
+		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
 
-		//add drag
-		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
 		//set rotation
-		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
 	}
 		break;
 	case BodyType::STATIC:
 		break;
 	}
 	
+	//finally update global shape points and AABB
 	if (collider != nullptr)
+	{
+		collider->GetShape()->CalculateGlobal(actorObject->GetGlobalTransform());
 		UpdateAABB();
+	}
 }
 
 void PhysicsBody::AddImpulse(Vector2 impulse)
 {
 	//same as add velocity except impacted by mass
-	velocity += impulse * iMass;
+	if (type != BodyType::KINEMATIC)
+		velocity += impulse * iMass;
 }
 
 void PhysicsBody::UpdateAABB()
 {
 	auto& aabb = collider->shapeAABB;
 
-	switch (collider->shape->getType())
+	switch (collider->shape->GetType())
 	{
 	case ShapeType::CIRCLE:
 	{
-		//aabb.topLeft = 
+		CircleShape* circleShape = (CircleShape*)collider->shape;
+		float radius = circleShape->GetRadius();
+
+		//aabb.bottomRight.x = radius + 
 	}
 		break;
 	case ShapeType::POLYGON:
-		break;
+	{
+		PolygonShape* colliderShape = (PolygonShape*)collider->shape;
+			
+		//maxX
+		aabb.bottomRight.x = INFINITY;
+		//maxY
+		aabb.bottomRight.y = INFINITY;
+		//minX
+		aabb.topLeft.x = -INFINITY;
+		//minY
+		aabb.topLeft.y = -INFINITY;
+
+		//get global vertices
+		auto vertices = colliderShape->GetGlobalVertices();
+
+		for (int i = 0; i < colliderShape->GetCount(); i++)
 		{
-			PolygonShape* colliderShape = (PolygonShape*)collider->shape;
-
-			//maxX
-			aabb.bottomRight.x = INFINITY;
-			//maxY
-			aabb.bottomRight.y = INFINITY;
-			//minX
-			aabb.topLeft.x = -INFINITY;
-			//minY
-			aabb.topLeft.y = -INFINITY;
-
-			for (int i = 0; i < colliderShape->count; i++)
-			{
-				auto& vertex = colliderShape->vertices[i];
 				
-				//set maxX
-				if (vertex.x > aabb.bottomRight.x)
-					aabb.bottomRight.x = vertex.x;
-				//set minX
-				if (vertex.x < aabb.topLeft.x)
-					aabb.topLeft.x = vertex.x;
+			//set maxX
+			if (vertices[i].x > aabb.bottomRight.x)
+				aabb.bottomRight.x = vertices[i].x;
+			//set minX
+			if (vertices[i].x < aabb.topLeft.x)
+				aabb.topLeft.x = vertices[i].x;
 
-				//set maxY
-				if (vertex.y > aabb.bottomRight.y)
-					aabb.bottomRight.y = vertex.y;
-				//set minY
-				if (vertex.y < aabb.topLeft.y)
-					aabb.topLeft.y = vertex.y;
-			}
-
-			aabb.topLeft += actorObject->GetGlobalPosition();
-			aabb.bottomRight += actorObject->GetGlobalPosition();
+			//set maxY
+			if (vertices[i].y > aabb.bottomRight.y)
+				aabb.bottomRight.y = vertices[i].y;
+			//set minY
+			if (vertices[i].y < aabb.topLeft.y)
+				aabb.topLeft.y = vertices[i].y;
 		}
+	}
+		break;
 	}
 	
 }
