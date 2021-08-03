@@ -51,6 +51,7 @@ float PolygonShape::GetArea()
 		Vector2 delta = vertices[i] - vertices[(i + 1) % count];
 		//Vector2 height = 
 	}
+	return 1.0f;
 }
 
 PolygonShape* PolygonShape::CreateBox(float hx, float hy, Vector2 relativeCentrePoint)
