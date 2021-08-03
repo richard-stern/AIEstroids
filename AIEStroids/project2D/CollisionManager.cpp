@@ -62,14 +62,14 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 						float rotationAmount = (float)M_PI / 10.0f;
 						for (int j = 0; j < 19; j++)
 						{
-							Vector2 straightLine = Vector2::RIGHT() * shape->GetRadius();
-							Vector2 straightLine2 = Vector2::RIGHT() * shape->GetRadius();
+							Vector2 straightLine = Vector2::RIGHT() * shape->GetGlobalRadius();
+							Vector2 straightLine2 = Vector2::RIGHT() * shape->GetGlobalRadius();
 							straightLine.SetRotation(rotationAmount * j);
 							straightLine2.SetRotation(rotationAmount * (j + 1));
 							renderer->DrawLine(straightLine.x + position.x, straightLine.y + position.y, straightLine2.x + position.x, straightLine2.y + position.y, 3);
 						}
-						Vector2 straightLine = Vector2::RIGHT() * shape->GetRadius();
-						Vector2 straightLine2 = Vector2::RIGHT() * shape->GetRadius();
+						Vector2 straightLine = Vector2::RIGHT() * shape->GetGlobalRadius();
+						Vector2 straightLine2 = Vector2::RIGHT() * shape->GetGlobalRadius();
 						straightLine2.SetRotation(rotationAmount * (19));
 						renderer->DrawLine(straightLine.x + position.x, straightLine.y + position.y, straightLine2.x + position.x, straightLine2.y + position.y, 3);
 					}
@@ -173,23 +173,24 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		//resolve collision
 		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
 		float projectedRV = manifold.collisionNormal.GetDot(rV);
+		
 		//velocities are seperating
-		//BREAKING THIS DOWN INTO IT'S PARTS TO TRY TO FIND THE PROBLEM
 		//bounce factor (minimum of the two in this case)
-		float restitution = std::min(manifold.a->collider->restitution, manifold.b->collider->restitution);
+		float restitution = (manifold.a->collider->restitution + manifold.b->collider->restitution) / 2.0f;
 		//the impulse magnitude
-		float impulseMagnitude = -(1 + restitution * projectedRV);
+		float impulseMagnitude = -(1 + restitution) * projectedRV;
 		//divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
 		impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
 		//turn into vector
 		Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
-		manifold.a->AddImpulse(impulse* -1);
+		manifold.a->AddImpulse(impulse * -1);
 		manifold.b->AddImpulse(impulse);
+		
 		if (manifold.a->type == BodyType::DYNAMIC)
-			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass()) * manifold.a->GetInverseMass()));
+			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())) * manifold.a->GetInverseMass());
 		if (manifold.b->type == BodyType::DYNAMIC)
-			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass()) * manifold.b->GetInverseMass()));
+			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())) * manifold.b->GetInverseMass());
 	}
 }
 
@@ -216,7 +217,7 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		CircleShape* b = (CircleShape*)manifold.b->collider->shape;
 
 		Vector2 delta = b->GetGlobalCentrePoint() - a->GetGlobalCentrePoint();
-		float p = a->GetRadius() + b->GetRadius() - (delta).GetMagnitude();
+		float p = a->GetGlobalRadius() + b->GetGlobalRadius() - (delta).GetMagnitude();
 		if (p > 0)
 		{
 			manifold.penetration = p;
@@ -251,7 +252,7 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		{
 			auto deltaVector = (b->GetGlobalCentrePoint() - polygonVertices[i]);
 			float dist = deltaVector.GetMagnitude();
-			float potentialP = b->GetRadius() - dist;
+			float potentialP = b->GetGlobalRadius() - dist;
 			if (potentialP > 0 && potentialP > p )
 			{
 				p = potentialP;
