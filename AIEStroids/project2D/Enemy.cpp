@@ -24,7 +24,7 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 	SetRotation(M_PI / 2);
 }
 
-Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Actor(pos)
+Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false)
 {
 	SetPosition(pos);
 	m_player = player;
@@ -33,7 +33,10 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Ac
 
 	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
 
-	SetRotation(M_PI / 2);
+	//Assign ship texture
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy_small.png");
+
+	SetRotation((float)(M_PI));
 }
 
 Enemy::~Enemy()
@@ -43,11 +46,16 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
-	Seek(deltaTime);
+	Seek(m_player, deltaTime);
+	//steeringForce = { 0, 1 };
 	CollisionAvoidance(deltaTime);
 
-	// rotate enemy ship
 	Vector2 velocity = m_PhysicsBody->GetVelocity();
+
+	// update the velocity of the enemy
+	m_PhysicsBody->SetVelocity(velocity + steeringForce);
+
+	// rotate enemy ship
 	float rotation = atan2(velocity.y, velocity.x) + M_PI / 2;
 
 	// set random rotation
@@ -65,17 +73,15 @@ void Enemy::OnCollision(GameObject* other)
 		m_CurrentHealth -= 10;
 }
 
-void Enemy::Seek(float deltaTime)
+void Enemy::Seek(Actor* target, float deltaTime)
 {
-	Vector2 playerPos = m_player->GetPosition();
-
-	Vector2 difference = playerPos - GetPosition();
+	Vector2 targetPos = target->GetPosition();
+	Vector2 difference = targetPos - GetPosition();
 
 	Vector2 desiredVelocity = difference.GetNormalised() * MAX_ENEMY_VELOCITY;
 	steeringForce = desiredVelocity - m_PhysicsBody->GetVelocity();
-	
-	// update the velocity of the enemy
-	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce);
+
+	//m_PhysicsBody->SetVelocity(localSteeringForce);
 }
 
 void Enemy::SetRandomLocation()
@@ -120,11 +126,14 @@ void Enemy::CollisionAvoidance(float deltaTime)
 		avoidance.y = ahead.y - mostThreatening->GetPosition().y;
 
 		avoidance.GetNormalised();
-		avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
+		avoidance *= MAX_AVOID_FORCE;
+
+		//avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
 	} 
 	else
 	{
-		avoidance.Scale(avoidance, { 0, 0 }); // nullify the avoidance force
+		avoidance *= 0;
+		//avoidance.Scale(avoidance, { 0, 0 }); // nullify the avoidance force
 	}
 
 	steeringForce += avoidance;
@@ -155,5 +164,5 @@ bool Enemy::LineIntersectsCircle(Vector2 ahead1, Vector2 ahead2, GameObject* obs
 	float ahead1Distance = obstacle->GetPosition().GetDistance(ahead1);
 	float ahead2Distance = obstacle->GetPosition().GetDistance(ahead2);
 
-	return (ahead1Distance <= radius || ahead2Distance <= radius);
+	return (ahead1Distance <= RADIUS || ahead2Distance <= RADIUS);
 }
