@@ -73,6 +73,14 @@ void Player::Update(float deltaTime)
 		//Dividing angular velocity by its absolute value will give the sign of the value
 		m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED);
 
+
+	//Update GUI values
+	UpdateGUI();
+}
+
+void Player::OnCollision(CollisionEvent collisionEvent)
+{
+	m_PhysicsBody->GetVelocity();
 }
 
 int Player::GetLives()
@@ -92,7 +100,8 @@ void Player::SetGUI(GUI* gui)
 
 void Player::UpdateGUI()
 {
-	//
+	gui->SetHealth(m_CurrentHealth);
+	gui->SetLives(this->lives);
 }
 
 PhysicsBody* Player::GetPhysicsBody()
