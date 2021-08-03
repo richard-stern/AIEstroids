@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "CollisionLayers.h"
 
 // Author: James K
 
@@ -23,8 +24,7 @@ public:
 	Vector2 GetVelocity() { return m_Velocity; }
 
 	virtual void OnCollision(CollisionEvent _event);
-	void AddPhysicsBody(PhysicsBody* _body);
-	
+	void GeneratePhysicsBody(aie::Texture* texture, CollisionLayer layer, unsigned short layerMask);
 	void RemovePhysicsBody() { m_PhysicsBody = nullptr; }
 
 protected:
