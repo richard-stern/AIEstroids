@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "Renderer2D.h"
 #include <cmath>
+#include <iostream>
 
 //Singleton initialisation
 Camera* Camera::instance = nullptr;
@@ -59,20 +60,22 @@ void Camera::Update(float deltaTime)
 {
 	//Get the player's position
 	Vector2 playerPosition;
-	playerPosition = player->GetLocalPosition();
+	playerPosition = player->GetGlobalPosition();
+	playerPosition.x *= -1;
+	playerPosition.y *= -1;
 
 	//Find the distance between the camera and the player
-	Vector2 distance = playerPosition - cameraPosition;
+	Vector2 distance = (playerPosition - cameraPosition);
 
 	//If the distance is significant enough to warrant moving the camera
-	if (abs(distance.GetMagnitude()) * distancePercentPerFrame * deltaTime > minMoveDistance)
+	if (abs(distance.GetMagnitude()) * (followSpeed / 100.0f) * deltaTime > minMoveDistance)
 	{
 		//Move the camera toward the player by the distance fraction
-		cameraPosition += (distance * distancePercentPerFrame * deltaTime);
+		cameraPosition += (distance * (followSpeed / 100.0f) * deltaTime);
 	}
 
 	//Apply the member Vector2 to the renderer's camera
-	//renderer->SetCameraPos(cameraPosition.x, cameraPosition.y);
+	renderer->SetCameraPos(cameraPosition.x, cameraPosition.y);
 }
 
 //Private constructor
@@ -83,10 +86,10 @@ Camera::Camera()
 	cameraPosition.y = 0.0f;
 
 	//The minimum absolute distance moved by the camera while smoothing, anything less is cut off and the camera doesn't move
-	minMoveDistance = 0.0f;
+	minMoveDistance = 0.25f;
 
-	//How far the camera moves towards its target in this frame (based on a percentage of the distance between them)
-	distancePercentPerFrame = 10;
+	//How far the camera moves towards its target per second (based on a percentage of the distance between them)
+	followSpeed = 200;
 
 	renderer = nullptr;
 	player = nullptr;
