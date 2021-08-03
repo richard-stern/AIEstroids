@@ -1,3 +1,7 @@
+/*
+ * Author: Paul King
+*/
+
 #pragma once
 #include <stdlib.h>
 #include <time.h>
@@ -7,6 +11,7 @@
 
 class Player;
 class Level;
+class Rock;
 
 class Enemy : public Actor
 {
@@ -16,10 +21,11 @@ private:
 	Vector2 m_position;
 	const float MAX_SEE_AHEAD = 10.0f;
 	const float MAX_AVOID_FORCE = 1.0f;
-	Level* level;
+	Rock** m_rocks;
 
 public:
-	Enemy();
+	Enemy(Player* player, Rock** rocks);
+	Enemy(Vector2 pos, Player* player, Rock** rocks);
 	~Enemy();
 	void Update(float deltaTime) override;
 	void Draw(aie::Renderer2D* renderer) override;
@@ -35,4 +41,5 @@ private:
 	Matrix3 GetRandomLocation();
 	Vector2 CollisionAvoidance();
 	GameObject* FindMostThreateningObstacle();
+	bool LineIntersectsCircle(Vector2 a, Vector2 b, GameObject* obstacle);
 };
