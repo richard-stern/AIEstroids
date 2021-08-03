@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor.h"
-#include "TextureManager.h"
+//#include "TextureManager.h"
 #include "Matrix3.h"
 #include "Vector2.h"
 
@@ -22,7 +22,7 @@ public:
 	virtual void OnCollision(CollisionEvent _event) override;
 
 private:
-	aie::Texture* m_MyTexture;
+	//aie::Texture* m_MyTexture;
 
 	//bool for a fucntion to make visable
 	bool m_bActive = true;

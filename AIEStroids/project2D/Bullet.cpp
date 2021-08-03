@@ -1,10 +1,11 @@
 #include "Bullet.h"
+#include "TextureManager.h"
 
 //Constructor
 Bullet::Bullet() : Actor::Actor()
 {
 	//uses function from the TextureManager to load the texture from the bullet
-	m_MyTexture = TextureManager::Get()->LoadTexture("../bin/textures/bullet.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Bullets_3.png");
 
 	//Set the variable to false
 	m_WrapAndRespawn = false;

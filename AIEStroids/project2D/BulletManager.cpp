@@ -1,6 +1,5 @@
 #include "BulletManager.h"
 #include "Bullet.h"
-
 //Cap it just for now will change later
 #define MAX_BULLET 100
 
@@ -55,5 +54,22 @@ void BulletManager::ShootBullet(Vector2 position, float angle)
 
 			break;
 		}
+	}
+}
+
+void BulletManager::Update(float deltaTime)
+{
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		pBullet[i]->Update(deltaTime);
+	}
+}
+
+void BulletManager::Draw(aie::Renderer2D* _renderer2D)
+{
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		if (pBullet[i]->GetActive())
+			pBullet[i]->Draw(_renderer2D);
 	}
 }
