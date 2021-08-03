@@ -88,8 +88,8 @@ void Enemy::SetRandomLocation()
 	SetPosition({ (float)x, (float)y });
 	
 	Vector2 spawnPos = { (float)x, (float)y };
+	SetPosition(spawnPos);
 
-	SetLocalPosition(spawnPos);
 
 	float rotation = (float) (rand() / 10000.0);
 
