@@ -111,13 +111,13 @@ void PhysicsBody::UpdateAABB()
 		PolygonShape* colliderShape = (PolygonShape*)collider->shape;
 			
 		//maxX
-		aabb.bottomRight.x = INFINITY;
+		aabb.bottomRight.x = -INFINITY;
 		//maxY
-		aabb.bottomRight.y = INFINITY;
+		aabb.bottomRight.y = -INFINITY;
 		//minX
-		aabb.topLeft.x = -INFINITY;
+		aabb.topLeft.x = INFINITY;
 		//minY
-		aabb.topLeft.y = -INFINITY;
+		aabb.topLeft.y = INFINITY;
 
 		//get global vertices
 		auto vertices = colliderShape->GetGlobalVertices();

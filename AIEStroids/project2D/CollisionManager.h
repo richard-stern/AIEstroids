@@ -6,6 +6,7 @@
 #include "Application.h"
 #include <vector>
 #include <forward_list>
+#include "Renderer2D.h"
 
 struct CollisionEvent
 {
@@ -51,6 +52,8 @@ public:
 	void AddBody(PhysicsBody* body);
 	//called by physics body to remove self from list (expensive!!)
 	void RemoveBody(PhysicsBody* body);
+
+	void DebugDraw(aie::Renderer2D* renderer);
 
 private:
 	static CollisionManager* instance;
