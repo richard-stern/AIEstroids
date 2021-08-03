@@ -6,6 +6,7 @@
 class TextureManager
 {
 public:
+	static void Create();
 	static TextureManager* Get();
 	static void Destroy();
 
