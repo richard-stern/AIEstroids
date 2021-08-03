@@ -5,6 +5,7 @@
 #include "Level.h"
 #include "Enemy.h"
 #include <vector>
+#include "StateMachine.h"
 
 class Game2D : public aie::Game
 {
@@ -17,6 +18,6 @@ public:
 
 protected:
 	aie::Renderer2D*	m_2dRenderer;
-	Level* level;
+	StateMachine* m_pStateMachine;
 	DynamicArray<Enemy*> enemies;
 };
