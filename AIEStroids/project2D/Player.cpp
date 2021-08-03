@@ -4,6 +4,7 @@
 #include <cmath>
 #include "TextureManager.h"
 #include "CollisionLayers.h"
+#include <iostream>
 
 //Author Rahul J. (BEANMEISTER)
 
@@ -70,9 +71,17 @@ void Player::Update(float deltaTime)
 		float thrustAmount = PLAYER_THRUST;
 		float torqueAmount = PLAYER_TORQUE * DEG2RAD;
 
-		//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
-		if (Vector2::Dot(playerForward, currentVelocity) < 0)
-			thrustAmount *= PLAYER_COUNTERFORCE_MULT;
+		if (inputVector.y > 0)
+		{
+			//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
+			//Also only do this if player is accelerating forward
+			if (Vector2::Dot(playerForward, currentVelocity) < 0)
+				thrustAmount *= PLAYER_COUNTERFORCE_MULT;
+		}
+		else
+		{
+			thrustAmount = PLAYER_REVERSE_THRUST;
+		}
 
 		//Scale up torque amount if rotating away from current rotational velocity
 		if (currentAngularVelocity * -inputVector.x < 0)
@@ -82,10 +91,7 @@ void Player::Update(float deltaTime)
 		//	Add forces
 		//--------------
 		//-------------------------P O S I T I O N----------------------------------------------------
-		if (inputVector.y != 0)
-		{
-			m_PhysicsBody->AddVelocity(playerForward * inputVector.y * thrustAmount);
-		}
+		m_PhysicsBody->AddVelocity(playerForward * inputVector.y * thrustAmount * deltaTime);
 
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
@@ -141,6 +147,7 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 		{
 			//Get component of velocity that is pointing away from the normal (toward the rock)
 			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
+			std::cout << impactSpeed << std::endl;
 		
 			//Instakill player cos they hit the rock too hard
 			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
@@ -171,10 +178,15 @@ void Player::SetGUI(GUI* gui)
 	this->gui = gui;
 }
 
+void Player::SetRenderer(aie::Renderer2D* renderer)
+{
+	this->renderer = renderer;
+}
+
 void Player::UpdateGUI()
 {
 	gui->SetHealth(m_CurrentHealth);
-	gui->SetLives(this->lives);
+	gui->SetLives(m_PhysicsBody->GetVelocity().GetMagnitude());
 }
 
 PhysicsBody* Player::GetPhysicsBody()
