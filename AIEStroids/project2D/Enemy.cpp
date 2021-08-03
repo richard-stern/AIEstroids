@@ -68,7 +68,7 @@ void Enemy::Seek(float deltaTime)
 	
 	// update the position of the enemy
 	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce *deltaTime);
-	SetGlobalPosition(GetGlobalPosition() + m_PhysicsBody->GetVelocity() * deltaTime);
+	SetLocalPosition(GetGlobalPosition() + m_PhysicsBody->GetVelocity() * deltaTime);
 }
 
 void Enemy::SetRandomLocation()
@@ -84,7 +84,9 @@ void Enemy::SetRandomLocation()
 	int x = rand() % 2*width + (-width);
 	int y = rand() % 2*height + (-height);
 
-	SetGlobalPosition({ (float)x, (float)y });
+	Vector2 spawnPos = { (float)x, (float)y };
+
+	SetLocalPosition(spawnPos);
 
 	float rotation = (float) (rand() / 10000.0);
 
