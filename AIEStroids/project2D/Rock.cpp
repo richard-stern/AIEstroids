@@ -4,7 +4,7 @@
 #include "CollisionLayers.h"
 Rock::Rock() : Actor()
 {
-	AddPhysicsBody(new PhysicsBody(this, BodyType::DYNAMIC));
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/rock_large.png");
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
 	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
@@ -13,7 +13,7 @@ Rock::Rock() : Actor()
 	//Create collider
 	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::ROCK, layermask);
 	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/rock_large.png");
+	
 	SetRandomPath();
 	
 }

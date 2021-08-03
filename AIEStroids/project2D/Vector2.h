@@ -44,6 +44,8 @@ struct Vector2 {
 	void operator*=(float _value);
 	void operator/=(const Vector2& other);
 	void operator/=(float _value);
+
+	Vector2 operator -();
 	
 	// ------- //
 	// METHODS //
