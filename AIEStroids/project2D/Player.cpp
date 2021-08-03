@@ -75,19 +75,21 @@ void Player::Update(float deltaTime)
 		//--------------
 		//	Add forces
 		//--------------
-		m_PhysicsBody->AddForce(playerForward * std::abs(inputVector.y) * thrustAmount * deltaTime);
+		//-------------------------P O S I T I O N----------------------------------------------------
+		m_PhysicsBody->AddForce(playerForward * std::abs(inputVector.y) * thrustAmount);
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
 		if (currentVelocity.GetMagnitude() > PLAYER_MAXSPEED)
 			m_PhysicsBody->SetVelocity(currentVelocity.GetNormalised() * PLAYER_MAXSPEED);
 
-		m_PhysicsBody->AddTorque(inputVector.x * torqueAmount * deltaTime);
+		//-------------------------R O T A T I O N----------------------------------------------------
+		m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * DEG2RAD * deltaTime);
 		//Limit angular velocity
 		currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
 		float absoluteValue = std::abs(currentAngularVelocity);
-		if (absoluteValue > PLAYER_MAXROTATIONSPEED)
+		if (absoluteValue > (PLAYER_MAXROTATIONSPEED * DEG2RAD))
 			//Dividing angular velocity by its absolute value will give the sign of the value
-			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED);
+			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
 
 		//Check tha health
 		if (m_CurrentHealth <= 0)
