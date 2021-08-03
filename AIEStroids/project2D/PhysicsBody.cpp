@@ -47,7 +47,7 @@ void PhysicsBody::Update(float deltaTime)
 		//add drag
 		velocity -= velocity * (drag * deltaTime);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set angular velocity based on torque
 		angularVelocity += torque * deltaTime;
@@ -64,7 +64,7 @@ void PhysicsBody::Update(float deltaTime)
 	case BodyType::KINEMATIC:
 	{
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set rotation
 		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
@@ -100,7 +100,10 @@ void PhysicsBody::UpdateAABB()
 		CircleShape* circleShape = (CircleShape*)collider->shape;
 		float radius = circleShape->GetRadius();
 
-		//aabb.bottomRight.x = radius + 
+		aabb.bottomRight.x = radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.topLeft.x = -radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.topLeft.y = -radius + circleShape->GetGlobalCentrePoint().y;
+		aabb.bottomRight.y = radius + circleShape->GetGlobalCentrePoint().y;
 	}
 		break;
 	case ShapeType::POLYGON:
@@ -108,13 +111,13 @@ void PhysicsBody::UpdateAABB()
 		PolygonShape* colliderShape = (PolygonShape*)collider->shape;
 			
 		//maxX
-		aabb.bottomRight.x = INFINITY;
+		aabb.bottomRight.x = -INFINITY;
 		//maxY
-		aabb.bottomRight.y = INFINITY;
+		aabb.bottomRight.y = -INFINITY;
 		//minX
-		aabb.topLeft.x = -INFINITY;
+		aabb.topLeft.x = INFINITY;
 		//minY
-		aabb.topLeft.y = -INFINITY;
+		aabb.topLeft.y = INFINITY;
 
 		//get global vertices
 		auto vertices = colliderShape->GetGlobalVertices();
