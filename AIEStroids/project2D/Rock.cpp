@@ -15,7 +15,6 @@ Rock::Rock() : Actor()
 	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
 	
 	SetRandomPath();
-	
 }
 
 Rock::~Rock()
@@ -30,9 +29,8 @@ void Rock::OnCollision(GameObject* other)
 
 void Rock::SetRandomPath()
 {
-	srand(time(NULL));
 	aie::Application* app = aie::Application::GetInstance();
-	int edge = rand() % 4;
+	int edge = rand() % 5;
 	int x = 0;
 	int y = 0;
 	switch (edge) {
@@ -55,7 +53,7 @@ void Rock::SetRandomPath()
 	}
 	Vector2 position(x, y);
 	SetPosition(position);
-	m_PhysicsBody->SetVelocity(Vector2::ONE());
+	m_PhysicsBody->SetVelocity(Vector2::ONE()* 50);
 	m_PhysicsBody->SetAngularVelocity(1);
 }
 void Rock::Update(float deltaTime)
