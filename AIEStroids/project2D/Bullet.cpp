@@ -4,13 +4,14 @@
 #include "Bullet.h"
 
 //Constructor
-Bullet::Bullet()
+Bullet::Bullet() : Actor::Actor()
 {
-	//Do'n't really know how to do the texture calling but can do 
-	//m_pTexture = TextureManager->LoadTexture("");
+	//Get the texture for the bullet
+	m_TextureManager = TextureManager::Get();
+	m_MyTexture = m_TextureManager->LoadTexture("");
 
-	//Can't seem to understand why i can't set it
-	//m_bWrapAndRespawn = false;
+	//Set the variable to false cause why not
+	m_WrapAndRespawn = false;
 }
 
 //Destructor
@@ -28,9 +29,6 @@ void Bullet::Shoot(Vector2 position, float angle)
 	//Basic velocity of the bullet
 	m_v2Velocity = { 0, -200 };
 
-	//Sets the Velocity of the bullet
-	//SetVelocity(m_v2Velocity);
-
 	//Set the rotation of the bullet when fired to face the way the turret faces
 	position.SetRotation(angle);
 
@@ -39,6 +37,9 @@ void Bullet::Shoot(Vector2 position, float angle)
 
 	//Need for the bullet to vanish either after going off the screen or after some time
 	//So there will need to be some work on how to turn the bullet back to null after it vanishes
+	//Gonna go with time for the bullet
+
+
 }
 
 //Collision with the bullet and other objects

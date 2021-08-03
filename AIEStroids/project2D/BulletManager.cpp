@@ -10,14 +10,18 @@
 //Constructor
 BulletManager::BulletManager()
 {
-	//Initialise the pBullet 
-	pBullet = new Bullet * [MAX_BULLET];
+	////Initialise the pBullet 
+	//pBullet = new Bullet * [MAX_BULLET];
 
-	//Set all pBullet in the list to null
-	for (int i = 0; i < MAX_BULLET; ++i)
-	{
-		pBullet[i] = nullptr;
-	}
+	////Set all pBullet in the list to null
+	//for (int i = 0; i < MAX_BULLET; ++i)
+	//{
+	//	pBullet[i] = nullptr;
+	//}
+
+	pBullet = new Bullet*[MAX_BULLET];
+
+	m_bActive = false;
 }
 
 //Destuctor
@@ -34,25 +38,33 @@ BulletManager::~BulletManager()
 //Shoot Bullet function that will pass the position and angle to Bullet.cpp Shoot function
 void BulletManager::ShootBullet(Vector2 position, float angle)
 {
-	//bool for while loop
-	bool run = true;
+	////bool for while loop
+	//bool run = true;
 
-	while (run)
+	//while (run)
+	//{
+	//	//Runs thorugh the array to find a pBullet that is null
+	//	for (int i = 0; i < MAX_BULLET; ++i)
+	//	{
+	//		if (pBullet[i] == nullptr)
+	//		{
+	//			//Creates the pBullet
+	//			pBullet[i] = new Bullet();
+
+	//			//Calls the function from Bullet.cpp
+	//			pBullet[i]->Shoot(position, angle);
+
+	//			//Sets bool to false to end while loop
+	//			run = false;
+	//		}
+	//	}
+	//}
+
+	for (int i = 0; i < MAX_BULLET; ++i)
 	{
-		//Runs thorugh the array to find a pBullet that is null
-		for (int i = 0; i < MAX_BULLET; ++i)
+		if (pBullet[i]->GetActive() == false)
 		{
-			if (pBullet[i] == nullptr)
-			{
-				//Creates the pBullet
-				pBullet[i] = new Bullet();
 
-				//Calls the function from Bullet.cpp
-				pBullet[i]->Shoot(position, angle);
-
-				//Sets bool to false to end while loop
-				run = false;
-			}
 		}
 	}
 }

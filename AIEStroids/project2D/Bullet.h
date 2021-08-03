@@ -3,7 +3,7 @@
 
 #pragma once
 #include "Actor.h"
-#include <Texture.h>
+#include "TextureManager.h"
 #include "Matrix3.h"
 #include "Vector2.h"
 
@@ -22,7 +22,9 @@ public:
 	void OnCollision(/*overload*/);
 
 private:
-	aie::Texture* m_pTexture;
+	TextureManager* m_TextureManager;
+
+	aie::Texture* m_MyTexture;
 
 	//bool for a fucntion to make visable
 	bool m_bActive = true;
