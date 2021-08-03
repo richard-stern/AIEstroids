@@ -137,8 +137,8 @@ GameObject* Enemy::FindMostThreateningObstacle(Vector2 ahead1, Vector2 ahead2)
 
 		// "position" is the character's current position
 		if (collision && (mostThreatening == nullptr ||
-			position.GetDistance(m_rocks[i]->GetLocalPosition()) <
-			position.GetDistance(mostThreatening->GetLocalPosition())))
+			position.GetDistance(m_rocks[i]->GetPosition()) <
+			position.GetDistance(mostThreatening->GetPosition())))
 		{
 			mostThreatening = (GameObject*) m_rocks[i];
 		}

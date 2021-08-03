@@ -30,7 +30,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	//turret->SetParent(this);
 	AddChild(turret);
 	//turret->SetPos(1000.0f, 0.0f);
-	turret->SetLocalPosition(Vector2(100.0f, 0.0f));
+	turret->SetPosition(Vector2(100.0f, 0.0f));
 
 
 	gui = GUI::GetInstance();
