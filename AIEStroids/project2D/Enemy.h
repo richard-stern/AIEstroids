@@ -5,6 +5,7 @@
 #pragma once
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "Matrix3.h"
 #include "Vector2.h"
 #include "Actor.h"
@@ -13,7 +14,7 @@ class Player;
 class Level;
 class Rock;
 
-#define MAX_ENEMY_VELOCITY 100
+#define MAX_ENEMY_VELOCITY 500
 
 class Enemy : public Actor
 {
@@ -24,13 +25,13 @@ private:
 	const float MAX_AVOID_FORCE = 1.0f;
 	Rock** m_rocks;
 	const int radius = 100;
+	Vector2 steeringForce;
 
 public:
 	Enemy(Player* player, Rock** rocks);
 	Enemy(Vector2 pos, Player* player, Rock** rocks);
 	~Enemy();
 	void Update(float deltaTime) override;
-	void Draw(aie::Renderer2D* renderer) override;
 	void OnCollision(GameObject* other);
 	bool IsDestroyed() { return (m_CurrentHealth <= 0); }
 

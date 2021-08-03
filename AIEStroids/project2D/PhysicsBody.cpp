@@ -45,14 +45,14 @@ void PhysicsBody::Update(float deltaTime)
 		//set velocity based on force
 		velocity += force * (deltaTime * iMass);
 		//add drag
-		velocity -= velocity * (drag * deltaTime);
+		velocity -= velocity * std::min(drag * deltaTime, 1.0f);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set angular velocity based on torque
 		angularVelocity += torque * deltaTime;
 		//add drag
-		angularVelocity -= angularVelocity * angularDrag * deltaTime;
+		angularVelocity -= angularVelocity * std::min(angularDrag * deltaTime, 1.0f);
 		//set rotation
 		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
 		
@@ -64,7 +64,7 @@ void PhysicsBody::Update(float deltaTime)
 	case BodyType::KINEMATIC:
 	{
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set rotation
 		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
@@ -100,7 +100,10 @@ void PhysicsBody::UpdateAABB()
 		CircleShape* circleShape = (CircleShape*)collider->shape;
 		float radius = circleShape->GetRadius();
 
-		//aabb.bottomRight.x = radius + 
+		aabb.max.x = radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.min.x = -radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.min.y = -radius + circleShape->GetGlobalCentrePoint().y;
+		aabb.max.y = radius + circleShape->GetGlobalCentrePoint().y;
 	}
 		break;
 	case ShapeType::POLYGON:
@@ -108,13 +111,13 @@ void PhysicsBody::UpdateAABB()
 		PolygonShape* colliderShape = (PolygonShape*)collider->shape;
 			
 		//maxX
-		aabb.bottomRight.x = INFINITY;
+		aabb.max.x = -INFINITY;
 		//maxY
-		aabb.bottomRight.y = INFINITY;
+		aabb.max.y = -INFINITY;
 		//minX
-		aabb.topLeft.x = -INFINITY;
+		aabb.min.x = INFINITY;
 		//minY
-		aabb.topLeft.y = -INFINITY;
+		aabb.min.y = INFINITY;
 
 		//get global vertices
 		auto vertices = colliderShape->GetGlobalVertices();
@@ -123,18 +126,18 @@ void PhysicsBody::UpdateAABB()
 		{
 				
 			//set maxX
-			if (vertices[i].x > aabb.bottomRight.x)
-				aabb.bottomRight.x = vertices[i].x;
+			if (vertices[i].x > aabb.max.x)
+				aabb.max.x = vertices[i].x;
 			//set minX
-			if (vertices[i].x < aabb.topLeft.x)
-				aabb.topLeft.x = vertices[i].x;
+			if (vertices[i].x < aabb.min.x)
+				aabb.min.x = vertices[i].x;
 
 			//set maxY
-			if (vertices[i].y > aabb.bottomRight.y)
-				aabb.bottomRight.y = vertices[i].y;
+			if (vertices[i].y > aabb.max.y)
+				aabb.max.y = vertices[i].y;
 			//set minY
-			if (vertices[i].y < aabb.topLeft.y)
-				aabb.topLeft.y = vertices[i].y;
+			if (vertices[i].y < aabb.min.y)
+				aabb.min.y = vertices[i].y;
 		}
 	}
 		break;
