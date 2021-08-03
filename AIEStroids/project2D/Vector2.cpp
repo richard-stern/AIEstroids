@@ -84,6 +84,11 @@ void Vector2::operator/=(float _value) {
 	y /= _value;
 }
 
+Vector2 Vector2::operator-()
+{
+	return Vector2(-x, -y);
+}
+
 bool Vector2::operator==(const Vector2& other) const {
 	return x == other.x && y == other.y;
 }

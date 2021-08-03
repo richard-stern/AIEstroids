@@ -14,7 +14,8 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	AddPhysicsBody(new PhysicsBody(PhysicsBody(this, BodyType::DYNAMIC)));
+	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
 
 	SetRandomLocation();
 }
@@ -26,7 +27,9 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Ac
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	AddPhysicsBody(new PhysicsBody(PhysicsBody(this, BodyType::DYNAMIC)));
+	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+
 }
 
 Enemy::~Enemy()
@@ -65,7 +68,7 @@ void Enemy::Seek(float deltaTime)
 	
 	// update the position of the enemy
 	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce *deltaTime);
-	SetGlobalPosition(GetGlobalPosition() + m_PhysicsBody->GetVelocity() * deltaTime);
+	SetLocalPosition(GetGlobalPosition() + m_PhysicsBody->GetVelocity() * deltaTime);
 }
 
 void Enemy::SetRandomLocation()
@@ -81,7 +84,9 @@ void Enemy::SetRandomLocation()
 	int x = rand() % 2*width + (-width);
 	int y = rand() % 2*height + (-height);
 
-	SetGlobalPosition({ (float)x, (float)y });
+	Vector2 spawnPos = { (float)x, (float)y };
+
+	SetLocalPosition(spawnPos);
 
 	float rotation = (float) (rand() / 10000.0);
 
