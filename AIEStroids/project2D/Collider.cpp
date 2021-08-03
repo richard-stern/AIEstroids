@@ -13,5 +13,8 @@ float Collider::CalculateMass()
 
 Collider::~Collider()
 {
-	delete shape;
+	if (shape != nullptr)
+	{
+		delete shape;
+	}
 }

@@ -25,13 +25,15 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 	{
 		CollisionManager::GetInstance()->AddBody(this);
 	}
-
 }
 
 PhysicsBody::~PhysicsBody()
 {
 	CollisionManager::GetInstance()->RemoveBody(this);
-	delete collider;
+	if (collider != nullptr)
+	{
+		delete collider;
+	}
 }
 
 void PhysicsBody::Update(float deltaTime)
@@ -45,7 +47,7 @@ void PhysicsBody::Update(float deltaTime)
 		//add drag
 		velocity -= velocity * (drag * deltaTime);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set angular velocity based on torque
 		angularVelocity += torque * deltaTime;
@@ -54,14 +56,15 @@ void PhysicsBody::Update(float deltaTime)
 		//set rotation
 		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
 		
-		//reset force
+		//reset forces
 		force = Vector2::ZERO();
+		torque = 0;
 	}
 		break;
 	case BodyType::KINEMATIC:
 	{
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set rotation
 		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
@@ -70,8 +73,8 @@ void PhysicsBody::Update(float deltaTime)
 	case BodyType::STATIC:
 		break;
 	}
-	
-	//finally update global shape points and AABB
+
+	//update global shape points and AABB
 	if (collider != nullptr)
 	{
 		collider->GetShape()->CalculateGlobal(actorObject->GetGlobalTransform());
@@ -97,7 +100,10 @@ void PhysicsBody::UpdateAABB()
 		CircleShape* circleShape = (CircleShape*)collider->shape;
 		float radius = circleShape->GetRadius();
 
-		//aabb.bottomRight.x = radius + 
+		aabb.bottomRight.x = radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.topLeft.x = -radius + circleShape->GetGlobalCentrePoint().x;
+		aabb.topLeft.y = -radius + circleShape->GetGlobalCentrePoint().y;
+		aabb.bottomRight.y = radius + circleShape->GetGlobalCentrePoint().y;
 	}
 		break;
 	case ShapeType::POLYGON:
@@ -105,13 +111,13 @@ void PhysicsBody::UpdateAABB()
 		PolygonShape* colliderShape = (PolygonShape*)collider->shape;
 			
 		//maxX
-		aabb.bottomRight.x = INFINITY;
+		aabb.bottomRight.x = -INFINITY;
 		//maxY
-		aabb.bottomRight.y = INFINITY;
+		aabb.bottomRight.y = -INFINITY;
 		//minX
-		aabb.topLeft.x = -INFINITY;
+		aabb.topLeft.x = INFINITY;
 		//minY
-		aabb.topLeft.y = -INFINITY;
+		aabb.topLeft.y = INFINITY;
 
 		//get global vertices
 		auto vertices = colliderShape->GetGlobalVertices();

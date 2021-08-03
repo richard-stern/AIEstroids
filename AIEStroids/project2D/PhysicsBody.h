@@ -26,6 +26,10 @@ public:
 	//if you don't input a value for mass it will be automatically calculated based on shape
 	PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider = nullptr, float drag = 0, float angularDrag = 0, float mass = 0, bool addToManager = true);
 
+	PhysicsBody(const PhysicsBody& other) = delete;
+	PhysicsBody(PhysicsBody&& other) = delete;
+	PhysicsBody& operator=(const PhysicsBody& other) = delete;
+	PhysicsBody& operator=(PhysicsBody&& other) = delete;
 	~PhysicsBody();
 
 	void Update(float deltaTime);
@@ -48,7 +52,7 @@ public:
 	void SetVelocity(Vector2 vel)		{ velocity = vel; }
 	void SetForce(Vector2 force)		{ this->force = force; }
 	void SetDrag(float drag)			{ this->drag = drag * PHYSICS_TIME_STEP < 1 ? drag : 1; }
-	void SetAngularVelocity(float aVel) { angularVelocity = angularVelocity; }
+	void SetAngularVelocity(float aVel) { angularVelocity = aVel; }
 	void SetTorque(float torque)		{ this->torque = torque; }
 	void SetAngularDrag(float aDrag)	{ angularDrag = aDrag * PHYSICS_TIME_STEP < 1 ? angularDrag : 1; }
 	void SetMass(float mass)			{ iMass = 1.0f / mass; }

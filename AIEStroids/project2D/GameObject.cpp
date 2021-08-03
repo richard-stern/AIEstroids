@@ -4,22 +4,30 @@
 
 GameObject::GameObject() : GameObject::GameObject(Vector2()) {}
 
-GameObject::GameObject(Vector2 _pos)
+GameObject::GameObject(Vector2 _pos, GameObject* _parent)
 {
-	m_GlobalTransform = Matrix3();
-	m_LocalTransform = Matrix3();
 	SetActive(true);
 	m_GlobalTransform.SetPosition(_pos);
+
+	if (m_Parent != nullptr)
+	{
+		SetParent(_parent);
+		m_Parent->AddChild(this);
+	}
+
+	m_SpawnPoint = _pos;
 }
 
 GameObject::~GameObject()
 {
-	
+	m_Parent = nullptr;
 }
 
 void GameObject::Update(float _deltaTime)
 {
-	
+	//loop through all child objects and update
+	for (int i = 0; i < m_Children.Count(); i++)
+		m_Children[i]->Update(_deltaTime);
 }
 
 void GameObject::UpdateTransforms()
@@ -42,13 +50,15 @@ void GameObject::UpdateTransforms()
 
 void GameObject::Draw(aie::Renderer2D* _renderer2D)
 {
+	//loop through all child objects and draw
+	for (int i = 0; i < m_Children.Count(); i++)
+		m_Children[i]->Draw(_renderer2D);
+
 	if (m_IsActive)
 	{
-		_renderer2D->DrawSprite(m_Texture, GetLocalPosition().x, GetLocalPosition().y, 0, 0, GetRotation());
+		_renderer2D->DrawSpriteTransformed3x3(m_Texture, m_GlobalTransform.m);
 	}
 }
-
-
 
 void GameObject::OnCollision(CollisionEvent _event)
 {

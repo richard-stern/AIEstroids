@@ -1,5 +1,6 @@
 #include "CollisionManager.h"
 #include "Actor.h"
+#include <iostream>
 
 CollisionManager* CollisionManager::instance = nullptr;
 
@@ -22,7 +23,34 @@ void CollisionManager::AddBody(PhysicsBody* body)
 
 void CollisionManager::RemoveBody(PhysicsBody* body)
 {
-	collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
+	auto it = std::find(collisionObjects.begin(), collisionObjects.end(), body);
+	if (it != collisionObjects.end())
+		collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
+}
+
+void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
+{
+	for (int i = 0; i < collisionObjects.size(); i++)
+	{
+		if (collisionObjects[i]->collider != nullptr)
+		{
+			AABB& aabb = collisionObjects[i]->collider->shapeAABB;
+			renderer->SetRenderColour(1,1,0,1);
+			renderer->DrawLine(aabb.topLeft.x, aabb.topLeft.y, aabb.bottomRight.x, aabb.topLeft.y, 5);
+			renderer->DrawLine(aabb.bottomRight.x, aabb.topLeft.y, aabb.bottomRight.x, aabb.bottomRight.y, 5, 19);
+			renderer->DrawLine(aabb.bottomRight.x, aabb.bottomRight.y, aabb.topLeft.x, aabb.bottomRight.y, 5);
+			renderer->DrawLine(aabb.topLeft.x, aabb.topLeft.y, aabb.topLeft.x, aabb.bottomRight.y, 5);
+
+			auto shape = (PolygonShape*)collisionObjects[i]->collider->shape;
+			auto vertices = shape->GetGlobalVertices();
+			for (int j = 0; j < shape->GetCount(); j++)
+			{
+				renderer->SetRenderColour(1, 0, 1, 1);
+				renderer->DrawCircle(vertices[j].x, vertices[j].y, 5);
+			}
+		
+		}
+	}
 }
 
 void CollisionManager::CreateInstance()
