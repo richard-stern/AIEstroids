@@ -72,6 +72,7 @@ private:
 
 	//Turret Movement Variables
 	Matrix3 movement;
+	Matrix3 prevMovement;
 	Vector2 m_posChange;
 	float m_speed;
 	float m_momentum;

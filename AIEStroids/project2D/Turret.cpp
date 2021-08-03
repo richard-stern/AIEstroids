@@ -2,9 +2,16 @@
 // Author: Keira 
 //
 
+//If CENTER_SCREEN will aim turret based off center of screen rather then turret pos, due to needing camera coords to use turret pos.
+#define CENTER_SCREEN
+
+//Shooting currently throws an exception in Bullet.cpp, change from DISABLE_SHOOTING to ENABLE_SHOOTING to test it.
+#define DISABLE_SHOOTING
+
 #include "Turret.h"
 #include "TextureManager.h"
 #include <cmath>
+#include <iostream>
 
 Turret::Turret() {
 
@@ -33,15 +40,14 @@ Turret::Turret() {
 	// - ADJUSTABLE - Where the "kick back" from firing moves turret (distance)
 	m_kickBackPos = 0;
 	// - ADJUSTABLE - Force turret is kicked back with
-	m_kickBackForce = 50;
+	m_kickBackForce = 3;
 
 	// -=-=- END OF ADJUSTABLE VARIABLES -=-=-
 
 	// -=-=- Other config stuff -=-=-
 
-
 	//Assign turret texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Turret-2_2.png");
 
 	// - DO NOT TOUCH - Waiting on other stuff to be completed  to uncomment
 	m_WrapAndRespawn = false; //Should be m_bWarpAndRespawn >:(
@@ -52,7 +58,7 @@ Turret::Turret() {
 	m_timeBetweenBullets = 1/m_firerate;
 	// - DO NOT TOUCH - Tracks time since last shot was fired - Leave at 0
 	m_lastShotTimeDelta = m_timeBetweenBullets; //Makes it so firing is available as soon as loaded in,
-										   //otherwise "Timebetweenbullets" time has to pass before firing if 0.
+										        //otherwise "Timebetweenbullets" time has to pass before firing if 0.
 											
 
 	// - DO NOT TOUCH - Position correction of turret on 'player'
@@ -66,6 +72,9 @@ Turret::Turret() {
 	m_rotation = 0;
 	m_speed = 0;
 	m_velocity = 0;
+
+	//Sprite layer
+	SetSpriteDepth(-1);
 
 	//m_bulletManager = new BulletManager(/*Enter amount of bullets here, once functionality is added*/);
 }
@@ -99,14 +108,19 @@ bool Turret::IsLeftMouseClicked() {
 
 void Turret::Controller(float deltaTime) {
 	Rotate(deltaTime);
-	//Fire(deltaTime);
-	//TurretKickback(deltaTime);
+	Fire(deltaTime);
+	TurretKickback(deltaTime);
 }
 
 void Turret::Rotate(float deltaTime) {
 	Vector2 turretPos = m_GlobalTransform.GetPosition();
+#ifdef CENTER_SCREEN
+	turretPos = Vector2(aie::Application::GetInstance()->GetWindowWidth() / 2, aie::Application::GetInstance()->GetWindowHeight() / 2);
+#endif
+
 	Vector2 mousePos = GetMousePos();
 	Vector2 diffPos = turretPos - mousePos;
+
 
 	float directionFix = M_PI / 2;
 
@@ -164,8 +178,9 @@ void Turret::Fire(float deltaTime) {
 	{
 		//Call BulletManager here to create a bullet -=-=- MISSING FUNCTION CALL HERE -=-=-
 		
-		//BulletManager->Shoot(m_globalTransform.GetPosition(), m_globalTransform.GetRotation());
-
+#ifdef ENABLE_SHOOTING
+		m_bulletManager->ShootBullet(m_GlobalTransform.GetPosition(), m_GlobalTransform.GetRotation());
+#endif
 		//Also move bullet forwards some amount so it doesn't spawn on top of the turret
 		m_lastShotTimeDelta = 0;
 	}
@@ -178,12 +193,19 @@ void Turret::TurretKickback(float deltaTime)
 	//Max time for turret to return to normal position, after "kickback"
 	float m_maxKBSettleTime = 0.5;
 
+	//If m_lastShotTimeDelta = 0 (aka turret just fired), go to full kickback position
+		std::cout << m_lastShotTimeDelta << std::endl;
+	if (m_lastShotTimeDelta == 0) 
+	{
+		m_kickBackPos = m_kickBackForce;
+	}
 
 	//Moves turret towards normal position, if not in normal position
 	float m_lastKickBackPos = m_kickBackPos;
-	if (m_kickBackPos != 0) 
+	if (m_kickBackPos > 0) 
 	{
-		m_kickBackPos -= m_kickBackForce / fminf(m_timeBetweenBullets, m_maxKBSettleTime);
+		m_kickBackPos -= __max((m_kickBackForce - m_timeBetweenBullets) * deltaTime * m_firerate, (m_kickBackForce - m_timeBetweenBullets) * deltaTime * 2);
+
 		//If overshoots turrets normal position, move to normal position
 		if (m_kickBackPos < 0) 
 		{
@@ -191,17 +213,19 @@ void Turret::TurretKickback(float deltaTime)
 		}
 	}
 
-	//If m_lastShotTimeDelta = 0 (aka turret just fired), go to full kickback position
-	if (m_lastShotTimeDelta == 0) 
-	{
-		m_kickBackPos = m_kickBackForce;
-	}
-
 	if (m_kickBackPos != 0) 
 	{
+		//Will counter previous movement
+		Vector2 fPrev = prevMovement.GetPosition();
+		prevMovement.SetPosition(-fPrev);
+
 		movement.ResetToIdentity();
-		movement.SetPosition(0, m_kickBackPos);
-		m_LocalTransform = m_LocalTransform * movement;
+		movement.SetPosition(-m_kickBackPos, 0.0f);
+		m_LocalTransform = m_LocalTransform * movement * prevMovement;
+
+		//Saves what movement last was
+		prevMovement = movement;
+
 	}
 
 
