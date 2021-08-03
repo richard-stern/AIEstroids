@@ -46,7 +46,7 @@ void PhysicsBody::Update(float deltaTime)
 		//add drag
 		angularVelocity -= angularVelocity * angularDrag * deltaTime;
 		//set rotation
-		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * deltaTime);
+		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
 		
 		//reset force
 		force = Vector2::ZERO();
@@ -58,7 +58,7 @@ void PhysicsBody::Update(float deltaTime)
 		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
 
 		//set rotation
-		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * deltaTime);
+		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
 	}
 		break;
 	case BodyType::STATIC:

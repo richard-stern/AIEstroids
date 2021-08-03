@@ -1,10 +1,18 @@
 #include "Shape.h"
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//		SHAPE
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 void Shape::CalculateGlobal(Matrix3& transform)
 {
 	globalCentrePoint = centrePoint * transform;
 	globalCentrePoint += transform.GetPosition();
 }
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//		POLYGON SHAPE
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PolygonShape::~PolygonShape()
 {
@@ -31,7 +39,7 @@ void PolygonShape::CalculateGlobal(Matrix3& transform)
 	for (int i = 0; i < count; i++)
 	{
 		globalVertices[i] = globalVertices[i] * transform;
-		globalVertices[i] += transform.GetPosition();
+		globalVertices[i] += globalCentrePoint;
 	}
 }
 
