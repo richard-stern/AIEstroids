@@ -54,7 +54,14 @@ void Actor::Update(float _deltaTime)
 	
 }
 
-/*
+void Actor::OnCollision(CollisionEvent _event)
+{
+
+}
+
+void Actor::AddPhysicsBody(PhysicsBody* _body)
+{
+	/*
 //Create a box that is the same dimensions as the texture
 Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
 //Collide with everything but player
@@ -66,8 +73,4 @@ AddPhysicsBody(new PhysicsBody(this, BodyType::DYNAMIC, collider));
 */
 
 //{ m_PhysicsBody = _body; }
-
-void Actor::OnCollision(CollisionEvent _event)
-{
-
 }
