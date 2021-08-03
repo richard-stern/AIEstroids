@@ -61,8 +61,8 @@ Level::~Level()
 	#pragma endregion
 
 	// Delete Collision, GUI and Camera systems
-	// UNFINISHED - Should I delete GUI here?
 	CollisionManager::GetInstance()->DeleteInstance();
+	GUI::Destroy();
 	Camera::Destroy();
 }
 
