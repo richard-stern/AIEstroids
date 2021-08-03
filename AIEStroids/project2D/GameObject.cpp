@@ -44,7 +44,8 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 {
 	if (m_IsActive)
 	{
-		_renderer2D->DrawSprite(m_Texture, GetLocalPosition().x, GetLocalPosition().y, 0, 0, GetRotation());
+		_renderer2D->DrawSpriteTransformed3x3(m_Texture, m_GlobalTransform.m);
+//		_renderer2D->DrawSprite(m_Texture, GetLocalPosition().x, GetLocalPosition().y, 0, 0, GetRotation());
 	}
 }
 
