@@ -20,7 +20,7 @@ public:
 		ESTATE_GAMEOVER
 	};
 
-	StateMachine();
+	StateMachine(aie::Renderer2D* renderer);           // we pass in renderer so we can finally pass it to Camera (that's created in Level)
 	virtual ~StateMachine();
 
 	/// Calls Update() on the active state
@@ -35,4 +35,5 @@ private:
 	MenuState* menu_state;
 	GameState* game_state;
 	GameOverState* game_over_state;
+	aie::Renderer2D* renderer;
 };

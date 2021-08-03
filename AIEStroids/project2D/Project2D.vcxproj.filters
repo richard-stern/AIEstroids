@@ -138,6 +138,9 @@
     <ClCompile Include="GameOverState.cpp">
       <Filter>Source Files\State Machine</Filter>
     </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files\State Machine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game2D.h">
@@ -261,6 +264,9 @@
       <Filter>Header Files\Collisions</Filter>
     </ClInclude>
     <ClInclude Include="GameOverState.h">
+      <Filter>Header Files\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
       <Filter>Header Files\State Machine</Filter>
     </ClInclude>
   </ItemGroup>
