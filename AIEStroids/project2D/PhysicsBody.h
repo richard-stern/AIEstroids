@@ -52,7 +52,7 @@ public:
 	void SetVelocity(Vector2 vel)		{ velocity = vel; }
 	void SetForce(Vector2 force)		{ this->force = force; }
 	void SetDrag(float drag)			{ this->drag = drag * PHYSICS_TIME_STEP < 1 ? drag : 1; }
-	void SetAngularVelocity(float aVel) { angularVelocity = angularVelocity; }
+	void SetAngularVelocity(float aVel) { angularVelocity = aVel; }
 	void SetTorque(float torque)		{ this->torque = torque; }
 	void SetAngularDrag(float aDrag)	{ angularDrag = aDrag * PHYSICS_TIME_STEP < 1 ? angularDrag : 1; }
 	void SetMass(float mass)			{ iMass = 1.0f / mass; }
