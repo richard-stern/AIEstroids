@@ -14,10 +14,14 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
 	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
 
+	//Assign ship texture
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy_small.png");
+
 	SetRandomLocation();
+
+	SetRotation(M_PI / 2);
 }
 
 Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Actor(pos)
@@ -27,8 +31,9 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Ac
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
 	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+
+	SetRotation(M_PI / 2);
 }
 
 Enemy::~Enemy()
@@ -40,21 +45,22 @@ void Enemy::Update(float deltaTime)
 {
 	Seek(deltaTime);
 	CollisionAvoidance(deltaTime);
-}
 
-void Enemy::Draw(aie::Renderer2D* renderer)
-{
-	Vector2 position = GetPosition();
+	// rotate enemy ship
+	Vector2 velocity = m_PhysicsBody->GetVelocity();
+	float rotation = atan2(velocity.y, velocity.x) + M_PI / 2;
 
-	renderer->SetRenderColour(1, 0, 0, 1);
-	renderer->DrawBox(position.x, position.y, 48, 48, GetRotation(), 1);
-	renderer->SetRenderColour(1, 1, 1, 1);
+	// set random rotation
+	SetRotation(rotation);
 }
 
 void Enemy::OnCollision(GameObject* other)
 {
 	if (other == m_player)
-		m_CurrentHealth = 0;
+	{
+		m_CurrentHealth = 0; // destroy enemy ship
+		m_player->SetHealth(m_player->GetHealth() - 10); // damage the player
+	}
 	else
 		m_CurrentHealth -= 10;
 }
@@ -86,11 +92,8 @@ void Enemy::SetRandomLocation()
 	int y = rand() % 2*height + (-height);
 
 	Vector2 spawnPos = { (float)x, (float)y };
-	SetPosition(spawnPos);
-	float rotation = (float) (rand() / 10000.0);
 
-	// set random rotation
-	SetRotation(rotation);
+	SetPosition(spawnPos);
 }
 
 void Enemy::Pursue(float deltaTime)
