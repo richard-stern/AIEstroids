@@ -10,7 +10,7 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 {
 	// Initialise 2D renderer and texture manager
 	m_2dRenderer = new aie::Renderer2D();
-	TextureManager::Get();
+	TextureManager::Create();
 
 	// Initialise level (which initialises objects, cameras, etc.)
 	m_pStateMachine = new StateMachine(m_2dRenderer);
@@ -18,9 +18,7 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 
 Game2D::~Game2D()
 {
-	// Delete level
-	delete level;
-	level = nullptr;
+	delete m_pStateMachine;
 
 	// Delete 2D renderer and texture manager
 	TextureManager::Destroy();
