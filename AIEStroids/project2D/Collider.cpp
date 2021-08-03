@@ -8,7 +8,7 @@ Collider::Collider(Shape* shape, unsigned short collisionLayer, unsigned short c
 
 float Collider::CalculateMass()
 {
-	return 1.0f;
+	return shape->GetArea() * density;
 }
 
 Collider::~Collider()
