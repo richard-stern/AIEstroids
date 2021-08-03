@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "Matrix3.h"
 #include <memory>
+#include <algorithm>
 
 struct AABB
 {
