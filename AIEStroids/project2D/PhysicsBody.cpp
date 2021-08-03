@@ -65,6 +65,7 @@ void PhysicsBody::Update(float deltaTime)
 		break;
 	}
 	
+	//finally update global shape points and AABB
 	if (collider != nullptr)
 	{
 		collider->GetShape()->CalculateGlobal(actorObject->GetGlobalTransform());
@@ -87,44 +88,47 @@ void PhysicsBody::UpdateAABB()
 	{
 	case ShapeType::CIRCLE:
 	{
-		//aabb.topLeft = 
+		CircleShape* circleShape = (CircleShape*)collider->shape;
+		float radius = circleShape->GetRadius();
+
+		//aabb.bottomRight.x = radius + 
 	}
 		break;
 	case ShapeType::POLYGON:
-		break;
+	{
+		PolygonShape* colliderShape = (PolygonShape*)collider->shape;
+			
+		//maxX
+		aabb.bottomRight.x = INFINITY;
+		//maxY
+		aabb.bottomRight.y = INFINITY;
+		//minX
+		aabb.topLeft.x = -INFINITY;
+		//minY
+		aabb.topLeft.y = -INFINITY;
+
+		//get global vertices
+		auto vertices = colliderShape->GetGlobalVertices();
+
+		for (int i = 0; i < colliderShape->GetCount(); i++)
 		{
-			PolygonShape* colliderShape = (PolygonShape*)collider->shape;
-
-			//maxX
-			aabb.bottomRight.x = INFINITY;
-			//maxY
-			aabb.bottomRight.y = INFINITY;
-			//minX
-			aabb.topLeft.x = -INFINITY;
-			//minY
-			aabb.topLeft.y = -INFINITY;
-
-			//get global vertices
-			auto vertices = colliderShape->GetGlobalVertices();
-
-			for (int i = 0; i < colliderShape->GetCount(); i++)
-			{
 				
-				//set maxX
-				if (vertices[i].x > aabb.bottomRight.x)
-					aabb.bottomRight.x = vertices[i].x;
-				//set minX
-				if (vertices[i].x < aabb.topLeft.x)
-					aabb.topLeft.x = vertices[i].x;
+			//set maxX
+			if (vertices[i].x > aabb.bottomRight.x)
+				aabb.bottomRight.x = vertices[i].x;
+			//set minX
+			if (vertices[i].x < aabb.topLeft.x)
+				aabb.topLeft.x = vertices[i].x;
 
-				//set maxY
-				if (vertices[i].y > aabb.bottomRight.y)
-					aabb.bottomRight.y = vertices[i].y;
-				//set minY
-				if (vertices[i].y < aabb.topLeft.y)
-					aabb.topLeft.y = vertices[i].y;
-			}
+			//set maxY
+			if (vertices[i].y > aabb.bottomRight.y)
+				aabb.bottomRight.y = vertices[i].y;
+			//set minY
+			if (vertices[i].y < aabb.topLeft.y)
+				aabb.topLeft.y = vertices[i].y;
 		}
+	}
+		break;
 	}
 	
 }
