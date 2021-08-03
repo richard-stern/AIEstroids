@@ -9,7 +9,7 @@ Actor::Actor()
 	SetHealth(m_MaxHealth);
 }
 
-Actor::Actor(Vector2 _pos)
+Actor::Actor(Vector2 _pos, GameObject* _parent)
 {
 	m_GlobalTransform.SetPosition(_pos);
 	SetHealth(m_MaxHealth);

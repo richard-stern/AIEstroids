@@ -11,7 +11,7 @@ class Actor : public GameObject
 {
 public:
 	Actor();
-	Actor(Vector2 _pos);
+	Actor(Vector2 _pos, GameObject* _parent = nullptr);
 	virtual ~Actor();
 
 	virtual void Update(float _deltaTime) override;
@@ -21,7 +21,6 @@ public:
 
 	bool GetWrapAndRespawn() { return m_WrapAndRespawn; }
 	void SetWrapAndRespawn(bool _active) { m_WrapAndRespawn = _active; }
-	Vector2 GetVelocity() { return m_Velocity; }
 
 	virtual void OnCollision(CollisionEvent _event);
 	void GeneratePhysicsBody(aie::Texture* texture, CollisionLayer layer, unsigned short layerMask);
