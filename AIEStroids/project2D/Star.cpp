@@ -11,7 +11,8 @@ Star::Star(float x, float y)
 	//Texture
 	textureManager = TextureManager::Get();
 
-			//m_Texture = textureManager->LoadTexture("[TEXTURE NAME]");
+	m_Texture = nullptr;
+	//m_Texture = textureManager->LoadTexture("[TEXTURE NAME]");
 }
 
 Star::~Star()
