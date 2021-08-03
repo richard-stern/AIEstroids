@@ -13,7 +13,7 @@ class Player;
 class Level;
 class Rock;
 
-#define MAX_ENEMY_VELOCITY 10
+#define MAX_ENEMY_VELOCITY 100
 
 class Enemy : public Actor
 {
@@ -23,7 +23,6 @@ private:
 	const float MAX_SEE_AHEAD = 10.0f;
 	const float MAX_AVOID_FORCE = 1.0f;
 	Rock** m_rocks;
-	unsigned int m_Health;
 	const int radius = 100;
 
 public:
@@ -33,7 +32,7 @@ public:
 	void Update(float deltaTime) override;
 	void Draw(aie::Renderer2D* renderer) override;
 	void OnCollision(GameObject* other);
-	bool IsDestroyed() { return (m_Health <= 0); }
+	bool IsDestroyed() { return (m_CurrentHealth <= 0); }
 
 private:
 	void Seek(float deltaTime);

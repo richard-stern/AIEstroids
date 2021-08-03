@@ -24,8 +24,6 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
 	//Create the physics body using the generated collider
 	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
-	//Don't be in the corner
-	SetLocalPosition(Vector2::ONE() * 100.0f);
 	gui = GUI::GetInstance();
 }
 
@@ -81,7 +79,7 @@ void Player::Update(float deltaTime)
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
 		if (currentVelocity.GetMagnitude() > PLAYER_MAXSPEED)
-			currentVelocity = currentVelocity.GetNormalised() * PLAYER_MAXSPEED;
+			m_PhysicsBody->SetVelocity(currentVelocity.GetNormalised() * PLAYER_MAXSPEED);
 
 		m_PhysicsBody->AddTorque(inputVector.x * torqueAmount * deltaTime);
 		//Limit angular velocity
