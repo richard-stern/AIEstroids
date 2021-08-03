@@ -1,51 +1,35 @@
+// Author: Declan & Cameron
+
 #pragma once
 #include "Renderer2D.h"
 #include "Font.h"
 #include "Input.h"
 #include "Application.h"
+#include "Camera.h"
+
+#define BORDER		32.0f		// Text offset from top-left corner (px)
+#define PADDING		32.0f		// Vertical offset between each line (px)
 	
 class GUI
 {
 public:
-	// GUI's creation
 	static void Create();
-
-	// Gui's destruction
 	static void Destroy();
-
-	// Returns the current instance
 	static GUI* GetInstance();
 
-	// Player setting health
-	void SetHealth(int health);
-
-	// Player setting score
-	void SetScore(int score);
-
-	// Player setting lives
-	void SetLives(int lives);
-
-	// Draws the Game UI
 	void Draw(aie::Renderer2D* renderer, aie::Font* font,  aie::Input* input);
 
+	void SetHealth(int health);
+	void SetScore(int score);
+	void SetLives(int lives);
+
 private:
+	GUI();						// Constructor
+	~GUI();						// Destructor
 
-	// Constructor
-	GUI();
-
-	// Destructor
-	~GUI();
-
-	// The current instance
-	static GUI* m_Instance;
-
-	// The Displayed health
-	int m_Health;
-
-	// The displayed score
-	int m_Score;
-
-	// The displayed lives
-	int m_lives;
+	static GUI* m_Instance;		// The GUI instance
+	int m_Health;				// Displayed Health
+	int m_Score;				// Displayed Score
+	int m_Lives;				// Displayed Lives
 };
 
