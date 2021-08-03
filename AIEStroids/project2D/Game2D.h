@@ -18,5 +18,5 @@ public:
 protected:
 	aie::Renderer2D*	m_2dRenderer;
 	Level* level;
-	DynamicArray<Enemy*> enemies;
+	std::vector<Enemy*> enemies;
 };
