@@ -14,17 +14,11 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 
 	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
-	m_LocalTransform.SetScale(1000.0f, 1000.0f);
+	m_LocalTransform.SetScale(3.0f, 3.0f);
 	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
-	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
-	//Collide with everything but player
-	unsigned int layermask = (unsigned int)CollisionLayer::ALL ^ (unsigned int)CollisionLayer::PLAYER;
-	//Create collider
-	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
-	//Create the physics body using the generated collider
-	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	GeneratePhysicsBody(32, 32, CollisionLayer::PLAYER, (unsigned int)CollisionLayer::ALL);
 	m_PhysicsBody->SetDrag(PLAYER_DRAG);
 
 	//------------------CREATE TURRET----------------------//

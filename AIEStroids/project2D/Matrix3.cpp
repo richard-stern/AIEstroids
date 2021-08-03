@@ -201,7 +201,7 @@ Matrix3 Matrix3::Inverse() const
 
 Vector2 Matrix3::GetScale()
 {
-	return Vector2(GetRight().GetMagnitude(), GetUp().GetMagnitude());
+	return Vector2(Vector2(m[0], m[1]).GetMagnitude(), Vector2(m[3], m[4]).GetMagnitude());
 }
 
 float Matrix3::GetRotation()
