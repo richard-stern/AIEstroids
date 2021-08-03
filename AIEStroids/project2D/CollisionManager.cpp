@@ -174,10 +174,6 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
 		float projectedRV = manifold.collisionNormal.GetDot(rV);
 		//velocities are seperating
-		if (projectedRV > 0)
-		{
-			return;
-		}
 		//BREAKING THIS DOWN INTO IT'S PARTS TO TRY TO FIND THE PROBLEM
 		//bounce factor (minimum of the two in this case)
 		float restitution = std::min(manifold.a->collider->restitution, manifold.b->collider->restitution);
