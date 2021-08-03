@@ -47,7 +47,7 @@ void PhysicsBody::Update(float deltaTime)
 		//add drag
 		velocity -= velocity * (drag * deltaTime);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set angular velocity based on torque
 		angularVelocity += torque * deltaTime;
@@ -64,7 +64,7 @@ void PhysicsBody::Update(float deltaTime)
 	case BodyType::KINEMATIC:
 	{
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
+		actorObject->SetPosition(actorObject->GetPosition() + velocity * deltaTime);
 
 		//set rotation
 		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);

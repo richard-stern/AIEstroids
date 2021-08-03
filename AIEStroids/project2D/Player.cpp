@@ -25,7 +25,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	//Create the physics body using the generated collider
 	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
 	//Don't be in the corner
-	SetLocalPosition(Vector2::ONE() * 100.0f);
+	SetPosition(Vector2::ONE() * 100.0f);
 	gui = GUI::GetInstance();
 }
 
@@ -180,5 +180,5 @@ void Player::Respawn()
 	SetRotation(0.0f);
 
 	//Set back to spawn
-	SetLocalPosition(Vector2::ZERO()/*Spawn point to be added*/);
+	SetPosition(Vector2::ZERO()/*Spawn point to be added*/);
 }

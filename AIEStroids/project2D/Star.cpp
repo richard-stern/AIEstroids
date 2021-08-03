@@ -6,7 +6,7 @@ Star::Star(float x, float y)
 	Vector2 position;
 	position.x = x;
 	position.y = y;
-	SetLocalPosition(position);
+	SetPosition(position);
 
 	//Texture
 	textureManager = TextureManager::Get();
@@ -29,7 +29,7 @@ void Star::Draw(aie::Renderer2D* _renderer)
 	//Draw the sprite if the texture is loaded
 	if (m_Texture != nullptr)
 	{
-		Vector2 position = GetLocalPosition();
+		Vector2 position = GetPosition();
 		_renderer->DrawSprite(m_Texture, position.x, position.y, 1.0f, 1.0f);
 	}
 }

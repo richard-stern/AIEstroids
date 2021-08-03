@@ -20,7 +20,7 @@ GameObject::GameObject(Vector2 _pos, GameObject* _parent)
 
 GameObject::~GameObject()
 {
-	
+	m_Parent = nullptr;
 }
 
 void GameObject::Update(float _deltaTime)
@@ -59,8 +59,6 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 		_renderer2D->DrawSpriteTransformed3x3(m_Texture, m_GlobalTransform.m);
 	}
 }
-
-
 
 void GameObject::OnCollision(CollisionEvent _event)
 {
