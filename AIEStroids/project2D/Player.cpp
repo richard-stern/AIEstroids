@@ -3,14 +3,27 @@
 #include "GUI.h"
 #include <cmath>
 #include "TextureManager.h"
+#include "CollisionLayers.h"
 
 //Author Rahul J. (BEANMEISTER)
 
 Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 {
+	//Player shouldn't wrap
 	m_WrapAndRespawn = false;
-	AddPhysicsBody(new PhysicsBody(this, BodyType::DYNAMIC));
+	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/ship.png");
+	
+	//--------- COLLIDER GENERATION ----------------------//
+	//Create a box that is the same dimensions as the texture
+	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
+	//Collide with everything but player
+	unsigned int layermask = (unsigned int)CollisionLayer::ALL ^ (unsigned int)CollisionLayer::PLAYER;
+	//Create collider
+	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
+	//Create the physics body using the generated collider
+	AddPhysicsBody(new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	//Don't be in the corner
 	SetLocalPosition(Vector2::ONE() * 100.0f);
 }
 
