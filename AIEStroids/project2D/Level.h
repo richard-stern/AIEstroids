@@ -33,6 +33,7 @@ public:
 	void Draw(aie::Renderer2D* renderer);
 	Actor** GetRocks() { return (Actor**) m_rockArray; }
 	Player* GetPlayer() { return m_player; }
+	DynamicArray<Enemy*> GetEnemies() { return m_enemyArray; }
 
 private:
 	// Window size

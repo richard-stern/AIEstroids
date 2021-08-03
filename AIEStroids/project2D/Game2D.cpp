@@ -19,17 +19,20 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 
 	level = new Level();
 
+	enemies = level->GetEnemies();
+
 	//Create the camera controller
 	Camera::Create(m_2dRenderer, level->GetPlayer());
 }
 
 Game2D::~Game2D()
 {
+	/*
 	for (Enemy* enemy : enemies)
 	{
 		delete enemy;
 		enemies.clear();
-	}
+	}*/
 
 	delete level;
 
@@ -72,12 +75,14 @@ void Game2D::Draw()
 	//Temporary so we can see tha player
 	level->GetPlayer()->Draw(m_2dRenderer);
 
-	for (Enemy* enemy : enemies)
-	{
-		enemy->Draw(m_2dRenderer);
-	}
+	//for (Enemy* enemy : enemies)
+	//{
+	//for(int i = 0; i< )
+		//enemy->Draw(m_2dRenderer);
+	//}
+
 	//Stars block it from drawing for now
-	//level->Draw(m_2dRenderer);
+	level->Draw(m_2dRenderer);
 
 	// Done drawing sprites. Must be called at the end of the Draw().
 	m_2dRenderer->End();

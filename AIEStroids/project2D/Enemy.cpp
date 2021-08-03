@@ -1,27 +1,54 @@
+/*
+ * Author: Paul King
+*/
+
 #include "Enemy.h"
 #include "Player.h"
 #include "Application.h"
 #include "Level.h"
-//#include "Rock.h"
+#include "Rock.h"
 
-Enemy::Enemy() : m_destroyed(false), Actor()
+Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 {
-	m_v2Velocity = { 0, 0 };
-	m_Drag = 1.0f;
+	m_player = player;
+	m_rocks = rocks;
+
+	// pick random direction
+	SetRandomLocation();
+
+	//m_v2Velocity = { 0, 0 };
+	//m_Drag = 1.0f;
 	//m_pCollider = ;
 	//m_pTexture = ;
-	m_LocalTransform.ResetToIdentity();
+	//m_LocalTransform.ResetToIdentity();
 	//m_pParent = ;
 	//m_Children = ;
 	//m_bVisible = ;
 	//m_bWrapAndRespawn = ;
 	m_nHealth = 100;
 	m_nMaxHealth = 100;
+}
 
-	//m_player = level->GetPlayer();
+Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Actor(pos)
+{
+	m_position = pos;
+	SetGlobalPosition(pos);
+	m_player = player;
+	m_rocks = rocks;
 
-	// pick random direction
-	SetRandomLocation();
+	m_PhysicsBody->GetVelocity();
+
+	m_v2Velocity = m_PhysicsBody->GetVelocity();
+	//m_Drag = 1.0f;
+	//m_pCollider = ;
+	//m_pTexture = ;
+	//m_LocalTransform.ResetToIdentity();
+	//m_pParent = ;
+	//m_Children = ;
+	//m_bVisible = ;
+	//m_bWrapAndRespawn = ;
+	m_nHealth = 100;
+	m_nMaxHealth = 100;
 }
 
 Enemy::~Enemy()
@@ -67,7 +94,7 @@ void Enemy::Seek(float deltaTime)
 void Enemy::SetRandomLocation()
 {
 	// initialize random seed: 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	aie::Application* app = aie::Application::GetInstance();
 
@@ -78,7 +105,7 @@ void Enemy::SetRandomLocation()
 
 	SetGlobalPosition({ (float)x, (float)y });
 
-	float rotation = rand() / 10000.0;
+	float rotation = (float) (rand() / 10000.0);
 
 	// set random rotation
 	SetRotationZ(rotation);
@@ -99,9 +126,11 @@ void Enemy::AvoidObstacles(float deltaTime)
 
 Vector2 Enemy::CollisionAvoidance()
 {
+	Vector2 velocity = m_PhysicsBody->GetVelocity();
+
 	// calculate the ahead and ahead2 vectora
-	Vector2 ahead = GetGlobalPosition() + m_v2Velocity.GetNormalised() * MAX_SEE_AHEAD; 
-	Vector2 ahead2 = GetGlobalPosition() + m_v2Velocity.GetNormalised() * MAX_SEE_AHEAD * 0.5f;
+	Vector2 ahead = GetGlobalPosition() + velocity.GetNormalised() * MAX_SEE_AHEAD; 
+	Vector2 ahead2 = GetGlobalPosition() + velocity.GetNormalised() * MAX_SEE_AHEAD * 0.5f;
 
 	GameObject* mostThreatening = FindMostThreateningObstacle();
 	Vector2 avoidance = { 0, 0 };
@@ -123,21 +152,25 @@ Vector2 Enemy::CollisionAvoidance()
 
 GameObject* Enemy::FindMostThreateningObstacle()
 {
-	Actor* mostThreatening = nullptr;
+	GameObject* mostThreatening = nullptr;
 	Vector2 position = GetGlobalPosition();
-	Actor** asteroids = level->GetRocks();
 
 	for (int i = 0; i < ROCKS_COUNT; i++) {
-		bool collision;// = lineIntersectsCircle(ahead, ahead2, obstacle);
+		bool collision = LineIntersectsCircle(ahead, ahead2, obstacle);
 
 		// "position" is the character's current position
 		if ((collision && mostThreatening == nullptr) ||
-			position.GetDistance(asteroids[i]->GetGlobalPosition()) <
+			position.GetDistance(m_rocks[i]->GetGlobalPosition()) <
 			position.GetDistance(mostThreatening->GetGlobalPosition()))
 		{
-			mostThreatening = asteroids[i];
+			mostThreatening = (GameObject*) m_rocks[i];
 		}
 	}
 
 	return mostThreatening;
+}
+
+bool Agent::LineIntersectsCircle(Vector2 a, Vector2 b, GameObject* obstacle)
+{
+	return false;
 }
