@@ -34,6 +34,8 @@ Game2D::~Game2D()
 	delete level;
 
 	TextureManager::Destroy();
+	Camera::Destroy();
+
 	// Delete the renderer.
 	delete m_2dRenderer;
 }
@@ -52,7 +54,7 @@ void Game2D::Update(float deltaTime)
 
 	//Temporary
 	level->GetPlayer()->Update(aie::Application::GetInstance()->GetDeltaTime());
-	level->GetPlayer()->GetPhysicsBody()->Update();
+	level->GetPlayer()->GetPhysicsBody()->Update(aie::Application::GetInstance()->GetDeltaTime());
 
 	//Call update on the camera
 	Camera::GetInstance()->Update(deltaTime);
