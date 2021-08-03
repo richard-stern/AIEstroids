@@ -14,7 +14,8 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	AddPhysicsBody(new PhysicsBody(PhysicsBody(this, BodyType::DYNAMIC)));
+	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
 
 	SetRandomLocation();
 }
@@ -26,7 +27,9 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Ac
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	AddPhysicsBody(new PhysicsBody(PhysicsBody(this, BodyType::DYNAMIC)));
+	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+
 }
 
 Enemy::~Enemy()

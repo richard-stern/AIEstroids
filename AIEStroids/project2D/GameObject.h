@@ -13,7 +13,7 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(Vector2 _pos);
+	GameObject(Vector2 _pos, GameObject* _parent = nullptr);
 	virtual ~GameObject();
 
 	virtual void Update(float _deltaTime);

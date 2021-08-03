@@ -22,7 +22,9 @@ void CollisionManager::AddBody(PhysicsBody* body)
 
 void CollisionManager::RemoveBody(PhysicsBody* body)
 {
-	collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
+	auto it = std::find(collisionObjects.begin(), collisionObjects.end(), body);
+	if (it != collisionObjects.end())
+		collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
 }
 
 void CollisionManager::CreateInstance()

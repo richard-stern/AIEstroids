@@ -54,8 +54,9 @@ void PhysicsBody::Update(float deltaTime)
 		//set rotation
 		actorObject->SetRotation(actorObject->GetRotation() + angularVelocity * deltaTime);
 		
-		//reset force
+		//reset forces
 		force = Vector2::ZERO();
+		torque = 0;
 	}
 		break;
 	case BodyType::KINEMATIC:
