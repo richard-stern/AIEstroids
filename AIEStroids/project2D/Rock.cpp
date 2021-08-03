@@ -11,8 +11,8 @@ Rock::Rock() : Actor()
 	//Collide with everything
 	unsigned int layermask = (unsigned int)CollisionLayer::ALL;
 	//Create collider
-	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::ROCK, layermask);
-	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
+	//Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::ROCK, layermask);
+	//m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
 	
 	SetRandomPath();
 }

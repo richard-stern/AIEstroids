@@ -50,11 +50,16 @@ void Enemy::Update(float deltaTime)
 	//steeringForce = { 0, 1 };
 	CollisionAvoidance(deltaTime);
 
+	Vector2 velocity = m_PhysicsBody->GetVelocity();
+
+	// update the velocity of the enemy
+	m_PhysicsBody->SetVelocity(velocity + steeringForce);
+
 	// rotate enemy ship
-	//float rotation = atan2(velocity.y, velocity.x) + M_PI / 2;
+	float rotation = atan2(velocity.y, velocity.x) + M_PI / 2;
 
 	// set random rotation
-	//SetRotation(rotation);
+	SetRotation(rotation);
 }
 
 void Enemy::OnCollision(GameObject* other)
@@ -71,14 +76,12 @@ void Enemy::OnCollision(GameObject* other)
 void Enemy::Seek(Actor* target, float deltaTime)
 {
 	Vector2 targetPos = target->GetPosition();
-
 	Vector2 difference = targetPos - GetPosition();
 
 	Vector2 desiredVelocity = difference.GetNormalised() * MAX_ENEMY_VELOCITY;
 	steeringForce = desiredVelocity - m_PhysicsBody->GetVelocity();
-	
-	// update the velocity of the enemy
-	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce);
+
+	//m_PhysicsBody->SetVelocity(localSteeringForce);
 }
 
 void Enemy::SetRandomLocation()
@@ -123,9 +126,9 @@ void Enemy::CollisionAvoidance(float deltaTime)
 		avoidance.y = ahead.y - mostThreatening->GetPosition().y;
 
 		avoidance.GetNormalised();
-		//avoidance *= MAX_AVOID_FORCE;
+		avoidance *= MAX_AVOID_FORCE;
 
-		avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
+		//avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
 	} 
 	else
 	{
