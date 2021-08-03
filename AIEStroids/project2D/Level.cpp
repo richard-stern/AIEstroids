@@ -24,20 +24,8 @@ Level::Level(aie::Renderer2D* renderer)
 		m_starArray[i] = new Star((float)(rand() % (int)windowW), (float)(rand() % (int)windowH));
 
 	// Create rocks
-	// UNFINISHED - Rocks don't exist yet
-	//for (int i = 0; i < ROCKS_COUNT; i++)
-	//{
-	//	// Keep getting a random position while the generated position is near player
-	//	float spawnX, spawnY;
-	//	do
-	//	{
-	//		spawnX = (float)(rand() % (int)windowW);
-	//		spawnY = (float)(rand() % (int)windowH);
-	//	} while (spawnX > (playerX - 10) && spawnX < (playerX + 10) && spawnY >(playerY - 10) && spawnY < (playerY + 10));
-
-	//	// Create rock at the free position
-	//	m_rockArray[i] = new Rock({ spawnX, spawnY });
-	//}
+	for (int i = 0; i < ROCKS_COUNT; i++)
+		m_rockArray[i] = new Rock();
 
 	
 }
@@ -53,12 +41,11 @@ Level::~Level()
 	}
 
 	// Delete rocks
-	// UNFINISHED - Rocks don't exist yet
-	/*for (int i = 0; i < ROCKS_COUNT; i++)
+	for (int i = 0; i < ROCKS_COUNT; i++)
 	{
 		delete m_rockArray[i];
 		m_rockArray[i] = nullptr;
-	}*/
+	}
 
 	// Delete enemies
 	for (int i = 0; i < m_enemyArray.Count(); i++)
@@ -87,18 +74,16 @@ void Level::Update(float deltaTime)
 		m_enemyArray[i]->Update(deltaTime);
 
 	// Update rocks
-	// UNFINISHED - Rocks don't exist yet
-	//for (int i = 0; i < ROCKS_COUNT; i++)
-	//	m_rockArray[i]->Update(deltaTime);
+	for (int i = 0; i < ROCKS_COUNT; i++)
+		m_rockArray[i]->Update(deltaTime);
 
 	// Create enemy if timer is reached, and reset timer
-	// UNFINISHED - Need to pass rock array to Enemy, and rocks don't exist yet
-	/*enemyTimer -= deltaTime;
+	enemyTimer -= deltaTime;
 	if (enemyTimer <= 0.0f)
 	{
-		m_enemyArray.Add(new Enemy(m_player, m_rockArray)));
+		m_enemyArray.Add(new Enemy(m_player, m_rockArray));
 		enemyTimer = ENEMY_RATE;
-	}*/
+	}
 
 	// Update collisions and camera
 	CollisionManager::GetInstance()->Update();
@@ -109,17 +94,17 @@ void Level::Update(float deltaTime)
 void Level::Draw(aie::Renderer2D* renderer)
 {
 	// Draw stars
-	//for (int i = 0; i < STARS_COUNT; i++)
-		//m_starArray[i]->Draw(renderer);
+	for (int i = 0; i < STARS_COUNT; i++)
+		m_starArray[i]->Draw(renderer);
 
 	// Draw player
 	m_player->Draw(renderer);
 
 	// Draw enemies
-	//for (int i = 0; i < m_enemyArray.Count(); i++)
-		//m_enemyArray[i]->Draw(renderer);
+	for (int i = 0; i < m_enemyArray.Count(); i++)
+		m_enemyArray[i]->Draw(renderer);
 
 	// Draw all rocks
-	/*for (int i = 0; i < ROCKS_COUNT; i++)
-		m_rockArray[i]->Draw(renderer);*/
+	for (int i = 0; i < ROCKS_COUNT; i++)
+		m_rockArray[i]->Draw(renderer);
 }

@@ -40,7 +40,7 @@ private:
 
 	// Objects
 	Player* m_player;
-	//Rock* m_rockArray[ROCKS_COUNT];			// UNFINISHED - Rocks don't exist yet
+	Rock* m_rockArray[ROCKS_COUNT];
 	Star* m_starArray[STARS_COUNT];	
 	DynamicArray<Enemy*> m_enemyArray;
 
