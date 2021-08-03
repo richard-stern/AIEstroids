@@ -22,7 +22,11 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 	}
 
 	if (addToManager)
+	{
 		CollisionManager::GetInstance()->AddBody(this);
+	}
+
+
 }
 
 void PhysicsBody::Update(float deltaTime)
@@ -32,18 +36,18 @@ void PhysicsBody::Update(float deltaTime)
 	case BodyType::DYNAMIC:
 	{
 		//set velocity based on force
-		velocity += force * (PHYSICS_TIME_STEP * iMass);
+		velocity += force * (deltaTime * iMass);
 		//add drag
-		velocity -= velocity * (drag * PHYSICS_TIME_STEP);
+		velocity -= velocity * (drag * deltaTime);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * PHYSICS_TIME_STEP);
+		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
 
 		//set angular velocity based on torque
-		angularVelocity += torque * PHYSICS_TIME_STEP;
+		angularVelocity += torque * deltaTime;
 		//add drag
-		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
+		angularVelocity -= angularVelocity * angularDrag * deltaTime;
 		//set rotation
-		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * deltaTime);
 		
 		//reset force
 		force = Vector2::ZERO();
@@ -51,15 +55,11 @@ void PhysicsBody::Update(float deltaTime)
 		break;
 	case BodyType::KINEMATIC:
 	{
-		//add drag
-		velocity -= velocity * (drag * PHYSICS_TIME_STEP);
 		//set position
-		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * PHYSICS_TIME_STEP);
+		actorObject->SetLocalPosition(actorObject->GetLocalPosition() + velocity * deltaTime);
 
-		//add drag
-		angularVelocity -= angularVelocity * angularDrag * PHYSICS_TIME_STEP;
 		//set rotation
-		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * PHYSICS_TIME_STEP);
+		actorObject->SetRotationZ(actorObject->GetRotation() + angularVelocity * deltaTime);
 	}
 		break;
 	case BodyType::STATIC:
@@ -67,13 +67,17 @@ void PhysicsBody::Update(float deltaTime)
 	}
 	
 	if (collider != nullptr)
+	{
+		collider->GetShape()->CalculateGlobal(actorObject->GetGlobalTransform());
 		UpdateAABB();
+	}
 }
 
 void PhysicsBody::AddImpulse(Vector2 impulse)
 {
 	//same as add velocity except impacted by mass
-	velocity += impulse * iMass;
+	if (type != BodyType::KINEMATIC)
+		velocity += impulse * iMass;
 }
 
 void PhysicsBody::UpdateAABB()
@@ -101,27 +105,26 @@ void PhysicsBody::UpdateAABB()
 			//minY
 			aabb.topLeft.y = -INFINITY;
 
-			for (int i = 0; i < colliderShape->count; i++)
+			//get global vertices
+			auto vertices = colliderShape->GetGlobalVertices();
+
+			for (int i = 0; i < colliderShape->GetCount(); i++)
 			{
-				auto& vertex = colliderShape->vertices[i];
 				
 				//set maxX
-				if (vertex.x > aabb.bottomRight.x)
-					aabb.bottomRight.x = vertex.x;
+				if (vertices[i].x > aabb.bottomRight.x)
+					aabb.bottomRight.x = vertices[i].x;
 				//set minX
-				if (vertex.x < aabb.topLeft.x)
-					aabb.topLeft.x = vertex.x;
+				if (vertices[i].x < aabb.topLeft.x)
+					aabb.topLeft.x = vertices[i].x;
 
 				//set maxY
-				if (vertex.y > aabb.bottomRight.y)
-					aabb.bottomRight.y = vertex.y;
+				if (vertices[i].y > aabb.bottomRight.y)
+					aabb.bottomRight.y = vertices[i].y;
 				//set minY
-				if (vertex.y < aabb.topLeft.y)
-					aabb.topLeft.y = vertex.y;
+				if (vertices[i].y < aabb.topLeft.y)
+					aabb.topLeft.y = vertices[i].y;
 			}
-
-			aabb.topLeft += actorObject->GetGlobalPosition();
-			aabb.bottomRight += actorObject->GetGlobalPosition();
 		}
 	}
 	

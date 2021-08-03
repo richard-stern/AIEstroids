@@ -5,17 +5,18 @@ CollisionManager* CollisionManager::instance = nullptr;
 
 void CollisionManager::Update()
 {
+	ResolveCollisions();
+
 	for (int i = 0; i < collisionObjects.size(); i++)
 	{
 		collisionObjects[i]->Update(aie::Application::GetInstance()->GetDeltaTime());
 	}
-
-	ResolveCollisions();
 }
 
 void CollisionManager::AddBody(PhysicsBody* body)
 {
 	collisionObjects.push_back(body);
+	body->GetCollider()->GetShape()->CalculateGlobal(body->actorObject->GetGlobalTransform());
 }
 
 void CollisionManager::CreateInstance()
@@ -107,17 +108,17 @@ bool CollisionManager::getCollisionInfo(CollisionManifold& manifold)
 
 	PolygonShape* a = (PolygonShape*)manifold.a->collider->shape;
 	auto aVertices = a->GetGlobalVertices();
-	auto aNormals = a->normals;
-	auto aCount = a->count;
+	auto aNormals = a->GetNormals();
+	auto aCount = a->GetCount();
 	//get the centre of the shape
 	//should be the mean of all points
-	Vector2 aCentre = a->getGlobalCentrePoint();
+	Vector2 aCentre = a->GetGlobalCentrePoint();
 
 	PolygonShape* b = (PolygonShape*)manifold.a->collider->shape;
 	auto bVertices = b->GetGlobalVertices();
-	auto bNormals = ((PolygonShape*)manifold.b->collider->shape)->normals;
-	auto bCount = b->count;
-	Vector2 bCentre = b->getGlobalCentrePoint();
+	auto bNormals = ((PolygonShape*)manifold.b->collider->shape)->GetNormals();
+	auto bCount = b->GetCount();
+	Vector2 bCentre = b->GetGlobalCentrePoint();
 	
 	//the projection data
 	float penetration = INFINITY;

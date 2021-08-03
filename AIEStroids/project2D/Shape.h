@@ -17,21 +17,24 @@ enum class ShapeType
 	POLYGON
 };
 
-struct Shape
+class Shape
 {
+public:
 	virtual ShapeType GetType() = 0;
-	Vector2 centrePoint;
 
 	virtual void CalculateGlobal(Matrix3& transform);
-	Vector2 getGlobalCentrePoint() { return globalCentrePoint; }
+	Vector2 GetGlobalCentrePoint() { return globalCentrePoint; }
+	void SetCentrePoint(Vector2 centrePoint) { this->centrePoint = centrePoint; }
+	Vector2 GetCentrePoint() { return centrePoint; }
+
 protected:
+	Vector2 centrePoint;
 	Vector2 globalCentrePoint;
 };
 
-struct CircleShape : public Shape
+class CircleShape : public Shape
 {
-	float radius;
-
+public:
 	CircleShape(Vector2 centrePoint, float radius)
 		: radius(radius)
 	{
@@ -39,18 +42,22 @@ struct CircleShape : public Shape
 	}
 
 	ShapeType GetType() { return ShapeType::CIRCLE; }
+	float GetRadius() { return radius; }
+	int SetRadius(float rad) { radius = rad; }
+
+private:
+	float radius;
 };
 
-struct PolygonShape : public Shape
+class PolygonShape : public Shape
 {
-	Vector2* vertices;
-	Vector2* normals;
-	int count;
-
-	PolygonShape(Vector2* vertices, Vector2* normals, Vector2 centrePoint, int count)
-		: vertices(vertices), normals(normals), count(count)
+public:
+	//vertices should be stored clockwise
+	PolygonShape(Vector2* vertices, Vector2 centrePoint, int count)
+		: vertices(vertices), count(count)
 	{
 		this->centrePoint = centrePoint;
+		GenerateNormals();
 		globalVertices = new Vector2[count];
 	}
 	~PolygonShape();
@@ -61,8 +68,19 @@ struct PolygonShape : public Shape
 	void CalculateGlobal(Matrix3& transform) override;
 
 	Vector2* GetGlobalVertices() { return globalVertices; };
+	Vector2* GetVertices() { return vertices; };
+	Vector2* GetNormals() { return normals; };
+	int GetCount() { return count; };
+
+	//reletive centrepoint is relative to the global position of the actor
+	static PolygonShape* CreateBox(float hx, float hy, Vector2 relativeCentrePoint);
+	static PolygonShape* CreatePoly(float vertexCount, float radius, Vector2 relativeCentrePoint);
 
 private:
-	//store these just because it is faster probably
-	Vector2* globalVertices;
+	void GenerateNormals();
+	//store global just because it is faster probably
+	Vector2* globalVertices = nullptr;
+	Vector2* vertices = nullptr;
+	Vector2* normals = nullptr;
+	int count;
 };

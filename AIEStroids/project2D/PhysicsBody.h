@@ -29,6 +29,7 @@ public:
 	void Update(float deltaTime);
 
 	//getters
+	Actor*	GetActor()			{ return actorObject; }
 	Collider*	GetCollider()			{ return collider; }
 	Vector2		GetVelocity()			{ return velocity; }
 	Vector2		GetForce()				{ return velocity; }

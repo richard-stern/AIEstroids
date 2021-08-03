@@ -3,6 +3,7 @@
 void Shape::CalculateGlobal(Matrix3& transform)
 {
 	globalCentrePoint = centrePoint * transform;
+	globalCentrePoint += transform.GetPosition();
 }
 
 PolygonShape::~PolygonShape()
@@ -25,9 +26,53 @@ void PolygonShape::CloneTo(PolygonShape& shape)
 void PolygonShape::CalculateGlobal(Matrix3& transform)
 {
 	globalCentrePoint = centrePoint * transform;
-	
+	globalCentrePoint += transform.GetPosition();
+
 	for (int i = 0; i < count; i++)
 	{
 		globalVertices[i] = globalVertices[i] * transform;
+		globalVertices[i] += transform.GetPosition();
 	}
+}
+
+PolygonShape* PolygonShape::CreateBox(float hx, float hy, Vector2 relativeCentrePoint)
+{
+	Vector2* vertices = new Vector2[4];
+	vertices[0] = Vector2(hx, hy);
+	vertices[1] = Vector2(hx, -hy);
+	vertices[2] = Vector2(-hx, -hy);
+	vertices[3] = Vector2(-hx, hy);
+
+	PolygonShape* polygonShape = new PolygonShape(vertices, relativeCentrePoint, 4);
+	polygonShape->GenerateNormals();
+	return polygonShape;
+}
+
+PolygonShape* PolygonShape::CreatePoly(float vertexCount, float radius, Vector2 relativeCentrePoint)
+{
+	Vector2* vertices = new Vector2[vertexCount];
+	float rotationPerPoint = (float)M_PI * 2 / vertexCount;
+
+	for (int i = 0; i < vertexCount; i++)
+	{
+		Vector2 radiusVector = Vector2::RIGHT() * radius;
+		radiusVector.SetRotation((float)M_PI * 2 - rotationPerPoint * i);
+		vertices[i] = radiusVector;
+	}
+
+	PolygonShape* polygonShape = new PolygonShape(vertices, relativeCentrePoint, 4);
+	polygonShape->GenerateNormals();
+	return polygonShape;
+}
+
+void PolygonShape::GenerateNormals()
+{
+	if (vertices != nullptr)
+	{
+		for (int i = 0; i < count - 1; i++)
+		{
+			normals[i] = (vertices[i] - vertices[i + 1]).GetNormalised().GetPerpendicular();
+		}
+	}
+	
 }

@@ -22,7 +22,7 @@ enum class CollisionType
 };
 struct CollisionManifold
 {
-	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) {}
+	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) { collisionNormal = Vector2::ZERO(); penetration = 0; }
 
 	PhysicsBody* a;
 	PhysicsBody* b;
