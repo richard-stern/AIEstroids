@@ -15,7 +15,8 @@ public:
 private:
 	TextureManager* textureManager;
 
-
+	float totalDeltaTime;
+	float flashSpeed;
 
 };
 
