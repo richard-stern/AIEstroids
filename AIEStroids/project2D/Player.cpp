@@ -28,7 +28,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	turret->SetParent(this);
 	AddChild(turret);
 	//turret->SetPos(1000.0f, 0.0f);
-	turret->SetPosition(Vector2(100.0f, 0.0f));
+	turret->SetPosition(Vector2(-12.0f, 0.0f));
 
 
 	gui = GUI::GetInstance();
@@ -121,9 +121,6 @@ void Player::Update(float deltaTime)
 		//Check tha health
 		if (m_CurrentHealth <= 0)
 			KillPlayer();
-
-		turret->Update(deltaTime);
-
 	}
 	else
 	{
