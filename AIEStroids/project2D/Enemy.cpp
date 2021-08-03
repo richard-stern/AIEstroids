@@ -17,7 +17,7 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
 
 	//Assign ship texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy_small.png");
 
 	SetRandomLocation();
 
@@ -93,7 +93,7 @@ void Enemy::SetRandomLocation()
 
 	Vector2 spawnPos = { (float)x, (float)y };
 
-	SetLocalPosition(spawnPos);
+	SetPosition(spawnPos);
 }
 
 void Enemy::Pursue(float deltaTime)
