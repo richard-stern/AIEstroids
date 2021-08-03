@@ -11,7 +11,6 @@ Level::Level(aie::Renderer2D* renderer)
 	windowH = (float)(application->GetWindowHeight());
 
 	// Create systems
-	Camera::Create(renderer, m_player);
 	CollisionManager::CreateInstance();
 	GUI::Create();
 
@@ -19,6 +18,9 @@ Level::Level(aie::Renderer2D* renderer)
 	float playerX = windowW * 0.5f;
 	float playerY = windowH * 0.5f;
 	m_player = new Player({ playerX, playerY });
+
+	// Create camera
+	Camera::Create(renderer, m_player);
 
 	// Create stars
 	for (int i = 0; i < STARS_COUNT; i++)
