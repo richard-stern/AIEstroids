@@ -49,6 +49,8 @@ public:
 	void Update();
 	//called by physics bodies to add themselves to the collision object list
 	void AddBody(PhysicsBody* body);
+	//called by physics body to remove self from list (expensive!!)
+	void RemoveBody(PhysicsBody* body);
 
 private:
 	static CollisionManager* instance;
