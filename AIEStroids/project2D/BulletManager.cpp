@@ -35,6 +35,7 @@ BulletManager::~BulletManager()
 	delete[] pBullet;
 }
 
+
 //Shoot Bullet function that will pass the position and angle to Bullet.cpp Shoot function
 void BulletManager::ShootBullet(Vector2 position, float angle)
 {
@@ -64,7 +65,11 @@ void BulletManager::ShootBullet(Vector2 position, float angle)
 	{
 		if (pBullet[i]->GetActive() == false)
 		{
+			pBullet[i]->SetActive(true);
 
+			pBullet[i]->Shoot(position, angle);
+			
+			/*pBullet[i]->SetActive(false);*/
 		}
 	}
 }

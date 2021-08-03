@@ -15,8 +15,6 @@ public:
 	//Destructor
 	~BulletManager();
 
-	void Update(float deltaTime);
-
 	//Selecting a bullet to be fired and pass to the Bullet.cpp Shoot function
 	void ShootBullet(Vector2 position, float angle);
 

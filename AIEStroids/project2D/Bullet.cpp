@@ -39,7 +39,6 @@ void Bullet::Shoot(Vector2 position, float angle)
 	//So there will need to be some work on how to turn the bullet back to null after it vanishes
 	//Gonna go with time for the bullet
 
-
 }
 
 //Collision with the bullet and other objects
