@@ -25,6 +25,7 @@ public:
 
 	virtual void OnCollision(CollisionEvent _event);
 	void GeneratePhysicsBody(aie::Texture* texture, CollisionLayer layer, unsigned short layerMask);
+	void GeneratePhysicsBody(float _width, float _height, CollisionLayer layer, unsigned short layerMask);
 	void RemovePhysicsBody() { m_PhysicsBody = nullptr; }
 
 protected:
