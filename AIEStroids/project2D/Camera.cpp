@@ -51,7 +51,7 @@ Camera::Camera()
 	minMoveDistance = 0.25f;
 
 	//How far the camera moves towards its target per second (based on a percentage of the distance between them)
-	followSpeed = 400;
+	followSpeed = 250;
 
 	renderer = nullptr;
 	player = nullptr;
