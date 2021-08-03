@@ -35,12 +35,13 @@ private:
 	Vector2 GetMousePos();
 	//returns if mouse is clicked
 	bool IsLeftMouseClicked();
-
 	
 	//controller, changes variables based on player input
 	void Controller(float deltaTime);
 	void Rotate(float deltaTime);
 	void Fire(float deltaTime);
+
+	void SetPos(float x, float y);
 
 	//Aesthetic targetted function, moves turret back and forth
 	void TurretKickback(float deltaTime); 
