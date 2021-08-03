@@ -1,7 +1,11 @@
 #include "Player.h"
 #include "Application.h"
 #include "GUI.h"
+<<<<<<< HEAD
 #include <cmath>
+=======
+#include "TextureManager.h"
+>>>>>>> main
 
 //Author Rahul J. (BEANMEISTER)
 
@@ -9,6 +13,8 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 {
 	m_WrapAndRespawn = false;
 	AddPhysicsBody(new PhysicsBody(this, BodyType::DYNAMIC));
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/ship.png");
+	SetLocalPosition(Vector2::ONE() * 100.0f);
 }
 
 Player::~Player()
