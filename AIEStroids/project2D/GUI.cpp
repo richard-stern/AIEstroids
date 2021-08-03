@@ -57,9 +57,11 @@ void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input)
 	char strHealth[16];
 	char strScore[16];
 	char strLives[16];
+	char strFPS[16];
 	sprintf_s(strHealth, "Health: %i", m_Health);
 	sprintf_s(strScore, "Score: %i", m_Score);
 	sprintf_s(strLives, "Lives: %i", m_Lives);
+	sprintf_s(strFPS, "FPS: %i", aie::Application::GetInstance()->GetFPS());
 
 	// Draw GUI
 	float xPos = xOrigin + BORDER;
@@ -68,6 +70,7 @@ void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input)
 	renderer->DrawText2D(font, strHealth, xPos, yPos);			yPos -= PADDING;
 	renderer->DrawText2D(font, strScore, xPos, yPos);			yPos -= PADDING;
 	renderer->DrawText2D(font, strLives, xPos, yPos);			yPos -= PADDING;
+	renderer->DrawText2D(font, strFPS, xPos, yPos);				yPos -= PADDING;
 }
 
 // Score setter functions
