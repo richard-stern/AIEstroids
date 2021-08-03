@@ -19,7 +19,7 @@ public:
 	//Done for now - Need parts from other people (Texture import, setting parent, etc)
 	Turret();
 
-	//Empty
+	//Deletes bullet manager
 	~Turret();
 
 	//Empty

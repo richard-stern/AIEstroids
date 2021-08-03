@@ -39,8 +39,9 @@ Turret::Turret() {
 	// -=-=- Other config stuff -=-=-
 
 	// - DO NOT TOUCH - Waiting on other stuff to be completed  to uncomment
-	//m_bWrapAndRespawn = false;
-	//m_bVisible = true;
+	m_WrapAndRespawn = false; //Should be m_bWarpAndRespawn >:(
+	//m_Visible = true;
+	
 
 	// - DO NOT TOUCH - Automatically assigned based off fire rate
 	m_timeBetweenBullets = 1/m_firerate;
@@ -65,6 +66,7 @@ Turret::Turret() {
 }
 
 Turret::~Turret() {
+	delete (m_bulletManager);
 
 };
 
