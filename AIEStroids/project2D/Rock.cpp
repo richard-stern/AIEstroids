@@ -55,7 +55,7 @@ void Rock::SetRandomPath()
 	}
 	Vector2 position(x, y);
 	SetPosition(position);
-	m_PhysicsBody->SetVelocity(Vector2::ONE());
+	m_PhysicsBody->SetVelocity(Vector2::ONE()* 50);
 	m_PhysicsBody->SetAngularVelocity(1);
 }
 void Rock::Update(float deltaTime)
