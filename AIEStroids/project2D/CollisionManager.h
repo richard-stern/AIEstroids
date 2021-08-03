@@ -16,10 +16,11 @@ struct CollisionEvent
 
 enum class CollisionType
 {
-	POLYGONPOLYGON,
+	CIRCLECIRCLE,
 	POLYGONCIRCLE,
-	CIRCLECIRCLE
+	POLYGONPOLYGON
 };
+
 struct CollisionManifold
 {
 	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) { collisionNormal = Vector2::ZERO(); penetration = 0; }
@@ -48,6 +49,8 @@ public:
 	void Update();
 	//called by physics bodies to add themselves to the collision object list
 	void AddBody(PhysicsBody* body);
+	//called by physics body to remove self from list (expensive!!)
+	void RemoveBody(PhysicsBody* body);
 
 private:
 	static CollisionManager* instance;
@@ -62,8 +65,9 @@ private:
 	//check if AABBs are colliding
 	static bool CheckAABBCollision(AABB& a, AABB& b);
 	//returns whether objects have collided or not, also sets colliison normal and penetration in manifold
-	static bool getCollisionInfo(CollisionManifold& manifold);
+	static bool SetCollisionInfo(CollisionManifold& manifold);
 	//gets the minimum and maximum values of all vertices projected onto an axis
+	static void SetCollisionType(CollisionManifold& manifold);
 	//takes in local vertices
 	static MinMax GetProjectedMinMax(Vector2& axis, Vector2* vertices, int vertexCount);
 

@@ -11,7 +11,7 @@ struct AABB
 	Vector2 bottomRight;
 };
 
-enum class ShapeType
+enum class ShapeType : char
 {
 	CIRCLE,
 	POLYGON
@@ -26,6 +26,8 @@ public:
 	Vector2 GetGlobalCentrePoint() { return globalCentrePoint; }
 	void SetCentrePoint(Vector2 centrePoint) { this->centrePoint = centrePoint; }
 	Vector2 GetCentrePoint() { return centrePoint; }
+
+	virtual ~Shape() = default;
 
 protected:
 	Vector2 centrePoint;
