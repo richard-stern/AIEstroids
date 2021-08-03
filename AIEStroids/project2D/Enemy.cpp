@@ -29,7 +29,6 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Ac
 
 	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
 	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
-
 }
 
 Enemy::~Enemy()
@@ -40,7 +39,7 @@ Enemy::~Enemy()
 void Enemy::Update(float deltaTime)
 {
 	Seek(deltaTime);
-	//CollisionAvoidance(deltaTime);	
+	CollisionAvoidance(deltaTime);
 }
 
 void Enemy::Draw(aie::Renderer2D* renderer)
@@ -54,7 +53,10 @@ void Enemy::Draw(aie::Renderer2D* renderer)
 
 void Enemy::OnCollision(GameObject* other)
 {
-	m_CurrentHealth -= 10;
+	if (other == m_player)
+		m_CurrentHealth = 0;
+	else
+		m_CurrentHealth -= 10;
 }
 
 void Enemy::Seek(float deltaTime)
@@ -64,11 +66,10 @@ void Enemy::Seek(float deltaTime)
 	Vector2 difference = playerPos - GetPosition();
 
 	Vector2 desiredVelocity = difference.GetNormalised() * MAX_ENEMY_VELOCITY;
-	Vector2 steeringForce = desiredVelocity - m_PhysicsBody->GetVelocity();
+	steeringForce = desiredVelocity - m_PhysicsBody->GetVelocity();
 	
-	// update the position of the enemy
-	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce * deltaTime);
-	SetPosition(GetPosition() + m_PhysicsBody->GetVelocity() * deltaTime);
+	// update the velocity of the enemy
+	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce);
 }
 
 void Enemy::SetRandomLocation()
@@ -81,16 +82,11 @@ void Enemy::SetRandomLocation()
 	int width = app->GetWindowWidth();
 	int height = app->GetWindowHeight();
 
-
 	int x = rand() % 2*width + (-width);
 	int y = rand() % 2*height + (-height);
 
-	SetPosition({ (float)x, (float)y });
-	
 	Vector2 spawnPos = { (float)x, (float)y };
 	SetPosition(spawnPos);
-
-
 	float rotation = (float) (rand() / 10000.0);
 
 	// set random rotation
@@ -128,9 +124,7 @@ void Enemy::CollisionAvoidance(float deltaTime)
 		avoidance.Scale(avoidance, { 0, 0 }); // nullify the avoidance force
 	}
 
-	// update the position of the enemy
-	SetPosition((GetPosition() + avoidance) * deltaTime);
-
+	steeringForce += avoidance;
 }
 
 GameObject* Enemy::FindMostThreateningObstacle(Vector2 ahead1, Vector2 ahead2)
@@ -142,9 +136,9 @@ GameObject* Enemy::FindMostThreateningObstacle(Vector2 ahead1, Vector2 ahead2)
 		bool collision = LineIntersectsCircle(ahead1, ahead2, m_rocks[i]);
 
 		// "position" is the character's current position
-		if ((collision && mostThreatening == nullptr) ||
-			position.GetDistance(m_rocks[i]->GetPosition()) <
-			position.GetDistance(mostThreatening->GetPosition()))
+		if (collision && (mostThreatening == nullptr ||
+			position.GetDistance(m_rocks[i]->GetLocalPosition()) <
+			position.GetDistance(mostThreatening->GetLocalPosition())))
 		{
 			mostThreatening = (GameObject*) m_rocks[i];
 		}
