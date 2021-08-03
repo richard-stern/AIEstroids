@@ -6,7 +6,7 @@ Rock::Rock(Player* player)
 {
 	_player = player;
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/rock_large.png");
-	m_LocalTransform.SetScale(3.0f, 3.0f);
+	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
 	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
@@ -32,6 +32,8 @@ void Rock::OnCollision(GameObject* other)
 
 void Rock::SetRandomPath()
 {
+	float scale = ((rand() % 30) / 10.0f) + 1;
+	m_LocalTransform.SetScale(scale, scale);
 	aie::Application* app = aie::Application::GetInstance();
 	int edge = rand() % 4;
 	int x = 0;
