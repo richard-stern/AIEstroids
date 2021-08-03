@@ -26,6 +26,10 @@ public:
 	//if you don't input a value for mass it will be automatically calculated based on shape
 	PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider = nullptr, float drag = 0, float angularDrag = 0, float mass = 0, bool addToManager = true);
 
+	PhysicsBody(const PhysicsBody& other) = delete;
+	PhysicsBody(PhysicsBody&& other) = delete;
+	PhysicsBody& operator=(const PhysicsBody& other) = delete;
+	PhysicsBody& operator=(PhysicsBody&& other) = delete;
 	~PhysicsBody();
 
 	void Update(float deltaTime);
