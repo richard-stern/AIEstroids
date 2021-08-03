@@ -72,6 +72,7 @@ private:
 
 	//Turret Movement Variables
 	Matrix3 movement;
+	Matrix3 prevMovement;
 	Vector2 m_posChange;
 	float m_speed;
 	float m_momentum;
@@ -80,8 +81,8 @@ private:
 
 	//Hopefully temporary vars that will be in gameobject/actor once implemented
 	//GameObject m_parent;
-	Matrix3 m_globalTransform;
-	Matrix3 m_localTransform;
+	//Matrix3 m_globalTransform;
+	//Matrix3 m_localTransform;
 
 	//For input stuff, obv.
 	aie::Input* m_input;
