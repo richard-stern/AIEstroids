@@ -12,63 +12,47 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 {
 	m_player = player;
 	m_rocks = rocks;
-
-	// pick random direction
-	SetRandomLocation();
-
-	//m_v2Velocity = { 0, 0 };
-	//m_Drag = 1.0f;
-	//m_pCollider = ;
-	//m_pTexture = ;
-	//m_LocalTransform.ResetToIdentity();
-	//m_pParent = ;
-	//m_Children = ;
-	//m_bVisible = ;
-	//m_bWrapAndRespawn = ;
 	m_CurrentHealth = m_MaxHealth;
+
+	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+
+	SetRandomLocation();
 }
 
 Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Actor(pos)
 {
-	SetGlobalPosition(pos);
+	SetLocalPosition(pos);
 	m_player = player;
 	m_rocks = rocks;
-
-	//m_Drag = 1.0f;
-	//m_pCollider = ;
-	//m_pTexture = ;
-	//m_LocalTransform.ResetToIdentity();
-	//m_pParent = ;
-	//m_Children = ;
-	//m_bVisible = ;
-	//m_bWrapAndRespawn = ;
 	m_CurrentHealth = m_MaxHealth;
+
+	//GeneratePhysicsBody(m_Texture, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+
 }
 
 Enemy::~Enemy()
 {
-
+	delete m_PhysicsBody;
 }
 
 void Enemy::Update(float deltaTime)
 {
-	//SetTransform(globalTranform);
-
 	Seek(deltaTime);
+	//CollisionAvoidance(deltaTime);
 }
 
 void Enemy::Draw(aie::Renderer2D* renderer)
 {
 	Vector2 position = GetLocalPosition();
 
-	//renderer->DrawBox(GetGlobalPosition().x, GetGlobalPosition().y, 32, 48, 0, 1);
 	renderer->DrawBox(position.x, position.y, 32, 48, GetRotation(), 1);
 }
 
 void Enemy::OnCollision(GameObject* other)
 {
-
-	m_destroyed = true;
+	m_Health -= 10;
 }
 
 void Enemy::Seek(float deltaTime)
@@ -95,7 +79,7 @@ void Enemy::SetRandomLocation()
 	int x = rand() % app->GetWindowWidth();
 	int y = rand() % app->GetWindowHeight();
 
-	SetGlobalPosition({ (float)x, (float)y });
+	SetLocalPosition({ (float)x, (float)y });
 
 	float rotation = (float) (rand() / 10000.0);
 
@@ -105,31 +89,26 @@ void Enemy::SetRandomLocation()
 
 void Enemy::Pursue(float deltaTime)
 {
-	Vector2 V = m_player->GetGlobalPosition() + m_player->GetVelocity() - this->GetGlobalPosition();
-	Vector2 force = V.GetNormalised() * MAX_ENEMY_VELOCITY - m_player->GetVelocity();
+	Vector2 playerVelocity = m_player->GetPhysicsBody()->GetVelocity();
+
+	Vector2 V = m_player->GetLocalPosition() + playerVelocity - this->GetLocalPosition();
+	Vector2 force = V.GetNormalised() * MAX_ENEMY_VELOCITY - playerVelocity;
 }
 
-void Enemy::AvoidObstacles(float deltaTime)
-{
-	Vector2 newPos = GetGlobalPosition() + CollisionAvoidance() * deltaTime;
-
-	SetGlobalPosition(newPos);
-}
-
-Vector2 Enemy::CollisionAvoidance()
+void Enemy::CollisionAvoidance(float deltaTime)
 {
 	Vector2 velocity = m_PhysicsBody->GetVelocity();
 
-	// calculate the ahead and ahead2 vectora
-	Vector2 ahead = GetGlobalPosition() + velocity.GetNormalised() * MAX_SEE_AHEAD; 
-	Vector2 ahead2 = GetGlobalPosition() + velocity.GetNormalised() * MAX_SEE_AHEAD * 0.5f;
+	// calculate the ahead and ahead2 vectors
+	Vector2 ahead = GetLocalPosition() + velocity.GetNormalised() * MAX_SEE_AHEAD; 
+	Vector2 ahead2 = GetLocalPosition() + velocity.GetNormalised() * MAX_SEE_AHEAD * 0.5f;
 
-	GameObject* mostThreatening = FindMostThreateningObstacle();
+	GameObject* mostThreatening = FindMostThreateningObstacle(ahead, ahead2);
 	Vector2 avoidance = { 0, 0 };
 
 	if (mostThreatening != nullptr) {
-		avoidance.x = ahead.x - mostThreatening->GetGlobalPosition().x;
-		avoidance.y = ahead.y - mostThreatening->GetGlobalPosition().y;
+		avoidance.x = ahead.x - mostThreatening->GetLocalPosition().x;
+		avoidance.y = ahead.y - mostThreatening->GetLocalPosition().y;
 
 		avoidance.GetNormalised();
 		avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
@@ -139,21 +118,23 @@ Vector2 Enemy::CollisionAvoidance()
 		avoidance.Scale(avoidance, { 0, 0 }); // nullify the avoidance force
 	}
 
-	return avoidance;
+	// update the position of the enemy
+	SetLocalPosition((GetLocalPosition() + avoidance) * deltaTime);
+
 }
 
-GameObject* Enemy::FindMostThreateningObstacle()
+GameObject* Enemy::FindMostThreateningObstacle(Vector2 ahead1, Vector2 ahead2)
 {
 	GameObject* mostThreatening = nullptr;
-	Vector2 position = GetGlobalPosition();
+	Vector2 position = GetLocalPosition();
 
 	for (int i = 0; i < ROCKS_COUNT; i++) {
-		bool collision = false;// = LineIntersectsCircle(ahead, ahead2, obstacle);
+		bool collision = LineIntersectsCircle(ahead1, ahead2, m_rocks[i]);
 
 		// "position" is the character's current position
 		if ((collision && mostThreatening == nullptr) ||
-			position.GetDistance(m_rocks[i]->GetGlobalPosition()) <
-			position.GetDistance(mostThreatening->GetGlobalPosition()))
+			position.GetDistance(m_rocks[i]->GetLocalPosition()) <
+			position.GetDistance(mostThreatening->GetLocalPosition()))
 		{
 			mostThreatening = (GameObject*) m_rocks[i];
 		}
@@ -162,7 +143,10 @@ GameObject* Enemy::FindMostThreateningObstacle()
 	return mostThreatening;
 }
 
-bool Enemy::LineIntersectsCircle(Vector2 a, Vector2 b, GameObject* obstacle)
+bool Enemy::LineIntersectsCircle(Vector2 ahead1, Vector2 ahead2, GameObject* obstacle)
 {
-	return false;
+	float ahead1Distance = obstacle->GetLocalPosition().GetDistance(ahead1);
+	float ahead2Distance = obstacle->GetLocalPosition().GetDistance(ahead2);
+
+	return (ahead1Distance <= radius || ahead2Distance <= radius);
 }

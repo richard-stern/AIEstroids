@@ -5,6 +5,8 @@
 
 #include "Renderer2D.h"
 class StateMachine;
+class Level;
+class GUI;
 
 class GameState : public BaseState {
 public:
@@ -20,5 +22,9 @@ public:
 	void Draw(aie::Renderer2D* renderer) override;
 	/// Destroy the Level and GUI
 	void Exit() override;
+
+private:
+	Level* level;
+	GUI* gui;
 };
 

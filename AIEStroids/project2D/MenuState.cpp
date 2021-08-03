@@ -1,11 +1,10 @@
 // Author: Matin Kamali
 #include "MenuState.h"
-
+#include "Rect.h"
   // -------------------------------------------
  //           DRAW UI FUNCTIONS
 // -------------------------------------------
-namespace UI { // @incomplete move Rect into its own file?
-	
+namespace UI { // @incomplete move UI into its own file?
 
 };
 

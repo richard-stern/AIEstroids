@@ -13,7 +13,7 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(Vector2 _pos);
+	GameObject(Vector2 _pos, GameObject* _parent = nullptr);
 	virtual ~GameObject();
 
 	virtual void Update(float _deltaTime);
@@ -31,9 +31,7 @@ public:
 	Vector2 GetGlobalPosition() { return  m_GlobalTransform.GetPosition(); }
 	Vector2 GetLocalPosition() { return  m_LocalTransform.GetPosition(); }
 
-	void SetGlobalTransform(Matrix3 _transform) { m_GlobalTransform = _transform; }
 	void SetLocalTransform(Matrix3 _transform) { m_LocalTransform = _transform; }
-	void SetGlobalPosition(Vector2 _pos) { m_GlobalTransform.SetPosition(_pos); }
 	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
 	float GetRotation() { return m_LocalTransform.GetRotation(); }
 	void SetRotation(float _radians) { m_LocalTransform.SetRotation(_radians); }
@@ -53,11 +51,11 @@ protected:
 
 	Matrix3 m_GlobalTransform;
 	Matrix3 m_LocalTransform;
-	
-	Vector2 m_Velocity = { 0, 0 };
+
+	Vector2 m_SpawnPoint;
 	float m_Drag = 0;
 
-	aie::Texture* m_Texture;
+	aie::Texture* m_Texture = nullptr;
 	bool m_IsActive = false;
 	bool m_WrapAndRespawn = false;
 };
