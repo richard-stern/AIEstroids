@@ -181,6 +181,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Game2D.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="HealthPickup.cpp" />
     <ClCompile Include="Heap.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game2D.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="HealthPickup.h" />
     <ClInclude Include="Heap.h" />
