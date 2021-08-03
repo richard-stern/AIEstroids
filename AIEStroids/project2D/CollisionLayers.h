@@ -1,6 +1,6 @@
 #pragma once
 
-enum class CollisionLayer
+enum class CollisionLayer : unsigned short
 {
 	PLAYER = 0b1,
 	ROCK = 0b10,

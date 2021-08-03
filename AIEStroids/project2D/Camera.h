@@ -21,8 +21,8 @@ private:
 	~Camera();
 	static Camera* instance;
 
-	float minMoveDistance = 0.0f;
-	int distancePercentPerFrame = 5; //100 is rigid-follow, 0 is no follow
+	float minMoveDistance = 0.25f; //The smallest distance the camera is allowed to move in one frame
+	int followSpeed = 5; //Higher numbers mean the camera has less delay
 
 	Vector2 cameraPosition;
 	aie::Renderer2D* renderer;

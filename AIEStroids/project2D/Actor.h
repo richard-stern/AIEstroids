@@ -24,14 +24,6 @@ public:
 	void SetWrapAndRespawn(bool _active) { m_WrapAndRespawn = _active; }
 	Vector2 GetVelocity() { return m_v2Velocity; }
 
-protected:
-	Vector2 m_v2Velocity;
-	Vector2 m_MaxVelocity;
-	int m_nHealth;
-	int m_nMaxHealth;	
-
-	void AddPhysicsBody(PhysicsBody* _body) { m_PhysicsBody = _body; }
-	
 private:
 
 	void RemovePhysicsBody() { m_PhysicsBody = nullptr; }
@@ -39,10 +31,13 @@ private:
 	virtual void OnCollision(CollisionEvent _event);
 
 protected:
-	//float WrapAndRespawn(float _coordinate, float _max);
-
 	PhysicsBody* m_PhysicsBody = nullptr;
-	
+	void AddPhysicsBody(PhysicsBody* _body) { m_PhysicsBody = _body; }
+
+	Vector2 m_v2Velocity;
+	Vector2 m_MaxVelocity;
+	const int m_nMaxHealth = 100;
+	int m_nHealth;
 	int m_Health = 0;
 	
 	bool m_WrapAndRespawn = false;
