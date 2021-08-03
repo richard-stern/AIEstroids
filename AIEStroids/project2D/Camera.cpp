@@ -60,6 +60,9 @@ Camera::Camera()
 	shakeDuration = 0.0f;
 	shakeTimer = 0.0f;
 	shakeStrength = 0;
+
+	//Assign application
+	application = aie::Application::GetInstance();
 }
 
 //Private destructor
@@ -102,11 +105,12 @@ void Camera::Update(float deltaTime)
 	//Get the player's position
 	Vector2 playerPosition;
 	playerPosition = player->GetGlobalPosition();
-	playerPosition.x *= -1;
-	playerPosition.y *= -1;
 
 	//Find the distance between the camera and the player
-	Vector2 distance = (playerPosition - cameraPosition);
+	Vector2 offsetBaseCameraPosition = cameraPosition;
+	offsetBaseCameraPosition.x = offsetBaseCameraPosition.x + application->GetWindowWidth() / 2;
+	offsetBaseCameraPosition.y = offsetBaseCameraPosition.y + application->GetWindowHeight() / 2;
+	Vector2 distance = (playerPosition - offsetBaseCameraPosition);
 
 	//If the distance is significant enough to warrant moving the camera
 	if (abs(distance.GetMagnitude()) * (followSpeed / 100.0f) * deltaTime > minMoveDistance)
