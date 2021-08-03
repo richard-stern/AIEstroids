@@ -13,7 +13,7 @@ Game2D::Game2D(const char* title, int width, int height, bool fullscreen) : Game
 	TextureManager::Get();
 
 	// Initialise level (which initialises objects, cameras, etc.)
-	level = new Level(m_2dRenderer);
+	m_pStateMachine = new StateMachine(m_2dRenderer);
 }
 
 Game2D::~Game2D()
@@ -40,7 +40,7 @@ void Game2D::Update(float deltaTime)
 	}
 
 	// Update level
-	level->Update(deltaTime);
+	m_pStateMachine->Update(deltaTime);
 }
 
 void Game2D::Draw()
@@ -55,7 +55,7 @@ void Game2D::Draw()
 	m_2dRenderer->Begin();
 
 	// Draw level
-	level->Draw(m_2dRenderer);
+	m_pStateMachine->Draw(m_2dRenderer);
 
 	// Done drawing sprites. Must be called at the end of the Draw().
 	m_2dRenderer->End();

@@ -6,16 +6,17 @@
 #include "Renderer2D.h"
 
 ///
-StateMachine::StateMachine() {
+StateMachine::StateMachine(aie::Renderer2D* _renderer) {
 	menu_state      = new MenuState();
-	//game_state      = new GameState();
-	//game_over_state = new GameOverState();
+	game_state      = new GameState();
+	game_over_state = new GameOverState();
 	current_state = menu_state;
+	renderer = _renderer;
 };
 ///
 StateMachine::~StateMachine() {
 	delete menu_state;
-	//delete game_state;
+	delete game_state;
 	delete game_over_state;
 };
 ///
