@@ -3,6 +3,7 @@
 //
 
 #include "Turret.h"
+#include "TextureManager.h"
 #include <cmath>
 
 Turret::Turret() {
@@ -37,6 +38,10 @@ Turret::Turret() {
 	// -=-=- END OF ADJUSTABLE VARIABLES -=-=-
 
 	// -=-=- Other config stuff -=-=-
+
+
+	//Assign turret texture
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Turret-1.png");
 
 	// - DO NOT TOUCH - Waiting on other stuff to be completed  to uncomment
 	m_WrapAndRespawn = false; //Should be m_bWarpAndRespawn >:(

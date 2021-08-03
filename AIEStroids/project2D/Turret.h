@@ -25,6 +25,8 @@ public:
 	//Empty
 	void Update(float deltaTime);
 
+	void SetPos(float x, float y);
+
 	//Empty
 	//void Draw();
 
@@ -41,7 +43,6 @@ private:
 	void Rotate(float deltaTime);
 	void Fire(float deltaTime);
 
-	void SetPos(float x, float y);
 
 	//Aesthetic targetted function, moves turret back and forth
 	void TurretKickback(float deltaTime); 
