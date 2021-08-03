@@ -27,5 +27,6 @@ private:
 	Vector2 cameraPosition;
 	aie::Renderer2D* renderer;
 	Player* player;
+	Rock** rocks;
 };
 

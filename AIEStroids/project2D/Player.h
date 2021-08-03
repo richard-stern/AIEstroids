@@ -26,7 +26,7 @@ public:
 	~Player();
 
 	void Update(float deltaTime) override;
-	//void OnCollision(CollisionEvent collisionEvent) override;
+	void OnCollision(CollisionEvent collisionEvent) override;
 
 	int GetLives();
 	void SetLives(int lives);

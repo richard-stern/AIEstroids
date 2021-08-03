@@ -27,17 +27,14 @@ public:
 	void AddChild(GameObject* _child) { m_Children.Add(_child); }
 
 	Matrix3 GetGlobalTransform() { return  m_GlobalTransform; }
-	void SetGlobalTransform(Matrix3 _transform) { m_GlobalTransform = _transform; }
-
 	Matrix3 GetLocalTransform() { return  m_LocalTransform; }
-	void SetLocalTransform(Matrix3 _transform) { m_LocalTransform = _transform; }
-
 	Vector2 GetGlobalPosition() { return  m_GlobalTransform.GetPosition(); }
-	void SetGlobalPosition(Vector2 _pos) { m_GlobalTransform.SetPosition(_pos); }
-
 	Vector2 GetLocalPosition() { return  m_LocalTransform.GetPosition(); }
-	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
 
+	void SetGlobalTransform(Matrix3 _transform) { m_GlobalTransform = _transform; }
+	void SetLocalTransform(Matrix3 _transform) { m_LocalTransform = _transform; }
+	void SetGlobalPosition(Vector2 _pos) { m_GlobalTransform.SetPosition(_pos); }
+	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
 	float GetRotation() { return m_LocalTransform.GetRotation(); }
 	void SetRotation(float _radians) { m_LocalTransform.SetRotation(_radians); }
 
@@ -58,7 +55,6 @@ protected:
 	Matrix3 m_LocalTransform;
 	
 	Vector2 m_Velocity = { 0, 0 };
-	Vector2 m_PreviousPos;
 	float m_Drag = 0;
 
 	aie::Texture* m_Texture;
