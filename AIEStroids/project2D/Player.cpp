@@ -25,6 +25,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	AddPhysicsBody(new PhysicsBody(this, BodyType::DYNAMIC, collider));
 	//Don't be in the corner
 	SetLocalPosition(Vector2::ONE() * 100.0f);
+	gui = GUI::GetInstance();
 }
 
 Player::~Player()
