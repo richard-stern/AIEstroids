@@ -1,17 +1,19 @@
+// Author: Declan & Cameron
+
 #include "GUI.h"
-// Sets the instance to nullptr
+
+// Singleton initialisation
 GUI* GUI::m_Instance = nullptr;
 
-// Creates the GUI if there isn't an existing instance
+#pragma region Singleton Functions
+// Singleton creation
 void GUI::Create()
 {
 	if (m_Instance == nullptr)
-	{
 		m_Instance = new GUI();
-	}
 }
 
-// Destroys the GUI if there is an existing instance
+// Singleton deletion
 void GUI::Destroy()
 {
 	if (m_Instance != nullptr)
@@ -21,50 +23,63 @@ void GUI::Destroy()
 	}
 }
 
-// Retruns the instance
+// Gets the GUI instance
 GUI* GUI::GetInstance()
 {
-	Create(); // make sure we have an instance
+	Create();
 	return m_Instance;
 }
 
-// Draws the Game UI
-void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input)
+// Constructor - Sets initial score values
+GUI::GUI()
 {
-	// Needs too be updated to look neater
-	int y = aie::Application::GetInstance()->GetWindowHeight() - 20;
-	int x = 20;
-
-	renderer->SetRenderColour(1.0f, 0.0f, 0.0f, 1.0f);
-	renderer->DrawText2D(font, "Health" + m_Health, x, y, 0.0f);
-	renderer->DrawText2D(font, "Score" + m_Score, x, (y - 30), 0.0f);
-	renderer->DrawText2D(font, "Lives" + m_lives, x, (y - 60), 0.0f);
+	m_Health = 100;
+	m_Score = 0;
+	m_Lives = 5;
 }
 
-// The player's health input
+// Destructor - Does nothing
+GUI::~GUI()
+{
+}
+#pragma endregion
+
+// Draw loop - Draws GUI
+void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input)
+{
+	// Calculate top-left position using camera position, window height and font height
+	Vector2 cameraPos = Camera::GetInstance()->GetPosition();
+	float windowH = (float)aie::Application::GetInstance()->GetWindowHeight();
+	float xOrigin = cameraPos.x;
+	float yOrigin = cameraPos.y + windowH - font->GetStringHeight("A");
+
+	// Get scores as strings
+	char strHealth[16];
+	char strScore[16];
+	char strLives[16];
+	sprintf_s(strHealth, "Health: %i", m_Health);
+	sprintf_s(strScore, "Score: %i", m_Score);
+	sprintf_s(strLives, "Lives: %i", m_Lives);
+
+	// Draw GUI
+	float xPos = xOrigin + BORDER;
+	float yPos = yOrigin - BORDER;
+	renderer->SetRenderColour(0xFFFFFFFF);
+	renderer->DrawText2D(font, strHealth, xPos, yPos);			yPos -= PADDING;
+	renderer->DrawText2D(font, strScore, xPos, yPos);			yPos -= PADDING;
+	renderer->DrawText2D(font, strLives, xPos, yPos);			yPos -= PADDING;
+}
+
+// Score setter functions
 void GUI::SetHealth(int health)
 {
 	m_Health = health;
 }
-
-// The player's score input
 void GUI::SetScore(int score)
 {
 	m_Score = score;
 }
-
-// The player's lives input
 void GUI::SetLives(int lives)
 {
-	m_lives = lives;
-}
-
-// Constructor
-GUI::GUI()
-{
-}
-
-// Destructor
-GUI::~GUI()
-{
+	m_Lives = lives;
 }
