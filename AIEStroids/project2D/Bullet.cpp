@@ -35,7 +35,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	position.SetRotation(angle);
 
 	//Set the local position of the bullet
-	SetLocalPosition(position);
+	SetPosition(position);
 
 	//Need for the bullet to vanish either after going off the screen or after some time
 	//So there will need to be some work on how to turn the bullet back to null after it vanishes
