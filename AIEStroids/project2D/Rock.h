@@ -11,7 +11,7 @@ public:
 	~Rock();
 	void Update(float deltaTime) override;
 	void OnCollision(GameObject* other);
-
+	
 
 private:
 	void SetRandomPath();
