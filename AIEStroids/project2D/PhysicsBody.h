@@ -51,10 +51,10 @@ public:
 	//setters
 	void SetVelocity(Vector2 vel)		{ velocity = vel; }
 	void SetForce(Vector2 force)		{ this->force = force; }
-	void SetDrag(float drag)			{ this->drag = drag * PHYSICS_TIME_STEP < 1 ? drag : 1; }
+	void SetDrag(float drag)			{ this->drag = drag; }
 	void SetAngularVelocity(float aVel) { angularVelocity = aVel; }
 	void SetTorque(float torque)		{ this->torque = torque; }
-	void SetAngularDrag(float aDrag)	{ angularDrag = aDrag * PHYSICS_TIME_STEP < 1 ? angularDrag : 1; }
+	void SetAngularDrag(float aDrag)	{ angularDrag = aDrag; }
 	void SetMass(float mass)			{ iMass = 1.0f / mass; }
 	void SetType(BodyType type)			{ this->type = type; }
 	
