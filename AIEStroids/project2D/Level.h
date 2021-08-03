@@ -32,8 +32,6 @@ public:
 
 	void Update(float deltaTime);
 	void Draw(aie::Renderer2D* renderer);
-	//Actor** GetRocks() { return (Actor**) m_rockArray; }		// I didn't write these
-	//Player* GetPlayer() { return m_player; }					// "
 
 private:
 	// Window size
