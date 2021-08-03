@@ -13,15 +13,17 @@ class Player;
 class Level;
 class Rock;
 
+#define MAX_ENEMY_VELOCITY 10
+
 class Enemy : public Actor
 {
 private:
 	bool m_destroyed;
 	Player* m_player;
-	Vector2 m_position;
 	const float MAX_SEE_AHEAD = 10.0f;
 	const float MAX_AVOID_FORCE = 1.0f;
 	Rock** m_rocks;
+	unsigned int m_Health;
 
 public:
 	Enemy(Player* player, Rock** rocks);
