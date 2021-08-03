@@ -1,27 +1,21 @@
-//Not all of this is right just a rough idea of what i think
-//so i don't forget what i tried and can work on later to fix
-
 #include "BulletManager.h"
 #include "Bullet.h"
 
 //Cap it just for now will change later
-#define MAX_BULLET 30
+#define MAX_BULLET 100
 
 //Constructor
 BulletManager::BulletManager()
 {
-	////Initialise the pBullet 
-	//pBullet = new Bullet * [MAX_BULLET];
+	m_bActive = true;
 
-	////Set all pBullet in the list to null
-	//for (int i = 0; i < MAX_BULLET; ++i)
-	//{
-	//	pBullet[i] = nullptr;
-	//}
-
+	//create the bullet array 
 	pBullet = new Bullet * [MAX_BULLET];
+	//pBullet is true
 	if (pBullet)
 	{
+		//for loop that ruins through the array creating the pBullets
+		//for all pBullet in the array set active as false
 		for (int i = 0; i < MAX_BULLET; ++i)
 		{
 			(pBullet)[i] = new Bullet();
@@ -47,13 +41,16 @@ BulletManager::~BulletManager()
 //Shoot Bullet function that will pass the position and angle to Bullet.cpp Shoot function
 void BulletManager::ShootBullet(Vector2 position, float angle)
 {
-
+	//For loop to find the pBullet closes to the start of the array tha active equals false
 	for (int i = 0; i < MAX_BULLET; ++i)
 	{
 		if (pBullet[i]->GetActive() == false)
 		{
+			//Set the pBullet to true
 			pBullet[i]->SetActive(true);
 
+			//calls thje shoot function from Bullet cpp file that will
+			//create a bullet from the posision from the araay
 			pBullet[i]->Shoot(position, angle);
 
 			break;

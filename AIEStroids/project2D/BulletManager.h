@@ -1,6 +1,3 @@
-//Not all of this is right just a rough idea of what i think
-//so i don't forget what i tried and can work on later to fix
-
 #pragma once
 #include "Vector2.h"
 

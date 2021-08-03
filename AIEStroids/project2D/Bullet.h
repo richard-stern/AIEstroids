@@ -1,6 +1,3 @@
-//Not all of this is right just a rough idea of what i think
-//so i don't forget what i tried and can work on later to fix
-
 #pragma once
 #include "Actor.h"
 #include "TextureManager.h"
@@ -17,13 +14,14 @@ public:
 
 	//Bullets fire 
 	void Shoot(Vector2 position, float angle);
+
 	//Update
-	virtual void Update(float _deltaTime) override;
+	virtual void Update(float m_fDeltaTime) override;
+
 	//Collision with bullets
 	virtual void OnCollision(CollisionEvent _event) override;
 
 private:
-	
 	aie::Texture* m_MyTexture;
 
 	//bool for a fucntion to make visable
@@ -31,7 +29,8 @@ private:
 
 	//Velocity of the bullet being fired
 	Vector2 m_v2Velocity;
+
+	//Float useds for the Update function for the timer
 	float m_fLifeTime;
 	float m_fLifeTimeTimer;
 };
-
