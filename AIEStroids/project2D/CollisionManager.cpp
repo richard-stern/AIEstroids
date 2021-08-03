@@ -173,7 +173,19 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		//resolve collision
 		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
 		float projectedRV = manifold.collisionNormal.GetDot(rV);
-		float impulseMagnitude = -(1 + std::min(manifold.a->collider->restitution, manifold.b->collider->restitution) * projectedRV) / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+		//velocities are seperating
+		if (projectedRV > 0)
+		{
+			return;
+		}
+		//BREAKING THIS DOWN INTO IT'S PARTS TO TRY TO FIND THE PROBLEM
+		//bounce factor (minimum of the two in this case)
+		float restitution = std::min(manifold.a->collider->restitution, manifold.b->collider->restitution);
+		//the impulse magnitude
+		float impulseMagnitude = -(1 + restitution * projectedRV);
+		//divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
+		impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+		//turn into vector
 		Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
 		manifold.a->AddImpulse(impulse* -1);
