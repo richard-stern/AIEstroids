@@ -11,7 +11,7 @@
 #include "Turret.h"
 #include "TextureManager.h"
 #include <cmath>
-#include <iostream>
+//#include <iostream>
 
 Turret::Turret() {
 
@@ -194,7 +194,6 @@ void Turret::TurretKickback(float deltaTime)
 	float m_maxKBSettleTime = 0.5;
 
 	//If m_lastShotTimeDelta = 0 (aka turret just fired), go to full kickback position
-		std::cout << m_lastShotTimeDelta << std::endl;
 	if (m_lastShotTimeDelta == 0) 
 	{
 		m_kickBackPos = m_kickBackForce;
