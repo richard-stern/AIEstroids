@@ -178,11 +178,6 @@ void Player::SetGUI(GUI* gui)
 	this->gui = gui;
 }
 
-void Player::SetRenderer(aie::Renderer2D* renderer)
-{
-	this->renderer = renderer;
-}
-
 void Player::UpdateGUI()
 {
 	gui->SetHealth(m_CurrentHealth);
