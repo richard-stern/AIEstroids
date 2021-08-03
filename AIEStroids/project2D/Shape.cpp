@@ -43,6 +43,17 @@ void PolygonShape::CalculateGlobal(Matrix3& transform)
 	}
 }
 
+float PolygonShape::GetArea()
+{
+	float area;
+	for (int i = 0; i < count; i++)
+	{
+		Vector2 delta = vertices[i] - vertices[(i + 1) % count];
+		//Vector2 height = 
+	}
+	return 1.0f;
+}
+
 PolygonShape* PolygonShape::CreateBox(float hx, float hy, Vector2 relativeCentrePoint)
 {
 	Vector2* vertices = new Vector2[4];
@@ -86,4 +97,9 @@ void PolygonShape::GenerateNormals()
 		normals[count -1] = (vertices[count - 1] - vertices[0]).GetNormalised().GetPerpendicular();
 	}
 	
+}
+
+float CircleShape::GetArea()
+{
+	return M_PI * radius * radius;
 }
