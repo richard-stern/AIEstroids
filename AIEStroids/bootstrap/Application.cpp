@@ -2,6 +2,7 @@
 #include "gl_core_4_4.h"
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <algorithm>
 
 namespace aie 
 {
@@ -17,6 +18,9 @@ Application::Application(const char* title, int width, int height, bool fullscre
 	m_gameOver = false;
 	m_fps = 0;
 	m_frames = 0;
+	m_timeScale = 1.0f;
+	m_unclampedDeltaTime = 0;
+	m_unscaledDeltaTime = 0;
 	m_deltaTime = 0;
 	m_fpsInterval = 0;
 	m_prevTime = GetTime();
@@ -44,7 +48,10 @@ void Application::Update()
 {
 	// Update delta time.
 	double currTime = GetTime();
-	m_deltaTime = currTime - m_prevTime;
+	//Limit delta time to 1 in cases of massive frametime
+	m_unclampedDeltaTime = currTime - m_prevTime;
+	m_unscaledDeltaTime = std::fmin(m_unclampedDeltaTime, 1.0f);
+	m_deltaTime = m_unscaledDeltaTime * m_timeScale;
 	m_prevTime = currTime;
 
 	// Update fps every second.

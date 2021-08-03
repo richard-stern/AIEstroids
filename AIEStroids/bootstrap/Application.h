@@ -51,7 +51,13 @@ public:
 	
 	// Time related functions.
 	float GetTime() const;
+	float GetTimeScale() const { return (float)m_timeScale; }
+	void SetTimeScale(float _timeScale) { m_timeScale = _timeScale; }
 	float GetDeltaTime() const { return (float)m_deltaTime; }
+	//Gets delta time without timescale modification
+	float GetUnscaledDeltaTime() const { return (float)m_unscaledDeltaTime; }
+	//Get unscaled delta time that hasn't been clamped
+	float GetUnclampedDeltaTime() const { return (float)m_unclampedDeltaTime; }
 	unsigned int GetFPS() const { return m_fps; }
 
 private:
@@ -82,6 +88,9 @@ private:
 
 	// Calculating framerate.
 	double m_prevTime;
+	double m_timeScale;
+	double m_unclampedDeltaTime;
+	double m_unscaledDeltaTime;
 	double m_deltaTime;
 	unsigned int m_fps;
 	unsigned int m_frames;

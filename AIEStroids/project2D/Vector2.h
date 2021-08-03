@@ -4,6 +4,10 @@
 #ifndef VECTOR_2_H
 #define VECTOR_2_H
 
+#define M_PI 3.14159265358979323846
+#define DEG2RAD 0.01745329
+#define RAD2DEG	57.2957795
+
 #include "Matrix3.h"
 
 #define M_PI 3.14159265358979323846
@@ -40,6 +44,8 @@ struct Vector2 {
 	void operator*=(float _value);
 	void operator/=(const Vector2& other);
 	void operator/=(float _value);
+
+	Vector2 operator -();
 	
 	// ------- //
 	// METHODS //
