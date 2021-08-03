@@ -7,8 +7,8 @@
 
 struct AABB
 {
-	Vector2 topLeft;
-	Vector2 bottomRight;
+	Vector2 min;
+	Vector2 max;
 };
 
 enum class ShapeType : char
