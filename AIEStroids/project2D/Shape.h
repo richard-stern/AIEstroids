@@ -49,13 +49,16 @@ public:
 		this->centrePoint = centrePoint;
 	}
 
+	void CalculateGlobal(Matrix3& transform);
 	float GetArea();
 	ShapeType GetType() { return ShapeType::CIRCLE; }
 	float GetRadius() { return radius; }
+	float GetGlobalRadius() { return radius; }
 	int SetRadius(float rad) { radius = rad; }
 
 private:
 	float radius;
+	float globalRadius;
 };
 
 class PolygonShape : public Shape

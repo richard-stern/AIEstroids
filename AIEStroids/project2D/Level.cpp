@@ -23,7 +23,7 @@ Level::Level(aie::Renderer2D* renderer)
 
 	// Create Rocks (rocks automatically randomise position)
 	for (int i = 0; i < ROCKS_COUNT; i++)
-		m_rockArray[i] = new Rock();
+		m_rockArray[i] = new Rock(m_player);
 	#pragma endregion
 
 	// Create Camera
