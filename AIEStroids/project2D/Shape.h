@@ -28,6 +28,11 @@ public:
 	Vector2 GetCentrePoint() { return centrePoint; }
 
 	virtual ~Shape() = default;
+	Shape() = default;
+	Shape(Shape& other ) = delete;
+	Shape(Shape&& other ) = delete;
+	Shape& operator=(const Shape& other) = delete;
+	Shape& operator=(Shape&& other) = delete;
 
 protected:
 	Vector2 centrePoint;
