@@ -21,7 +21,6 @@ GameObject::~GameObject()
 
 void GameObject::Update(float _deltaTime)
 {
-	// Update all global transfroms
 	
 }
 

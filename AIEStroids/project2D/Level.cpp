@@ -109,8 +109,8 @@ void Level::Update(float deltaTime)
 void Level::Draw(aie::Renderer2D* renderer)
 {
 	// Draw stars
-	for (int i = 0; i < STARS_COUNT; i++)
-		m_starArray[i]->Draw(renderer);
+	//for (int i = 0; i < STARS_COUNT; i++)
+		//m_starArray[i]->Draw(renderer);
 
 	// Draw player
 	m_player->Draw(renderer);
