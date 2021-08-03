@@ -5,6 +5,7 @@
 #include "Matrix3.h"
 #include "Vector2.h"
 #include "CollisionManager.h"
+#include "Application.h"
 
 // Author: James K
 
@@ -38,10 +39,7 @@ public:
 	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
 
 	float GetRotation() { return m_LocalTransform.GetRotation(); }
-	void SetRotationX(float _radians) { m_LocalTransform.SetRotateX(_radians); }
-	void SetRotationY(float _radians) { m_LocalTransform.SetRotateY(_radians); }
-	void SetRotationZ(float _radians) { m_LocalTransform.SetRotateZ(_radians); }
-
+	void SetRotation(float _radians) { m_LocalTransform.SetRotation(_radians); }
 
 	bool GetActive() { return m_IsActive; }
 	void SetActive(bool _active) { m_IsActive = _active; }
@@ -52,6 +50,7 @@ public:
 	virtual void OnCollision(CollisionEvent _event);
 	
 protected:
+	
 	GameObject* m_Parent = nullptr;
 	DynamicArray<GameObject*> m_Children;
 

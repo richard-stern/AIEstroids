@@ -6,13 +6,13 @@
 Actor::Actor()
 {
 	m_GlobalTransform.SetPosition({ 0, 0 });
-	SetHealth(MAX_HEALTH);
+	SetHealth(m_MaxHealth);
 }
 
 Actor::Actor(Vector2 _pos)
 {
 	m_GlobalTransform.SetPosition(_pos);
-	SetHealth(MAX_HEALTH);
+	SetHealth(m_MaxHealth);
 }
 
 Actor::~Actor()
@@ -24,31 +24,32 @@ Actor::~Actor()
 void Actor::Update(float _deltaTime)
 {
 	GameObject::Update(_deltaTime);
-	
-	/*
-	int h = 0; // Screen Height
-	int w = 0; // Screen Width
+
+	aie::Application* application = aie::Application::GetInstance();
+
+	int h = application->GetWindowHeight();
+	int w = application->GetWindowWidth();
 	Vector2 pos = GetLocalPosition();
 
 	// if actor moves off the screen horizontally
 	if (pos.x > w)
 	{
-		SetLocalPosition({ -w, pos.y });
+		SetLocalPosition({ (float)-w, pos.y });
 	}
 	else if (pos.x < 0)
 	{
-		SetLocalPosition({ w, pos.y });
+		SetLocalPosition({ (float)w, pos.y });
 	}
 	// vertically
 	if (pos.y > h)
 	{
-		SetLocalPosition({ pos.x, -h });
+		SetLocalPosition({ pos.x, (float)-h });
 	}
 	else if (pos.x < 0)
 	{
-		SetLocalPosition({ pos.x, -h });
+		SetLocalPosition({ pos.x, (float)-h });
 	}
-	*/
+	
 }
 
 void Actor::OnCollision(CollisionEvent _event)
