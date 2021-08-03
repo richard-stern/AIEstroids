@@ -44,6 +44,7 @@ struct Matrix3 {
 	Matrix3 Inverse() const;
 	Vector2 GetScale();
 	float GetRotation();
+	void SetRotation(float radians);
 
 	// --------- //
 	// debugging //
