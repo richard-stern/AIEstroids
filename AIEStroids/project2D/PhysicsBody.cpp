@@ -98,7 +98,7 @@ void PhysicsBody::UpdateAABB()
 	case ShapeType::CIRCLE:
 	{
 		CircleShape* circleShape = (CircleShape*)collider->shape;
-		float radius = circleShape->GetRadius();
+		float radius = circleShape->GetGlobalRadius();
 
 		aabb.max.x = radius + circleShape->GetGlobalCentrePoint().x;
 		aabb.min.x = -radius + circleShape->GetGlobalCentrePoint().x;
