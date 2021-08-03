@@ -26,6 +26,8 @@ public:
 	//if you don't input a value for mass it will be automatically calculated based on shape
 	PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* collider = nullptr, float drag = 0, float angularDrag = 0, float mass = 0, bool addToManager = true);
 
+	~PhysicsBody();
+
 	void Update(float deltaTime);
 
 	//getters
@@ -54,10 +56,10 @@ public:
 	
 	//adders
 	void AddImpulse(Vector2 impulse);
-	void AddVelocity(Vector2 vel) { velocity += vel; }
-	void AddForce(Vector2 force) { this->force += force; }
+	void AddVelocity(Vector2 vel)		{ velocity += vel; }
+	void AddForce(Vector2 force)		{ this->force += force; }
 	void AddAngularVelocity(float aVel) { angularVelocity += aVel; }
-	void AddTorque(float torque) { this->torque += torque; }
+	void AddTorque(float torque)		{ this->torque += torque; }
 
 	void UpdateAABB();
 
