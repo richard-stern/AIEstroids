@@ -42,6 +42,7 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 		{
 			if (collisionObjects[i]->collider != nullptr)
 			{
+				//Draw AABB
 				AABB& aabb = collisionObjects[i]->collider->shapeAABB;
 				renderer->SetRenderColour(1, 1, 0, 1);
 				renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.max.x, aabb.min.y, 1.5f);
@@ -49,10 +50,12 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 				renderer->DrawLine(aabb.max.x, aabb.max.y, aabb.min.x, aabb.max.y, 1.5f);
 				renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.min.x, aabb.max.y, 1.5f);
 
+				//Draw Shape
 				switch (collisionObjects[i]->collider->shape->GetType())
 				{
 				case ShapeType::CIRCLE:
 					{
+						//just draw as a high point count polygon
 						auto shape = (CircleShape*)collisionObjects[i]->collider->shape;
 						Vector2 position = shape->GetGlobalCentrePoint();
 						renderer->SetRenderColour(1, 0, 1, 1);

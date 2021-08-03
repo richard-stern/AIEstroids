@@ -45,13 +45,18 @@ void PolygonShape::CalculateGlobal(Matrix3& transform)
 
 float PolygonShape::GetArea()
 {
-	float area;
+	//this only returns accurate area if centrepoint is inside the shape
+	float area = 0;
 	for (int i = 0; i < count; i++)
 	{
-		Vector2 delta = vertices[i] - vertices[(i + 1) % count];
-		//Vector2 height = 
+		Vector2 baseVector = vertices[(i + 1) % count] - vertices[i];
+		//height should be perpendicular to bade
+		float height = abs(Vector2::Dot(baseVector.GetPerpendicular().GetNormalised(), vertices[i] - centrePoint));
+		float base = baseVector.GetMagnitude();
+		//triangle area
+		area += base * height * 0.5f;
 	}
-	return 1.0f;
+	return area;
 }
 
 PolygonShape* PolygonShape::CreateBox(float hx, float hy, Vector2 relativeCentrePoint)
