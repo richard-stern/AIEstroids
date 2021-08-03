@@ -34,39 +34,41 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false), Ac
 
 Enemy::~Enemy()
 {
-	delete m_PhysicsBody;
+
 }
 
 void Enemy::Update(float deltaTime)
 {
 	Seek(deltaTime);
-	//CollisionAvoidance(deltaTime);
+	//CollisionAvoidance(deltaTime);	
 }
 
 void Enemy::Draw(aie::Renderer2D* renderer)
 {
-	Vector2 position = GetLocalPosition();
+	Vector2 position = GetGlobalPosition();
 
-	renderer->DrawBox(position.x, position.y, 32, 48, GetRotation(), 1);
+	renderer->SetRenderColour(1, 0, 0, 1);
+	renderer->DrawBox(position.x, position.y, 48, 48, GetRotation(), 1);
+	renderer->SetRenderColour(1, 1, 1, 1);
 }
 
 void Enemy::OnCollision(GameObject* other)
 {
-	m_Health -= 10;
+	m_CurrentHealth -= 10;
 }
 
 void Enemy::Seek(float deltaTime)
 {
 	Vector2 playerPos = m_player->GetLocalPosition();
 
-	Vector2 difference = playerPos - GetLocalPosition();
+	Vector2 difference = playerPos - GetGlobalPosition();
 
 	Vector2 desiredVelocity = difference.GetNormalised() * MAX_ENEMY_VELOCITY;
 	Vector2 steeringForce = desiredVelocity - m_PhysicsBody->GetVelocity();
 	
 	// update the position of the enemy
-	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce * deltaTime);
-	SetLocalPosition(playerPos + m_PhysicsBody->GetVelocity() * deltaTime);
+	m_PhysicsBody->SetVelocity(m_PhysicsBody->GetVelocity() + steeringForce *deltaTime);
+	SetLocalPosition(GetGlobalPosition() + m_PhysicsBody->GetVelocity() * deltaTime);
 }
 
 void Enemy::SetRandomLocation()
@@ -76,10 +78,15 @@ void Enemy::SetRandomLocation()
 
 	aie::Application* app = aie::Application::GetInstance();
 
-	int x = rand() % app->GetWindowWidth();
-	int y = rand() % app->GetWindowHeight();
+	int width = app->GetWindowWidth();
+	int height = app->GetWindowHeight();
 
-	SetLocalPosition({ (float)x, (float)y });
+	int x = rand() % 2*width + (-width);
+	int y = rand() % 2*height + (-height);
+
+	Vector2 spawnPos = { (float)x, (float)y };
+
+	SetLocalPosition(spawnPos);
 
 	float rotation = (float) (rand() / 10000.0);
 
