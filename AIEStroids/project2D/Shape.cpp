@@ -77,6 +77,8 @@ void PolygonShape::GenerateNormals()
 {
 	if (vertices != nullptr)
 	{
+		normals = new Vector2[count];
+
 		for (int i = 0; i < count - 1; i++)
 		{
 			normals[i] = (vertices[i] - vertices[i + 1]).GetNormalised().GetPerpendicular();

@@ -28,6 +28,11 @@ PhysicsBody::PhysicsBody(Actor* connectedGameObject, BodyType type, Collider* co
 
 }
 
+PhysicsBody::~PhysicsBody()
+{
+	delete collider;
+}
+
 void PhysicsBody::Update(float deltaTime)
 {
 	switch (type)
