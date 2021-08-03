@@ -19,9 +19,17 @@ BulletManager::BulletManager()
 	//	pBullet[i] = nullptr;
 	//}
 
-	pBullet = new Bullet*[MAX_BULLET];
+	pBullet = new Bullet * [MAX_BULLET];
+	if (pBullet)
+	{
+		for (int i = 0; i < MAX_BULLET; ++i)
+		{
+			(pBullet)[i] = new Bullet();
 
-	m_bActive = false;
+			if (pBullet[i])
+				pBullet[i]->SetActive(false);
+		}
+	}
 }
 
 //Destuctor
@@ -39,27 +47,6 @@ BulletManager::~BulletManager()
 //Shoot Bullet function that will pass the position and angle to Bullet.cpp Shoot function
 void BulletManager::ShootBullet(Vector2 position, float angle)
 {
-	////bool for while loop
-	//bool run = true;
-
-	//while (run)
-	//{
-	//	//Runs thorugh the array to find a pBullet that is null
-	//	for (int i = 0; i < MAX_BULLET; ++i)
-	//	{
-	//		if (pBullet[i] == nullptr)
-	//		{
-	//			//Creates the pBullet
-	//			pBullet[i] = new Bullet();
-
-	//			//Calls the function from Bullet.cpp
-	//			pBullet[i]->Shoot(position, angle);
-
-	//			//Sets bool to false to end while loop
-	//			run = false;
-	//		}
-	//	}
-	//}
 
 	for (int i = 0; i < MAX_BULLET; ++i)
 	{
@@ -68,8 +55,8 @@ void BulletManager::ShootBullet(Vector2 position, float angle)
 			pBullet[i]->SetActive(true);
 
 			pBullet[i]->Shoot(position, angle);
-			
-			/*pBullet[i]->SetActive(false);*/
+
+			break;
 		}
 	}
 }

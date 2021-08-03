@@ -7,11 +7,13 @@
 Bullet::Bullet() : Actor::Actor()
 {
 	//Get the texture for the bullet
-	m_TextureManager = TextureManager::Get();
-	m_MyTexture = m_TextureManager->LoadTexture("");
+
+	m_MyTexture = TextureManager::Get()->LoadTexture("");
 
 	//Set the variable to false cause why not
 	m_WrapAndRespawn = false;
+	m_fLifeTime = 10;
+	m_fLifeTimeTimer = m_fLifeTime;
 }
 
 //Destructor
@@ -23,6 +25,9 @@ Bullet::~Bullet()
 //takes in the position and angle 
 void Bullet::Shoot(Vector2 position, float angle)
 {
+	//Reset Timer
+	m_fLifeTimeTimer = m_fLifeTime;
+
 	//Calls function to make visable so it will renderer
 	SetActive(m_bActive);
 	
@@ -41,8 +46,23 @@ void Bullet::Shoot(Vector2 position, float angle)
 
 }
 
-//Collision with the bullet and other objects
-void Bullet::OnCollision()
+void Bullet::Update(float _deltaTime)
 {
-
+	//Life Timer
+	if (m_bActive)
+	{
+		m_fLifeTimeTimer -= _deltaTime;
+		if (m_fLifeTimeTimer <= 0)
+		{
+			
+			m_bActive = false;
+		}
+	}
 }
+
+void Bullet::OnCollision(CollisionEvent _event)
+{
+	m_bActive = false;
+}
+
+

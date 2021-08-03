@@ -17,13 +17,13 @@ public:
 
 	//Bullets fire 
 	void Shoot(Vector2 position, float angle);
-
+	//Update
+	virtual void Update(float _deltaTime) override;
 	//Collision with bullets
-	void OnCollision(/*overload*/);
+	virtual void OnCollision(CollisionEvent _event) override;
 
 private:
-	TextureManager* m_TextureManager;
-
+	
 	aie::Texture* m_MyTexture;
 
 	//bool for a fucntion to make visable
@@ -31,5 +31,7 @@ private:
 
 	//Velocity of the bullet being fired
 	Vector2 m_v2Velocity;
+	float m_fLifeTime;
+	float m_fLifeTimeTimer;
 };
 
