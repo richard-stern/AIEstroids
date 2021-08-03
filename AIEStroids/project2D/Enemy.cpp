@@ -16,7 +16,7 @@ Enemy::Enemy() : m_destroyed(false), Actor()
 	//m_bVisible = ;
 	//m_bWrapAndRespawn = ;
 	m_nHealth = 100;
-	m_nMaxHealth = 100;
+	//m_nMaxHealth = 100;
 
 	//m_player = level->GetPlayer();
 

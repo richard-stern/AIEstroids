@@ -34,6 +34,8 @@ Game2D::~Game2D()
 	delete level;
 
 	TextureManager::Destroy();
+	Camera::Destroy();
+
 	// Delete the renderer.
 	delete m_2dRenderer;
 }
