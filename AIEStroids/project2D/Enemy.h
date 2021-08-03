@@ -5,6 +5,7 @@
 #pragma once
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "Matrix3.h"
 #include "Vector2.h"
 #include "Actor.h"
@@ -31,7 +32,6 @@ public:
 	Enemy(Vector2 pos, Player* player, Rock** rocks);
 	~Enemy();
 	void Update(float deltaTime) override;
-	void Draw(aie::Renderer2D* renderer) override;
 	void OnCollision(GameObject* other);
 	bool IsDestroyed() { return (m_CurrentHealth <= 0); }
 

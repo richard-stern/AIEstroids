@@ -24,13 +24,14 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
 	//Create the physics body using the generated collider
 	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	m_PhysicsBody->SetDrag(PLAYER_DRAG);
 
 	//------------------CREATE TURRET----------------------//
 	turret = new Turret();
-	//turret->SetParent(this);
+	turret->SetParent(this);
 	AddChild(turret);
 	//turret->SetPos(1000.0f, 0.0f);
-	turret->SetLocalPosition(Vector2(100.0f, 0.0f));
+	turret->SetPosition(Vector2(100.0f, 0.0f));
 
 
 	gui = GUI::GetInstance();
@@ -45,7 +46,6 @@ void Player::Update(float deltaTime)
 	Actor::Update(deltaTime);
 	if (playerAlive)
 	{
-
 		//Calculate input vectors
 		//------------------------------------
 		// 	  + Y
@@ -86,20 +86,35 @@ void Player::Update(float deltaTime)
 		//	Add forces
 		//--------------
 		//-------------------------P O S I T I O N----------------------------------------------------
-		m_PhysicsBody->AddForce(playerForward * std::abs(inputVector.y) * thrustAmount);
+		if (inputVector.y != 0)
+		{
+			m_PhysicsBody->AddForce(playerForward * inputVector.y * thrustAmount);
+		}
+
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
 		if (currentVelocity.GetMagnitude() > PLAYER_MAXSPEED)
 			m_PhysicsBody->SetVelocity(currentVelocity.GetNormalised() * PLAYER_MAXSPEED);
 
 		//-------------------------R O T A T I O N----------------------------------------------------
-		m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * deltaTime);
+		if (inputVector.x != 0)
+		{
+			//Remove drag so rotation doesn't get hampered
+			m_PhysicsBody->SetAngularDrag(0.0f);
+			m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * deltaTime);
+		}
+		else
+		{
+			m_PhysicsBody->SetAngularDrag(PLAYER_ROTATIONAL_DRAG);
+		}
+		
 		//Limit angular velocity
 		currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
 		float absoluteValue = std::abs(currentAngularVelocity);
 		if (absoluteValue > (PLAYER_MAXROTATIONSPEED * DEG2RAD))
 			//Dividing angular velocity by its absolute value will give the sign of the value
 			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
+
 
 		//Check tha health
 		if (m_CurrentHealth <= 0)
@@ -192,5 +207,5 @@ void Player::Respawn()
 	SetRotation(0.0f);
 
 	//Set back to spawn
-	SetLocalPosition(Vector2::ZERO()/*Spawn point to be added*/);
+	SetPosition(Vector2::ZERO()/*Spawn point to be added*/);
 }

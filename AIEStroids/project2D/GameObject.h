@@ -29,10 +29,10 @@ public:
 	Matrix3 GetGlobalTransform() { return  m_GlobalTransform; }
 	Matrix3 GetLocalTransform() { return  m_LocalTransform; }
 	Vector2 GetGlobalPosition() { return  m_GlobalTransform.GetPosition(); }
-	Vector2 GetLocalPosition() { return  m_LocalTransform.GetPosition(); }
+	Vector2 GetPosition() { return  m_LocalTransform.GetPosition(); }
 
 	void SetLocalTransform(Matrix3 _transform) { m_LocalTransform = _transform; }
-	void SetLocalPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
+	void SetPosition(Vector2 _pos) { m_LocalTransform.SetPosition(_pos); }
 	float GetRotation() { return m_LocalTransform.GetRotation(); }
 	void SetRotation(float _radians) { m_LocalTransform.SetRotation(_radians); }
 
