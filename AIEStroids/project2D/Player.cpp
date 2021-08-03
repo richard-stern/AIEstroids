@@ -14,7 +14,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 
 	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
-	m_LocalTransform.SetScale(3.0f, 3.0f);
+	m_LocalTransform.SetScale(1000.0f, 1000.0f);
 	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
@@ -89,7 +89,7 @@ void Player::Update(float deltaTime)
 		//-------------------------P O S I T I O N----------------------------------------------------
 		if (inputVector.y != 0)
 		{
-			m_PhysicsBody->AddForce(playerForward * inputVector.y * thrustAmount);
+			m_PhysicsBody->AddVelocity(playerForward * inputVector.y * thrustAmount);
 		}
 
 		//Limit player speed

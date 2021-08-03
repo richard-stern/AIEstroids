@@ -143,10 +143,16 @@ void Matrix3::SetRotateZ(float _radians) {
 }
 
 void Matrix3::SetScale(float _x, float _y) {
-	Matrix3 scale_matrix;
-	scale_matrix.m[0] = _x;
-	scale_matrix.m[1] = _y;
-	*this = *this * scale_matrix;
+	Vector2 right = { m[0], m[1] };
+	Vector2 up = { m[3], m[4] };
+
+	right = right.GetNormalised() * _x;
+	up = up.GetNormalised() * _y;
+
+	m[0] = right.x;
+	m[1] = right.y;
+	m[3] = up.x;
+	m[4] = up.y;
 }
 
 void Matrix3::SetPosition(float _x, float _y) {
