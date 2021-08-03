@@ -44,6 +44,12 @@ Vector2 Vector2::operator*(float _value) const {
 	return Vector2(x * _value, y * _value);
 }
 
+Vector2 Vector2::operator*(const Matrix3& mat) const
+{
+	return Vector2(mat.m[0] * x + mat.m[3] * y,
+		mat.m[1] * x + mat.m[4] * y);
+}
+
 void Vector2::operator*=(const Vector2& other) {
 	x *= other.x;
 	y *= other.y;
