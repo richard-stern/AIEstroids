@@ -24,7 +24,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
 	//Create the physics body using the generated collider
 	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
-	m_PhysicsBody->SetAngularDrag(900.0f);
+	m_PhysicsBody->SetDrag(PLAYER_DRAG);
 
 	//------------------CREATE TURRET----------------------//
 	turret = new Turret();
@@ -94,13 +94,22 @@ void Player::Update(float deltaTime)
 			m_PhysicsBody->SetVelocity(currentVelocity.GetNormalised() * PLAYER_MAXSPEED);
 
 		//-------------------------R O T A T I O N----------------------------------------------------
-		m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * deltaTime);
-		//Limit angular velocity
-		currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
-		float absoluteValue = std::abs(currentAngularVelocity);
-		if (absoluteValue > (PLAYER_MAXROTATIONSPEED * DEG2RAD))
-			//Dividing angular velocity by its absolute value will give the sign of the value
-			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
+		if (inputVector.x != 0)
+		{
+			m_PhysicsBody->SetAngularDrag(0.0f);
+			m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * deltaTime);
+			//Limit angular velocity
+			currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
+			float absoluteValue = std::abs(currentAngularVelocity);
+			if (absoluteValue > (PLAYER_MAXROTATIONSPEED * DEG2RAD))
+				//Dividing angular velocity by its absolute value will give the sign of the value
+				m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
+		}
+		else
+		{
+			m_PhysicsBody->SetAngularDrag(PLAYER_ROTATIONAL_DRAG);
+		}
+
 
 		//Check tha health
 		if (m_CurrentHealth <= 0)
