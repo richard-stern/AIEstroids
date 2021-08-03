@@ -14,7 +14,7 @@
 #include "Camera.h"
 #include "GUI.h"
 
-#define ROCKS_COUNT		6				// Count of Rocks in the level
+#define ROCKS_COUNT		12				// Count of Rocks in the level
 #define STARS_COUNT		100				// Count of Stars in the level
 #define ENEMY_RATE		6				// Enemy spawn rate (sec between spawns)
 

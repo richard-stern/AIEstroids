@@ -38,7 +38,7 @@ void PolygonShape::CalculateGlobal(Matrix3& transform)
 
 	for (int i = 0; i < count; i++)
 	{
-		globalVertices[i] = globalVertices[i] * transform;
+		globalVertices[i] = vertices[i] * transform;
 		globalVertices[i] += globalCentrePoint;
 	}
 }
@@ -83,6 +83,7 @@ void PolygonShape::GenerateNormals()
 		{
 			normals[i] = (vertices[i] - vertices[i + 1]).GetNormalised().GetPerpendicular();
 		}
+		normals[count -1] = (vertices[count - 1] - vertices[0]).GetNormalised().GetPerpendicular();
 	}
 	
 }

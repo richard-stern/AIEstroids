@@ -1,5 +1,6 @@
 #include "CollisionManager.h"
 #include "Actor.h"
+#include <iostream>
 
 CollisionManager* CollisionManager::instance = nullptr;
 
@@ -25,6 +26,37 @@ void CollisionManager::RemoveBody(PhysicsBody* body)
 	auto it = std::find(collisionObjects.begin(), collisionObjects.end(), body);
 	if (it != collisionObjects.end())
 		collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
+}
+
+static Vector2 penetrationVector;
+static Vector2 penPos;
+static bool didCollide;
+void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
+{
+	for (int i = 0; i < collisionObjects.size(); i++)
+	{
+		if (collisionObjects[i]->collider != nullptr)
+		{
+			AABB& aabb = collisionObjects[i]->collider->shapeAABB;
+			renderer->SetRenderColour(1,1,0,1);
+			renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.max.x, aabb.min.y, 5);
+			renderer->DrawLine(aabb.max.x, aabb.min.y, aabb.max.x, aabb.max.y, 5, 19);
+			renderer->DrawLine(aabb.max.x, aabb.max.y, aabb.min.x, aabb.max.y, 5);
+			renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.min.x, aabb.max.y, 5);
+
+			auto shape = (PolygonShape*)collisionObjects[i]->collider->shape;
+			auto vertices = shape->GetGlobalVertices();
+			for (int j = 0; j < shape->GetCount(); j++)
+			{
+				renderer->SetRenderColour(1, 0, 1, 1);
+				renderer->DrawCircle(vertices[j].x, vertices[j].y, 5);
+			}
+
+			renderer->SetRenderColour(0, 1, 1, 1);
+			renderer->DrawLine(penPos.x, penPos.y, (penPos + penetrationVector * 50).x, (penPos + penetrationVector * 50).y, 10);
+		
+		}
+	}
 }
 
 void CollisionManager::CreateInstance()
@@ -68,9 +100,14 @@ void CollisionManager::ResolveCollisions()
 				//this checks if the AABBs are colliding
 				if (CheckAABBCollision(collisionObjects[i]->collider->shapeAABB, collisionObjects[j]->collider->shapeAABB))
 				{
+					std::cout << "AABBS!!!!!!!!!\n";
 					//in this case we need to check if collision is valid, and if so, resolve it
 					//we add it to collisions for this frame
 					collisions.push_back(CollisionManifold(collisionObjects[i], collisionObjects[j]));
+				}
+				else
+				{
+					std::cout << "                \n";
 				}
 			}
 		}
@@ -88,25 +125,27 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 	//if collision happened
 	if (SetCollisionInfo(manifold))
 	{
-		//collision callbacks
-		manifold.a->actorObject->OnCollision(CollisionEvent{ manifold.b, manifold.collisionNormal, manifold.penetration });
-		manifold.b->actorObject->OnCollision(CollisionEvent{ manifold.a, manifold.collisionNormal, manifold.penetration });
+		////collision callbacks
+		//manifold.a->actorObject->OnCollision(CollisionEvent{ manifold.b, manifold.collisionNormal, manifold.penetration });
+		//manifold.b->actorObject->OnCollision(CollisionEvent{ manifold.a, manifold.collisionNormal, manifold.penetration });
 
-		//resolve collision
-		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
-		float projectedRV = manifold.collisionNormal.GetDot(rV);
-		float impulseMagnitude = -(1 + std::min(manifold.a->collider->restitution, manifold.b->collider->restitution) * projectedRV) / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
-		Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
+		////resolve collision
+		//Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
+		//float projectedRV = manifold.collisionNormal.GetDot(rV);
+		//float impulseMagnitude = -(1 + std::min(manifold.a->collider->restitution, manifold.b->collider->restitution) * projectedRV) / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+		//Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
-		manifold.a->AddImpulse(impulse * -1);
-		manifold.b->AddImpulse(impulse);
+		//manifold.a->AddImpulse(impulse * -1);
+		//manifold.b->AddImpulse(impulse);
 	}
 }
 
 bool CollisionManager::CheckAABBCollision(AABB& a, AABB& b)
 {
-	return (a.bottomRight.x > b.topLeft.x&& a.bottomRight.y > b.topLeft.x
-		&& a.topLeft.x < b.bottomRight.x && a.topLeft.y < b.bottomRight.y);
+	return (a.min.x < b.max.x && a.min.y < b.max.y
+		&& a.max.x > b.min.x && a.max.y > b.min.y
+		&& b.min.x < a.max.x && b.min.y < a.max.y
+		&& b.max.x > a.min.x && b.max.y > a.min.y);
 }
 
 bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
@@ -264,7 +303,9 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		//set penetration data in manifold
 		manifold.penetration = penetration;
 		manifold.collisionNormal = pNormal;
-
+		penetrationVector = manifold.collisionNormal * manifold.penetration;
+		penPos = manifold.a->actorObject->GetGlobalPosition();
+		return true;
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
