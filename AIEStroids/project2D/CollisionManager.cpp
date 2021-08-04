@@ -170,27 +170,33 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		manifold.a->actorObject->OnCollision(CollisionEvent{ manifold.b, manifold.collisionNormal, manifold.penetration });
 		manifold.b->actorObject->OnCollision(CollisionEvent{ manifold.a, manifold.collisionNormal, manifold.penetration });
 
-		//resolve collision
+		if (manifold.a->collider->GetTrigger() || manifold.b->collider->GetTrigger())
+			return;
+
+		////resolve collision
 		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
 		float projectedRV = manifold.collisionNormal.GetDot(rV);
-		
-		//velocities are seperating
-		//bounce factor (minimum of the two in this case)
-		float restitution = (manifold.a->collider->restitution + manifold.b->collider->restitution) / 2.0f;
-		//the impulse magnitude
-		float impulseMagnitude = -(1 + restitution) * projectedRV;
-		//divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
-		impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
-		//turn into vector
-		Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
+		//
+		////velocities are seperating
+		if (projectedRV < 0)
+			return;
+		////bounce factor (average of the two)
+		//float restitution = (manifold.a->collider->restitution + manifold.b->collider->restitution) / 2.0f;
+		////the impulse magnitude
+		//float impulseMagnitude = -(1 + restitution) * projectedRV;
+		////divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
+		//impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+		////turn into vector
+		//Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
-		manifold.a->AddImpulse(impulse * -1);
-		manifold.b->AddImpulse(impulse);
-		
+		//manifold.a->AddImpulse(impulse * -1);
+		//manifold.b->AddImpulse(impulse);
+		std::cout << manifold.penetration << '\n';
+
 		if (manifold.a->type == BodyType::DYNAMIC)
-			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())) * manifold.a->GetInverseMass());
+			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration * manifold.a->GetInverseMass() / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())));
 		if (manifold.b->type == BodyType::DYNAMIC)
-			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())) * manifold.b->GetInverseMass());
+			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() - manifold.collisionNormal * (manifold.penetration * manifold.b->GetInverseMass() / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())));
 	}
 }
 
