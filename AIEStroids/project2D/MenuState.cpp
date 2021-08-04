@@ -58,7 +58,7 @@ void MenuState::Draw(aie::Renderer2D* renderer) {
 	aie::Application* application = aie::Application::GetInstance();
 	float width  = (float)(application->GetWindowWidth());
 	float height = (float)(application->GetWindowHeight());
-
+	
 	auto font = TextureManager::Get()->LoadFont("..\\bin\\font\\consolas.ttf");
 	renderer->DrawText2D(font, "AIESTROIDS", width * 0.5f - 22 * 4, height * 0.5f + 22);
 	renderer->DrawText2D(font, "Press Enter", width * 0.5f - 23 * 4, height * 0.5f - 22);
