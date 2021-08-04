@@ -24,7 +24,7 @@ private:
 	const float MAX_SEE_AHEAD = 100.0f;
 	const float MAX_AVOID_FORCE = 10.0f;
 	Rock** m_rocks;
-	const int radius = 100;
+	const int radius = 120;
 	Vector2 steeringForce;
 
 public:

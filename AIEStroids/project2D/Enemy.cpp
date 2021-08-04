@@ -46,11 +46,15 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
+	Vector2 velocity = m_PhysicsBody->GetVelocity();
 	Seek(m_player, deltaTime);
-	//steeringForce = { 0, 1 };
 	CollisionAvoidance(deltaTime);
 
-	Vector2 velocity = m_PhysicsBody->GetVelocity();
+	if (steeringForce.GetMagnitude() > MAX_SEE_AHEAD)
+	{
+		steeringForce = steeringForce.GetNormalised();
+		steeringForce *= MAX_SEE_AHEAD;
+	}
 
 	// update the velocity of the enemy
 	m_PhysicsBody->SetVelocity(velocity + steeringForce *deltaTime);
@@ -131,10 +135,8 @@ void Enemy::CollisionAvoidance(float deltaTime)
 		avoidance.x = ahead.x - mostThreatening->GetPosition().x;
 		avoidance.y = ahead.y - mostThreatening->GetPosition().y;
 
-		if (avoidance.GetMagnitude() > MAX_AVOID_FORCE) {
-			avoidance.GetNormalised();
-			avoidance *= MAX_AVOID_FORCE;
-		}
+		avoidance.GetNormalised();
+		avoidance *= MAX_AVOID_FORCE;
 
 		//avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
 	} 
