@@ -2,19 +2,12 @@
 #include "Application.h"
 #include "PhysicsBody.h"
 #include "CollisionManager.h"
+#include "Camera.h"
 
 #define LEVEL_SIZE 20000
 
-Actor::Actor()
+Actor::Actor(Vector2 _pos, GameObject* _parent) : GameObject::GameObject(_pos, _parent)
 {
-	SetPosition({ 0, 0 });
-	SetHealth(m_MaxHealth);
-	
-}
-
-Actor::Actor(Vector2 _pos, GameObject* _parent)
-{
-	SetPosition(_pos);
 	SetHealth(m_MaxHealth);
 }
 
@@ -27,42 +20,25 @@ Actor::~Actor()
 void Actor::Update(float _deltaTime)
 {
 	GameObject::Update(_deltaTime);
+
+	m_Camera = Camera::GetInstance();
 	
-	// V2 thisPos
-	// V2 cameraPos
-	// int xThresh
-	// int yThresh
-	
-	//difference.x = thispos.x - campos.x
-
-	// if (thisPos.x < campos.x + xThresh)
-	// SetPos(-, thispos.y 
-
-
 	if (m_WrapAndRespawn)
 	{
-		//int h = application->GetWindowHeight();
-		//int w = application->GetWindowWidth();
-		//Vector2 pos = GetPosition();
+		// V2 pos
+		// V2 cameraPos
+		// int xThresh
+		// int yThresh
 
-		//// if actor moves off the screen horizontally
-		//if (pos.x > w)
-		//{
-		//	SetPosition({ (float)-w, pos.y });
-		//}
-		//else if (pos.x < 0)
-		//{
-		//	SetPosition({ (float)w, pos.y });
-		//}
-		//// vertically
-		//if (pos.y > h)
-		//{
-		//	SetPosition({ pos.x, (float)-h });
-		//}
-		//else if (pos.x < 0)
-		//{
-		//	SetPosition({ pos.x, (float)-h });
-		//}
+		// if (pos.x < campos.x + xThresh)
+		// SetPos(campos.x + xthresh, thispos.y + rand() % ythresh)
+		// if (pos.x > campos.x + xThresh)
+		// SetPos(campos.x - xthresh, thispos.y + rand() % ythresh)
+		// if (pos.y < campos.y + yThresh)
+		// SetPos(campos.y + xthresh, thispos.y + rand() % xthresh)
+		// if (pos.y > campos.y + yThresh)
+		// SetPos(campos.y + xthresh, thispos.y + rand() % xthresh)
+
 	}
 }
 

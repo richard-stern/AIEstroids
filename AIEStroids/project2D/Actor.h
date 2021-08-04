@@ -9,8 +9,7 @@ class PhysicsBody;
 
 class Actor : public GameObject
 {
-public:
-	Actor();
+
 	Actor(Vector2 _pos, GameObject* _parent = nullptr);
 	virtual ~Actor();
 
@@ -30,7 +29,7 @@ public:
 
 protected:
 	PhysicsBody* m_PhysicsBody = nullptr;
-
+	Camera* m_Camera = nullptr;
 	const int m_MaxHealth = 100;
 	int m_CurrentHealth;
 	
