@@ -7,5 +7,7 @@ enum class CollisionLayer : unsigned short
 	BULLET = 0b100,
 	PICKUP = 0b1000,
 	ENEMY = 0b10000,
+	NONE = 0,
+	DEFAULT = 0b100000,
 	ALL = 0xFF
 };

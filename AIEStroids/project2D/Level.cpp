@@ -30,6 +30,9 @@ Level::Level(aie::Renderer2D* renderer)
 
 	// Create Camera
 	Camera::Create(renderer, m_player);
+
+	// Set game over to false
+	isGameOver = false;
 }
 
 // Destructor - Deletes level objects and systems
@@ -153,6 +156,10 @@ void Level::Update(float deltaTime)
 
 	// Update Camera system
 	Camera::GetInstance()->Update(deltaTime);
+
+	// Update game over
+	if (m_player->GetLives() <= 0)
+		isGameOver = true;
 }
 
 // Draw loop - Runs draw loop for all level objects
@@ -178,4 +185,10 @@ void Level::Draw(aie::Renderer2D* renderer)
 		m_healthArray[i]->Draw(renderer);
 
 	CollisionManager::GetInstance()->DebugDraw(renderer);
+}
+
+// Returns whether the player has run out of lives
+bool Level::IsGameOver()
+{
+	return isGameOver;
 }

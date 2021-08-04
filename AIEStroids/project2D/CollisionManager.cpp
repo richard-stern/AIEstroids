@@ -128,7 +128,7 @@ void CollisionManager::ResolveCollisions()
 
 	for (int i = 0; i < collisionObjects.Count() - 1; i++)
 	{
-		if (collisionObjects[i]->collider == nullptr)
+		if (collisionObjects[i]->collider == nullptr || !collisionObjects[i]->GetActor()->GetActive())
 		{
 			continue;
 		}
@@ -136,8 +136,8 @@ void CollisionManager::ResolveCollisions()
 		for (int j = i + 1; j < collisionObjects.Count(); j++)
 		{
 			//check if the objects are compatible layer wise, if collider exists, and 
-			if (collisionObjects[j]->collider != nullptr && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
-				&& collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask)
+			if ((collisionObjects[j]->collider != nullptr && collisionObjects[i]->GetActor()->GetActive()) && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
+				&& collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask )
 			{
 				//broad phase
 				//this checks if the AABBs are colliding
@@ -220,7 +220,7 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		CircleShape* a = (CircleShape*)manifold.a->collider->shape;
 		CircleShape* b = (CircleShape*)manifold.b->collider->shape;
 
-		Vector2 delta = b->GetGlobalCentrePoint() - a->GetGlobalCentrePoint();
+		Vector2 delta = a->GetGlobalCentrePoint() - b->GetGlobalCentrePoint();
 		float p = a->GetGlobalRadius() + b->GetGlobalRadius() - (delta).GetMagnitude();
 		if (p > 0)
 		{
@@ -251,31 +251,16 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		float p = -INFINITY;
 		int count = a->GetCount();
 
-		//loop through all vertices and get the one with the min distance to the circle
-		//should actually project onto axis
-
-		for (int i = 0; i < count; i++)
+		Vector2 axis = (a->GetGlobalCentrePoint() - b->GetGlobalCentrePoint()).GetNormalised();
+		MinMax projPolygon = GetProjectedMinMax(axis, polygonVertices, count);
+		float penetration = ((projPolygon.max - projPolygon.min) / 2 + b->GetGlobalRadius()) - (a->GetGlobalCentrePoint() - b->GetGlobalCentrePoint()).GetMagnitude();
+		if (penetration > 0)
 		{
-			auto deltaVector = -(b->GetGlobalCentrePoint() - polygonVertices[i]);
-			float dist = deltaVector.GetMagnitude();
-			float potentialP = b->GetGlobalRadius() - dist;
-			if (potentialP > 0 && potentialP > p )
-			{
-				p = potentialP;
-				normal = deltaVector;
-			}
-		}
-		
-		//return results
-		if (!isinf(p))
-		{
-			manifold.penetration = p;
-			manifold.collisionNormal = normal.GetNormalised();
+			manifold.collisionNormal = axis;
+			manifold.penetration = penetration;
 			return true;
 		}
-		else
-			return false;
-
+		return false;
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
