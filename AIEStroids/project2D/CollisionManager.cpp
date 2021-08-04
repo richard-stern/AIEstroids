@@ -14,7 +14,7 @@ void CollisionManager::Update()
 
 	ResolveCollisions();
 
-	for (int i = 0; i < collisionObjects.size(); i++)
+	for (int i = 0; i < collisionObjects.Count(); i++)
 	{
 		collisionObjects[i]->Update(aie::Application::GetInstance()->GetDeltaTime());
 	}
@@ -22,23 +22,21 @@ void CollisionManager::Update()
 
 void CollisionManager::AddBody(PhysicsBody* body)
 {
-	collisionObjects.push_back(body);
+	collisionObjects.Add(body);
 	if (body->GetCollider() != nullptr)
 		body->GetCollider()->GetShape()->CalculateGlobal(body->actorObject->GetGlobalTransform());
 }
 
 void CollisionManager::RemoveBody(PhysicsBody* body)
 {
-	auto it = std::find(collisionObjects.begin(), collisionObjects.end(), body);
-	if (it != collisionObjects.end())
-		collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
+	collisionObjects.Remove(body);
 }
 
 void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 {
 	if (drawDebug)
 	{
-		for (int i = 0; i < collisionObjects.size(); i++)
+		for (int i = 0; i < collisionObjects.Count(); i++)
 		{
 			if (collisionObjects[i]->collider != nullptr)
 			{
@@ -94,7 +92,7 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 			}
 		}
 		//go through all the collisions that happened last time and draw penetration vector
-		for (int i = 0; i < collisions.size(); i++)
+		for (int i = 0; i < collisions.Count(); i++)
 		{
 			renderer->SetRenderColour(0, 1, 1, 1);
 			auto pos = collisions[i].b->actorObject->GetPosition();
@@ -126,16 +124,16 @@ CollisionManager* CollisionManager::GetInstance()
 
 void CollisionManager::ResolveCollisions()
 {
-	collisions.clear();
+	collisions.Clear();
 
-	for (int i = 0; i < collisionObjects.size() - 1; i++)
+	for (int i = 0; i < collisionObjects.Count() - 1; i++)
 	{
 		if (collisionObjects[i]->collider == nullptr)
 		{
 			continue;
 		}
 
-		for (int j = i + 1; j < collisionObjects.size(); j++)
+		for (int j = i + 1; j < collisionObjects.Count(); j++)
 		{
 			//check if the objects are compatible layer wise, if collider exists, and 
 			if (collisionObjects[j]->collider != nullptr && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
@@ -148,14 +146,14 @@ void CollisionManager::ResolveCollisions()
 				{
 					//in this case we need to check if collision is valid, and if so, resolve it
 					//we add it to collisions for this frame
-					collisions.push_back(CollisionManifold(collisionObjects[i], collisionObjects[j]));
+					collisions.Add(CollisionManifold(collisionObjects[i], collisionObjects[j]));
 				}
 			}
 		}
 	}
 
 	//now that all possible collisions have been found, resolve collisions
-	for (int i = 0; i < collisions.size(); i++)
+	for (int i = 0; i < collisions.Count(); i++)
 	{
 		ResolveCollision(collisions[i]);
 	}
