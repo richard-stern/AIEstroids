@@ -36,7 +36,7 @@ namespace UI { // @incomplete move UI into its own file?
 	};
 	///
 	struct Colour {
-		Colour();
+		Colour() {};
 		Colour(float _r, float _g, float _b, float _a) {
 			r = _r;
 			g = _g;
