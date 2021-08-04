@@ -23,6 +23,8 @@ void GameState::Update(float deltaTime, StateMachine* state) {
 	// @incomplete check if the player's health is zero
 	// if so, change state to game over state
 	level->Update(deltaTime);
+	if (level->IsGameOver())
+        state->ChangeState(StateMachine::ESTATE_GAMEOVER);
 };
 ///
 void GameState::Draw(aie::Renderer2D* renderer) {

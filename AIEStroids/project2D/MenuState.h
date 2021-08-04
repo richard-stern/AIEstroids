@@ -8,25 +8,10 @@
 #include "Renderer2D.h"
 class StateMachine;
 
+#define NUMBER_OF_BUTTONS 3 // this is terrible @incomplete
 
-class MenuState : public BaseState {
-public:
-	MenuState();
-	virtual ~MenuState();
-
-	/// Called when the state starts. Loads all the images needed for the menu. Inits everything
-	void Enter() override;
-	/// Process input and when the player has clicked the start button, you can start the game using pStatemachine->ChangeState(ESTATE_GAME);
-	void Update(float deltaTime, StateMachine* stateMachine) override;
-	/// Draw all the graphics for the menu
-	void Draw(aie::Renderer2D* renderer) override;
-	/// Called when the state is exited. Deletes all assets used in menu and cleans up everything
-	void Exit() override;
-};
-
-
-  // -------------------------------------------
- //           DRAW UI FUNCTIONS
+// -------------------------------------------
+//           DRAW UI FUNCTIONS
 // -------------------------------------------
 namespace UI { // @incomplete move UI into its own file?
 	enum class UI_STATES {
@@ -53,26 +38,52 @@ namespace UI { // @incomplete move UI into its own file?
 		Colour colour_normal;
 		Colour colour_pressed;
 		Colour colour_hover;
-		
+
 		aie::Font* font;
 	};
 	///
 	struct Button {
+		UI_STATES ui_state;
 		Rect rect;
 		String text;
 		Theme theme;
 		aie::EInputCodes keyboard_shortcut;
+		void (*function)();	// <!> not freed by Button
 	};
 	///
 	struct Panel {
-		Rect rect;      // match items to the width OR the height of the panel based on Panel Mode
-		int at_y;       // the place the next item should be drawn from
+		int at_y = 0;       // the place the next item should be drawn from
 	};
 
 	/// draw a button and return the state of the button
-	UI_STATES draw_button(const Button* button, Vector2 mouse_cursor, aie::Renderer2D* renderer);
+	void draw_button(const Button* button, aie::Renderer2D* renderer);
 	/// draw a button inside of a panel. This way buttons can be arranged together
-	UI_STATES panel_push_button(Button* button, Vector2 mouse_cursor, aie::Renderer2D* renderer);
+	void panel_push_button(Panel* panel, Button* button, aie::Renderer2D* renderer);
 	/// get the default Theme
 	Theme get_default_theme();
+	/// update UI State based on input and mouse cursor
+	void update_button_ui_state(Button* button, Vector2 mouse_cursor);
+	/// get a default button <!> memory needs to be cleaned by the caller
+	Button* new_button();
 };
+
+
+class MenuState : public BaseState {
+public:
+	MenuState();
+	virtual ~MenuState();
+
+	/// Called when the state starts. Loads all the images needed for the menu. Inits everything
+	void Enter() override;
+	/// Process input and when the player has clicked the start button, you can start the game using pStatemachine->ChangeState(ESTATE_GAME);
+	void Update(float deltaTime, StateMachine* stateMachine) override;
+	/// Draw all the graphics for the menu
+	void Draw(aie::Renderer2D* renderer) override;
+	/// Called when the state is exited. Deletes all assets used in menu and cleans up everything
+	void Exit() override;
+
+private:
+	UI::Button* buttons[NUMBER_OF_BUTTONS];
+	UI::Panel panel;
+};
+
