@@ -152,8 +152,8 @@ void CollisionManager::ResolveCollisions()
 		for (int j = i + 1; j < collisionObjects.Count(); j++)
 		{
 			//check if the objects are compatible layer wise, if collider exists, and 
-			if ((collisionObjects[j]->collider != nullptr && collisionObjects[i]->GetActor()->GetActive()) && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
-				&& collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask )
+			if (collisionObjects[j]->collider != nullptr && collisionObjects[j]->GetActor()->GetActive() && (collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask)
+				&& (collisionObjects[j]->collider->collisionLayer & collisionObjects[i]->collider->collisionMask) )
 			{
 				//broad phase
 				//this checks if the AABBs are colliding
