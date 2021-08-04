@@ -17,12 +17,12 @@ public:
 	unsigned short GetCollisionLayer() { return collisionLayer; }
 	unsigned short GetCollisionMask() { return collisionMask; }
 	float GetDensity() { return density; }
-	bool CheckIsTrigger() { return isTrigger; }
+	bool GetTrigger() { return trigger; }
 
 	void SetCollisionLayer(unsigned short layer) { collisionLayer = layer; };
 	void SetCollisionMask(unsigned short mask) { collisionMask = mask; }
 	void SetRestitution(float restitution) { this->restitution = restitution; }
-	void SetTrigger(bool value) { isTrigger = value; }
+	void SetTrigger(bool trigger) { this->trigger = trigger; }
 
 	Collider(const Collider& other) = delete;
 	Collider(Collider&& other) = delete;
@@ -39,7 +39,7 @@ private:
 	unsigned short collisionMask;
 	//bounciness
 	float restitution;
-	bool isTrigger;
 	float density;
+	bool trigger;
 };
 

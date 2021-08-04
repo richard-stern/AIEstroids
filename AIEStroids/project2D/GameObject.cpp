@@ -56,8 +56,13 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 
 	if (m_IsActive)
 	{
-		_renderer2D->DrawSpriteTransformed3x3(m_Texture, m_GlobalTransform.m);
+		_renderer2D->DrawSpriteTransformed3x3(m_Texture, m_GlobalTransform.m, 0.0f, 0.0f, m_SpriteDepth);
 	}
+}
+
+void GameObject::SetSpriteDepth(float _depth)
+{
+	m_SpriteDepth = _depth;
 }
 
 void GameObject::OnCollision(CollisionEvent _event)

@@ -1,8 +1,6 @@
-//Not all of this is right just a rough idea of what i think
-//so i don't forget what i tried and can work on later to fix
-
 #pragma once
 #include "Vector2.h"
+#include "Renderer2D.h"
 
 class Bullet;
 
@@ -18,7 +16,14 @@ public:
 	//Selecting a bullet to be fired and pass to the Bullet.cpp Shoot function
 	void ShootBullet(Vector2 position, float angle);
 
+	//Updates the bullets
+	void Update(float deltaTime);
+
+	//Draws the bullets
+	void Draw(aie::Renderer2D* _renderer2D);
+
 private:
+	//Creates a pointer to the Bullet class
 	Bullet** pBullet;
 };
 

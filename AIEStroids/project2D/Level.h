@@ -13,10 +13,12 @@
 #include "Enemy.h"
 #include "Camera.h"
 #include "GUI.h"
+#include "HealthPickup.h"
 
-#define ROCKS_COUNT		12				// Count of Rocks in the level
-#define STARS_COUNT		100				// Count of Stars in the level
-#define ENEMY_RATE		6				// Enemy spawn rate (sec between spawns)
+#define ROCKS_COUNT		24						// Count of Rocks in the level
+#define STARS_COUNT		200						// Count of Stars in the level
+#define ENEMY_RATE		6						// Enemy spawn rate (sec between spawns)
+#define HEALTH_RATE		10						// Health-Pickup spawn rate (sec between spawns)
 
 class Level : GameObject
 {
@@ -29,11 +31,13 @@ public:
 
 private:
 	// Objects
-	Player* m_player;					// Player object
-	Rock* m_rockArray[ROCKS_COUNT];		// Static array of Rock objects
-	Star* m_starArray[STARS_COUNT];		// Static array of Star objects
-	DynamicArray<Enemy*> m_enemyArray;	// Dynamic array of Enemy objects
-
+	Player* m_player;							// Player object
+	Rock* m_rockArray[ROCKS_COUNT];				// Static array of Rock objects
+	Star* m_starArray[STARS_COUNT];				// Static array of Star objects
+	DynamicArray<Enemy*> m_enemyArray;			// Dynamic array of Enemy objects
+	DynamicArray<HealthPickup*> m_healthArray;	// Health-Pickup object
+	
 	// Misc.
-	float enemyTimer = ENEMY_RATE;		// Countdown to spawn a new Enemy
+	float enemyTimer = ENEMY_RATE;				// Countdown to spawn a new Enemy
+	float healthTimer = HEALTH_RATE;			// Countdown to spawn a new Health-Pickup
 };

@@ -4,6 +4,7 @@
 #include <cmath>
 #include "TextureManager.h"
 #include "CollisionLayers.h"
+#include <iostream>
 
 //Author Rahul J. (BEANMEISTER)
 
@@ -13,25 +14,29 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	m_WrapAndRespawn = false;
 
 	//Assign ship texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/ship.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
+	m_LocalTransform.SetScale(3.0f, 3.0f);
 	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
-	Shape* shape = PolygonShape::CreateBox(m_Texture->GetWidth() / 2.0f, m_Texture->GetHeight() / 2.0f, Vector2::ZERO());
-	//Collide with everything but player
-	unsigned int layermask = (unsigned int)CollisionLayer::ALL ^ (unsigned int)CollisionLayer::PLAYER;
-	//Create collider
-	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::PLAYER, layermask);
-	//Create the physics body using the generated collider
-	m_PhysicsBody = (new PhysicsBody(this, BodyType::DYNAMIC, collider));
+	GeneratePhysicsBody(32, 32, CollisionLayer::PLAYER, (unsigned int)CollisionLayer::ALL);
 	m_PhysicsBody->SetDrag(PLAYER_DRAG);
+	m_PhysicsBody->GetCollider()->SetRestitution(1.0f);
 
 	//------------------CREATE TURRET----------------------//
-	turret = new Turret();
-	turret->SetParent(this);
-	AddChild(turret);
-	//turret->SetPos(1000.0f, 0.0f);
-	turret->SetPosition(Vector2(100.0f, 0.0f));
+	turrets[0] = new Turret();
+	turrets[0]->SetParent(this);
+	AddChild(turrets[0]);
+	turrets[0]->SetPosition(Vector2(-8.0f, 18.0f));
+	//Turret 2
+	turrets[1] = new Turret();
+	turrets[1]->SetParent(this);
+	AddChild(turrets[1]);
+	turrets[1]->SetPosition(Vector2(-8.0f, -16.0f));
+	Matrix3 transform = turrets[1]->GetLocalTransform();
+	Vector2 scale = transform.GetScale();
+	transform.SetScale(scale.x, -scale.y);
+	turrets[1]->SetLocalTransform(transform);
 
 
 	gui = GUI::GetInstance();
@@ -74,9 +79,17 @@ void Player::Update(float deltaTime)
 		float thrustAmount = PLAYER_THRUST;
 		float torqueAmount = PLAYER_TORQUE * DEG2RAD;
 
-		//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
-		if (Vector2::Dot(playerForward, currentVelocity) < 0)
-			thrustAmount *= PLAYER_COUNTERFORCE_MULT;
+		if (inputVector.y > 0)
+		{
+			//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
+			//Also only do this if player is accelerating forward
+			if (Vector2::Dot(playerForward, currentVelocity) < 0)
+				thrustAmount *= PLAYER_COUNTERFORCE_MULT;
+		}
+		else
+		{
+			thrustAmount = PLAYER_REVERSE_THRUST;
+		}
 
 		//Scale up torque amount if rotating away from current rotational velocity
 		if (currentAngularVelocity * -inputVector.x < 0)
@@ -86,10 +99,7 @@ void Player::Update(float deltaTime)
 		//	Add forces
 		//--------------
 		//-------------------------P O S I T I O N----------------------------------------------------
-		if (inputVector.y != 0)
-		{
-			m_PhysicsBody->AddForce(playerForward * inputVector.y * thrustAmount);
-		}
+		m_PhysicsBody->AddVelocity(playerForward * inputVector.y * thrustAmount * deltaTime);
 
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
@@ -119,9 +129,6 @@ void Player::Update(float deltaTime)
 		//Check tha health
 		if (m_CurrentHealth <= 0)
 			KillPlayer();
-
-		turret->Update(deltaTime);
-
 	}
 	else
 	{
@@ -144,7 +151,8 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 		if (collisionEvent.other->GetCollider()->GetCollisionLayer() == (unsigned int)CollisionLayer::ROCK)
 		{
 			//Get component of velocity that is pointing away from the normal (toward the rock)
-			/*float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
+			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
+			std::cout << "Impact Speed: " << impactSpeed << std::endl;
 		
 			//Instakill player cos they hit the rock too hard
 			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
@@ -178,7 +186,7 @@ void Player::SetGUI(GUI* gui)
 void Player::UpdateGUI()
 {
 	gui->SetHealth(m_CurrentHealth);
-	gui->SetLives(this->lives);
+	gui->SetLives(m_PhysicsBody->GetVelocity().GetMagnitude());
 }
 
 PhysicsBody* Player::GetPhysicsBody()

@@ -14,7 +14,7 @@ void CollisionManager::Update()
 
 	ResolveCollisions();
 
-	for (int i = 0; i < collisionObjects.size(); i++)
+	for (int i = 0; i < collisionObjects.Count(); i++)
 	{
 		collisionObjects[i]->Update(aie::Application::GetInstance()->GetDeltaTime());
 	}
@@ -22,26 +22,25 @@ void CollisionManager::Update()
 
 void CollisionManager::AddBody(PhysicsBody* body)
 {
-	collisionObjects.push_back(body);
+	collisionObjects.Add(body);
 	if (body->GetCollider() != nullptr)
 		body->GetCollider()->GetShape()->CalculateGlobal(body->actorObject->GetGlobalTransform());
 }
 
 void CollisionManager::RemoveBody(PhysicsBody* body)
 {
-	auto it = std::find(collisionObjects.begin(), collisionObjects.end(), body);
-	if (it != collisionObjects.end())
-		collisionObjects.erase(std::find(collisionObjects.begin(), collisionObjects.end(), body));
+	collisionObjects.Remove(body);
 }
 
 void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 {
 	if (drawDebug)
 	{
-		for (int i = 0; i < collisionObjects.size(); i++)
+		for (int i = 0; i < collisionObjects.Count(); i++)
 		{
 			if (collisionObjects[i]->collider != nullptr)
 			{
+				//Draw AABB
 				AABB& aabb = collisionObjects[i]->collider->shapeAABB;
 				renderer->SetRenderColour(1, 1, 0, 1);
 				renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.max.x, aabb.min.y, 1.5f);
@@ -49,24 +48,26 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 				renderer->DrawLine(aabb.max.x, aabb.max.y, aabb.min.x, aabb.max.y, 1.5f);
 				renderer->DrawLine(aabb.min.x, aabb.min.y, aabb.min.x, aabb.max.y, 1.5f);
 
+				//Draw Shape
 				switch (collisionObjects[i]->collider->shape->GetType())
 				{
 				case ShapeType::CIRCLE:
 					{
+						//just draw as a high point count polygon
 						auto shape = (CircleShape*)collisionObjects[i]->collider->shape;
 						Vector2 position = shape->GetGlobalCentrePoint();
 						renderer->SetRenderColour(1, 0, 1, 1);
 						float rotationAmount = (float)M_PI / 10.0f;
 						for (int j = 0; j < 19; j++)
 						{
-							Vector2 straightLine = Vector2::RIGHT() * shape->GetRadius();
-							Vector2 straightLine2 = Vector2::RIGHT() * shape->GetRadius();
+							Vector2 straightLine = Vector2::RIGHT() * shape->GetGlobalRadius();
+							Vector2 straightLine2 = Vector2::RIGHT() * shape->GetGlobalRadius();
 							straightLine.SetRotation(rotationAmount * j);
 							straightLine2.SetRotation(rotationAmount * (j + 1));
 							renderer->DrawLine(straightLine.x + position.x, straightLine.y + position.y, straightLine2.x + position.x, straightLine2.y + position.y, 3);
 						}
-						Vector2 straightLine = Vector2::RIGHT() * shape->GetRadius();
-						Vector2 straightLine2 = Vector2::RIGHT() * shape->GetRadius();
+						Vector2 straightLine = Vector2::RIGHT() * shape->GetGlobalRadius();
+						Vector2 straightLine2 = Vector2::RIGHT() * shape->GetGlobalRadius();
 						straightLine2.SetRotation(rotationAmount * (19));
 						renderer->DrawLine(straightLine.x + position.x, straightLine.y + position.y, straightLine2.x + position.x, straightLine2.y + position.y, 3);
 					}
@@ -91,7 +92,7 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 			}
 		}
 		//go through all the collisions that happened last time and draw penetration vector
-		for (int i = 0; i < collisions.size(); i++)
+		for (int i = 0; i < collisions.Count(); i++)
 		{
 			renderer->SetRenderColour(0, 1, 1, 1);
 			auto pos = collisions[i].b->actorObject->GetPosition();
@@ -123,16 +124,16 @@ CollisionManager* CollisionManager::GetInstance()
 
 void CollisionManager::ResolveCollisions()
 {
-	collisions.clear();
+	collisions.Clear();
 
-	for (int i = 0; i < collisionObjects.size() - 1; i++)
+	for (int i = 0; i < collisionObjects.Count() - 1; i++)
 	{
 		if (collisionObjects[i]->collider == nullptr)
 		{
 			continue;
 		}
 
-		for (int j = i + 1; j < collisionObjects.size(); j++)
+		for (int j = i + 1; j < collisionObjects.Count(); j++)
 		{
 			//check if the objects are compatible layer wise, if collider exists, and 
 			if (collisionObjects[j]->collider != nullptr && collisionObjects[i]->collider->collisionLayer & collisionObjects[j]->collider->collisionMask
@@ -145,14 +146,14 @@ void CollisionManager::ResolveCollisions()
 				{
 					//in this case we need to check if collision is valid, and if so, resolve it
 					//we add it to collisions for this frame
-					collisions.push_back(CollisionManifold(collisionObjects[i], collisionObjects[j]));
+					collisions.Add(CollisionManifold(collisionObjects[i], collisionObjects[j]));
 				}
 			}
 		}
 	}
 
 	//now that all possible collisions have been found, resolve collisions
-	for (int i = 0; i < collisions.size(); i++)
+	for (int i = 0; i < collisions.Count(); i++)
 	{
 		ResolveCollision(collisions[i]);
 	}
@@ -167,18 +168,33 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		manifold.a->actorObject->OnCollision(CollisionEvent{ manifold.b, manifold.collisionNormal, manifold.penetration });
 		manifold.b->actorObject->OnCollision(CollisionEvent{ manifold.a, manifold.collisionNormal, manifold.penetration });
 
+		if (manifold.a->collider->GetTrigger() || manifold.b->collider->GetTrigger())
+			return;
+
 		//resolve collision
 		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
 		float projectedRV = manifold.collisionNormal.GetDot(rV);
-		float impulseMagnitude = -(1 + std::min(manifold.a->collider->restitution, manifold.b->collider->restitution) * projectedRV) / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
-		Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
-		manifold.a->AddImpulse(impulse* -1);
-		manifold.b->AddImpulse(impulse );
+		//velocities are seperating
+		if (projectedRV > 0)
+		{
+			//bounce factor (average of the two)
+			float restitution = (manifold.a->collider->restitution + manifold.b->collider->restitution) / 2.0f;
+			//the impulse magnitude
+			float impulseMagnitude = -(1 + restitution) * projectedRV;
+			//divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
+			impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+			//turn into vector
+			Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
+
+			manifold.a->AddImpulse(impulse * -1);
+			manifold.b->AddImpulse(impulse);
+		}
+
 		if (manifold.a->type == BodyType::DYNAMIC)
-			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration/2));
+			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration * manifold.a->GetInverseMass() / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())));
 		if (manifold.b->type == BodyType::DYNAMIC)
-			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() + manifold.collisionNormal * (-manifold.penetration /2));
+			manifold.b->GetActor()->SetPosition(manifold.b->GetActor()->GetPosition() - manifold.collisionNormal * (manifold.penetration * manifold.b->GetInverseMass() / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())));
 	}
 }
 
@@ -205,7 +221,7 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		CircleShape* b = (CircleShape*)manifold.b->collider->shape;
 
 		Vector2 delta = b->GetGlobalCentrePoint() - a->GetGlobalCentrePoint();
-		float p = a->GetRadius() + b->GetRadius() - (delta).GetMagnitude();
+		float p = a->GetGlobalRadius() + b->GetGlobalRadius() - (delta).GetMagnitude();
 		if (p > 0)
 		{
 			manifold.penetration = p;
@@ -236,11 +252,13 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		int count = a->GetCount();
 
 		//loop through all vertices and get the one with the min distance to the circle
+		//should actually project onto axis
+
 		for (int i = 0; i < count; i++)
 		{
-			auto deltaVector = (b->GetGlobalCentrePoint() - polygonVertices[i]);
+			auto deltaVector = -(b->GetGlobalCentrePoint() - polygonVertices[i]);
 			float dist = deltaVector.GetMagnitude();
-			float potentialP = b->GetRadius() - dist;
+			float potentialP = b->GetGlobalRadius() - dist;
 			if (potentialP > 0 && potentialP > p )
 			{
 				p = potentialP;
@@ -287,12 +305,14 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		float absPenetration = INFINITY;
 		Vector2 pNormal;
 		Vector2 deltaAB = b->GetGlobalCentrePoint() - a->GetGlobalCentrePoint();
+		bool aPen = true;
+		int normalIndex = 0;
 
 		//loop through a's normals
 		for (int i = 0; i < aCount; i++)
 		{
 			//get minimum and maximum on this axis
-			auto axis = aNormals[i] * aGlobal;
+			auto axis = (aNormals[i] * aGlobal).GetNormalised();
 			MinMax aResult = GetProjectedMinMax(axis, aVertices, aCount);
 			MinMax bResult = GetProjectedMinMax(axis, bVertices, bCount);
 
@@ -310,6 +330,8 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 				{
 					penetration = absPenetration;
 					pNormal = axis * pValue;
+					normalIndex = i;
+					aPen = true;
 				}
 			}
 			//if not they are not colliding, so return
@@ -321,7 +343,7 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		for (int i = 0; i < bCount; i++)
 		{
 			//get minimum and maximum on this axis
-			auto axis = bNormals[i] * bGlobal;
+			auto axis = (bNormals[i] * bGlobal).GetNormalised();
 			MinMax aResult = GetProjectedMinMax(axis, aVertices, aCount);
 			MinMax bResult = GetProjectedMinMax(axis, bVertices, bCount);
 
@@ -338,6 +360,8 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 				if (absPenetration < penetration)
 				{
 					penetration = absPenetration;
+					normalIndex = i;
+					aPen = false;
 					pNormal = axis * pValue;
 				}
 			}
@@ -346,8 +370,6 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 				return false;
 		}
 
-		//if reached this point without exiting, they are colliding.
-		//set penetration data in manifold
 		manifold.penetration = penetration;
 		manifold.collisionNormal = pNormal.GetNormalised();
 		return true;

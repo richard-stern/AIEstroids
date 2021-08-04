@@ -4,16 +4,24 @@
 #include "CollisionLayers.h"
 #include "TextureManager.h"
 
-HealthPickup::HealthPickup(int health, const char* textureName) : Actor(/*textureName*/)
+HealthPickup::HealthPickup(int health) : Actor(/*textureName*/)
 {
 	m_healthGained = health;
 	SetWrapAndRespawn(true);
-	TextureManager::Get()->LoadTexture(textureName);
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/car.png");
+
+	GeneratePhysicsBody(32, 32, CollisionLayer::PICKUP, (unsigned int)CollisionLayer::ALL);
 
 	//Set a random velocity at start
+	randomVelocity = Vector2(rand() % 1000, rand() % 1000);
+	randomVelocity = randomVelocity.GetNormalised();
+	Vector2 direction(((rand() % 200) - 100) / 100.0f, ((rand() % 200) - 100) / 100.0f);
 
-	//Create a physics body
-	//Set physics body
+	m_PhysicsBody->SetVelocity(direction.GetNormalised() *100);
+	m_PhysicsBody->SetAngularVelocity((rand() % 5) - 2.5);
+
+	Vector2 pos = Vector2(rand() % 1000, rand() % 1000);
+	SetPosition(pos);
 }
 
 HealthPickup::~HealthPickup()
@@ -40,9 +48,11 @@ void HealthPickup::OnCollision(CollisionEvent _event)
 	//Handle Player Collision
 	case CollisionLayer::PLAYER:
 	{
-		if (actor)
+		if (actor && m_IsActive)
+		{
 			actor->SetHealth(actor->GetHealth() + m_healthGained);
-		m_IsActive = false;
+			m_IsActive = false;
+		}
 	}
 	break;
 
@@ -77,4 +87,9 @@ void HealthPickup::OnCollision(CollisionEvent _event)
 	//If collides with rocks or enemies, they should bounce off without damaging either
 
 	//When destroying this object, just set its m_bVisible to false
+}
+
+void HealthPickup::Update(float deltaTime)
+{
+	Actor::Update(deltaTime);
 }
