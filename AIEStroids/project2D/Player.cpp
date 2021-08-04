@@ -24,10 +24,9 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	m_PhysicsBody->GetCollider()->SetRestitution(1.0f);
 
 	//------------------CREATE TURRET----------------------//
-	turretAnchor = new Actor(Vector2(-12.0f, 0.0f), this);
 	turret = new Turret();
-	turret->SetParent(turretAnchor);
-	turretAnchor->AddChild(turret);
+	turret->SetParent(this);
+	AddChild(turret);
 	turret->SetPosition(Vector2(-12.0f, 0.0f));
 
 
