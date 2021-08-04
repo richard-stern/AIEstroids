@@ -173,25 +173,25 @@ void CollisionManager::ResolveCollision(CollisionManifold& manifold)
 		if (manifold.a->collider->GetTrigger() || manifold.b->collider->GetTrigger())
 			return;
 
-		////resolve collision
+		//resolve collision
 		Vector2 rV = manifold.b->GetVelocity() - manifold.a->GetVelocity();
 		float projectedRV = manifold.collisionNormal.GetDot(rV);
-		//
-		////velocities are seperating
-		if (projectedRV < 0)
-			return;
-		////bounce factor (average of the two)
-		//float restitution = (manifold.a->collider->restitution + manifold.b->collider->restitution) / 2.0f;
-		////the impulse magnitude
-		//float impulseMagnitude = -(1 + restitution) * projectedRV;
-		////divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
-		//impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
-		////turn into vector
-		//Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
 
-		//manifold.a->AddImpulse(impulse * -1);
-		//manifold.b->AddImpulse(impulse);
-		std::cout << manifold.penetration << '\n';
+		//velocities are seperating
+		if (projectedRV > 0)
+		{
+			//bounce factor (average of the two)
+			float restitution = (manifold.a->collider->restitution + manifold.b->collider->restitution) / 2.0f;
+			//the impulse magnitude
+			float impulseMagnitude = -(1 + restitution) * projectedRV;
+			//divide by inverse masses add together as a way to ratio by mass (AddImpulse timeses by inverse mass)
+			impulseMagnitude /= (manifold.a->GetInverseMass() + manifold.b->GetInverseMass());
+			//turn into vector
+			Vector2 impulse = manifold.collisionNormal * impulseMagnitude;
+
+			manifold.a->AddImpulse(impulse * -1);
+			manifold.b->AddImpulse(impulse);
+		}
 
 		if (manifold.a->type == BodyType::DYNAMIC)
 			manifold.a->GetActor()->SetPosition(manifold.a->GetActor()->GetPosition() + manifold.collisionNormal * (manifold.penetration * manifold.a->GetInverseMass() / (manifold.a->GetInverseMass() + manifold.b->GetInverseMass())));
@@ -254,9 +254,11 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		int count = a->GetCount();
 
 		//loop through all vertices and get the one with the min distance to the circle
+		//should actually project onto axis
+
 		for (int i = 0; i < count; i++)
 		{
-			auto deltaVector = (b->GetGlobalCentrePoint() - polygonVertices[i]);
+			auto deltaVector = -(b->GetGlobalCentrePoint() - polygonVertices[i]);
 			float dist = deltaVector.GetMagnitude();
 			float potentialP = b->GetGlobalRadius() - dist;
 			if (potentialP > 0 && potentialP > p )
@@ -305,12 +307,14 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		float absPenetration = INFINITY;
 		Vector2 pNormal;
 		Vector2 deltaAB = b->GetGlobalCentrePoint() - a->GetGlobalCentrePoint();
+		bool aPen = true;
+		int normalIndex = 0;
 
 		//loop through a's normals
 		for (int i = 0; i < aCount; i++)
 		{
 			//get minimum and maximum on this axis
-			auto axis = aNormals[i] * aGlobal;
+			auto axis = (aNormals[i] * aGlobal).GetNormalised();
 			MinMax aResult = GetProjectedMinMax(axis, aVertices, aCount);
 			MinMax bResult = GetProjectedMinMax(axis, bVertices, bCount);
 
@@ -328,6 +332,8 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 				{
 					penetration = absPenetration;
 					pNormal = axis * pValue;
+					normalIndex = i;
+					aPen = true;
 				}
 			}
 			//if not they are not colliding, so return
@@ -339,7 +345,7 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 		for (int i = 0; i < bCount; i++)
 		{
 			//get minimum and maximum on this axis
-			auto axis = bNormals[i] * bGlobal;
+			auto axis = (bNormals[i] * bGlobal).GetNormalised();
 			MinMax aResult = GetProjectedMinMax(axis, aVertices, aCount);
 			MinMax bResult = GetProjectedMinMax(axis, bVertices, bCount);
 
@@ -356,6 +362,8 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 				if (absPenetration < penetration)
 				{
 					penetration = absPenetration;
+					normalIndex = i;
+					aPen = false;
 					pNormal = axis * pValue;
 				}
 			}
@@ -364,8 +372,6 @@ bool CollisionManager::SetCollisionInfo(CollisionManifold& manifold)
 				return false;
 		}
 
-		//if reached this point without exiting, they are colliding.
-		//set penetration data in manifold
 		manifold.penetration = penetration;
 		manifold.collisionNormal = pNormal.GetNormalised();
 		return true;
