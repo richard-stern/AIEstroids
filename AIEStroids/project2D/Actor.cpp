@@ -25,33 +25,33 @@ void Actor::Update(float _deltaTime)
 	Vector2 cameraPos = Camera::GetInstance()->GetPosition();
 	Vector2 position = GetPosition();
 	aie::Application* app = app->GetInstance();
-	int xThresh = 500;
-	int yThresh = 500;
+	int xThresh = 200;
+	int yThresh = 150;
 	int height = app->GetWindowHeight();
 	int width = app->GetWindowWidth();
 
 	
 	if (m_WrapAndRespawn)
 	{
-		if (position.x < m_CameraPos.x - xThresh)
+		if (position.x < cameraPos.x - xThresh)
 		{
-			SetPosition({ m_CameraPos.x + width + xThresh, position.y});
-			std::cout << "wrapping left to right" << std::endl;
+			SetPosition({ cameraPos.x + width + xThresh, position.y});
+			//std::cout << "wrapping left to right" << std::endl;
 		}
-		if (position.x > m_CameraPos.x + width + xThresh)
+		if (position.x > cameraPos.x + width + xThresh)
 		{
-			SetPosition({ m_CameraPos.x - xThresh, position.y});
-			std::cout << "wrapping right to left" << std::endl;
+			SetPosition({ cameraPos.x - xThresh, position.y});
+			//std::cout << "wrapping right to left" << std::endl;
 		}
-		if (position.y < m_CameraPos.y - yThresh)
+		if (position.y < cameraPos.y - yThresh)
 		{
-			SetPosition({ position.x, m_CameraPos.y + height + yThresh});
-			std::cout << "wrapping bottom to top" << std::endl;
+			SetPosition({ position.x, cameraPos.y + height + yThresh});
+			//std::cout << "wrapping bottom to top" << std::endl;
 		}
-		if (position.y > m_CameraPos.y + height + yThresh)
+		if (position.y > cameraPos.y + height + yThresh)
 		{
-			SetPosition({ position.x, m_CameraPos.y - yThresh });
-			std::cout << "wrapping top to bottom" << std::endl;
+			SetPosition({ position.x, cameraPos.y - yThresh });
+			//std::cout << "wrapping top to bottom" << std::endl;
 		}
 
 
