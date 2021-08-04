@@ -22,15 +22,22 @@ Turret::Turret() {
 
 	// -=-=- TURRET MOVEMENT -=-=-
 	// - ADJUSTABLE - Turret rotate speed
-	m_rotateSpeed = 50;
+	m_rotateSpeed = 60;
 	// - ADJUSTABLE - How fast turret stops moving
-	m_rotateFriction = 10;
+	m_rotateFriction = 8;
 	// - ADJUSTABLE - turret speed up/slow down?
 	m_mass = 1;
 
 	// -=-=- FIRE RATE -=-=-
 	// - ADJUSTABLE - Self explanatory, fire rate of turret, bullets per second
-	m_firerate = 8;
+	m_firerate = 3;
+
+	// - DO NOT TOUCH - Automatically assigned based off fire rate
+	m_timeBetweenBullets = 1/m_firerate;
+
+	// -=-=- SCREENSHAKE -=-=-
+	m_SShakeDuration = 0.04; //m_timeBetweenBullets / 5;
+	m_SShakeForce = 3;
 
 	// -=-=- POSITION -=-=-
 	// - ADJUSTABLE - Change turrets pivot
@@ -55,8 +62,6 @@ Turret::Turret() {
 	//m_Visible = true;
 	
 
-	// - DO NOT TOUCH - Automatically assigned based off fire rate
-	m_timeBetweenBullets = 1/m_firerate;
 	// - DO NOT TOUCH - Tracks time since last shot was fired - Leave at 0
 	m_lastShotTimeDelta = m_timeBetweenBullets; //Makes it so firing is available as soon as loaded in,
 										        //otherwise "Timebetweenbullets" time has to pass before firing if 0.
@@ -194,6 +199,9 @@ void Turret::Fire(float deltaTime) {
 		m_bulletManager->ShootBullet(m_GlobalTransform.GetPosition(), m_GlobalTransform.GetRotation());
 #endif
 		//Also move bullet forwards some amount so it doesn't spawn on top of the turret
+
+		Camera::GetInstance()->Shake(m_SShakeForce, m_SShakeDuration);
+
 		m_lastShotTimeDelta = 0;
 	}
 
