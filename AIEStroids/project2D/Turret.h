@@ -51,6 +51,8 @@ private:
 	void TurretKickback(float deltaTime); 
 
 	//Visual Aesthetic stuff
+	float m_SShakeDuration;
+	float m_SShakeForce;
 
 	//Change pivot maybe;
 	Matrix3 m_m3Offset;
