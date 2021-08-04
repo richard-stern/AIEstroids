@@ -27,12 +27,12 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	turrets[0] = new Turret();
 	turrets[0]->SetParent(this);
 	AddChild(turrets[0]);
-	turrets[0]->SetPosition(Vector2(-10.0f, 16.0f));
+	turrets[0]->SetPosition(Vector2(-8.0f, 18.0f));
 	//Turret 2
 	turrets[1] = new Turret();
 	turrets[1]->SetParent(this);
 	AddChild(turrets[1]);
-	turrets[1]->SetPosition(Vector2(-10.0f, -16.0f));
+	turrets[1]->SetPosition(Vector2(-8.0f, -16.0f));
 	Matrix3 transform = turrets[1]->GetLocalTransform();
 	Vector2 scale = transform.GetScale();
 	transform.SetScale(scale.x, -scale.y);

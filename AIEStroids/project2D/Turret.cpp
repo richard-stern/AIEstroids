@@ -30,7 +30,7 @@ Turret::Turret() {
 
 	// -=-=- FIRE RATE -=-=-
 	// - ADJUSTABLE - Self explanatory, fire rate of turret, bullets per second
-	m_firerate = 15;
+	m_firerate = 8;
 
 	// -=-=- POSITION -=-=-
 	// - ADJUSTABLE - Change turrets pivot

@@ -4,8 +4,7 @@
 #include "PhysicsBody.h"
 #include "Matrix3.h"
 #include "Application.h"
-#include <vector>
-#include <forward_list>
+#include "DynamicArray.h"
 #include "Renderer2D.h"
 
 struct CollisionEvent
@@ -25,6 +24,7 @@ enum class CollisionType
 struct CollisionManifold
 {
 	//penetration and type definitions are just there to clear up warnings, they will be immediately overwritten
+	CollisionManifold() { a = nullptr; b = nullptr; penetration = 0; type = (CollisionType)0; }
 	CollisionManifold(PhysicsBody* a, PhysicsBody* b) : a(a), b(b) { penetration = 0; type = (CollisionType)0; }
 
 	PhysicsBody* a;
@@ -77,8 +77,9 @@ private:
 	//takes in local vertices
 	static MinMax GetProjectedMinMax(Vector2& axis, Vector2* vertices, int vertexCount);
 
-	std::vector<PhysicsBody*> collisionObjects;
-	std::vector<CollisionManifold> collisions;
+
+	DynamicArray<PhysicsBody*> collisionObjects;
+	DynamicArray<CollisionManifold> collisions;
 	bool drawDebug = false;
 };
 
