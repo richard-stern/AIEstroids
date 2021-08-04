@@ -4,10 +4,11 @@
 #include "Matrix3.h"
 #include "Vector2.h"
 #include "Actor.h"
+#include "Player.h"
 class Rock : public Actor
 {
 public:
-	Rock();
+	Rock(Player* player);
 	~Rock();
 	void Update(float deltaTime) override;
 	void OnCollision(GameObject* other);
@@ -15,4 +16,5 @@ public:
 
 private:
 	void SetRandomPath();
+	Player* _player;
 };

@@ -28,7 +28,7 @@ void GameState::Update(float deltaTime, StateMachine* state) {
 void GameState::Draw(aie::Renderer2D* renderer) {
 	level->Draw(renderer);
 	aie::Input* input = aie::Input::GetInstance();
-	auto font = TextureManager::Get()->LoadFont("font\\consolas.ttf"); // @incomplete ask Jaden to have a bunch of #define s that point to fonts and textures that we have
+	auto font = TextureManager::Get()->LoadFont("..\\bin\\font\\consolas.ttf"); // @incomplete ask Jaden to have a bunch of #define s that point to fonts and textures that we have
 	gui->Draw(renderer, font, input);
 };
 ///
