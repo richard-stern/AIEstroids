@@ -38,7 +38,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	m_fLifeTimeTimer = m_fLifeTime;
 
 	//Calls function to make visable so it will renderer
-	SetActive(true);
+	/*SetActive(true);*/
 
 	//Set the local position of the bullet
 	SetPosition(position);
@@ -47,11 +47,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	SetRotation(angle);
 
 	//speed of the bullet when fired
-<<<<<<< HEAD
-	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 500);
-=======
-	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 100);
->>>>>>> main
+	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 1000);
 }
 
 //Function gets updated allowing to use deltaTime 
