@@ -3,7 +3,7 @@
 //
 
 //If CENTER_SCREEN will aim turret based off center of screen rather then turret pos, due to needing camera coords to use turret pos.
-#define CENTER_SCREEN
+//#define CENTER_SCREEN
 
 //Shooting currently throws an exception in Bullet.cpp, change from DISABLE_SHOOTING to ENABLE_SHOOTING to test it.
 #define ENABLE_SHOOTING
@@ -11,6 +11,7 @@
 #include "Turret.h"
 #include "TextureManager.h"
 #include <cmath>
+#include "Camera.h"
 //#include <iostream>
 
 Turret::Turret() {
@@ -31,10 +32,10 @@ Turret::Turret() {
 	// - ADJUSTABLE - Self explanatory, fire rate of turret, bullets per second
 	m_firerate = 5;
 
-	// -=-=- POSITION -=-=- To change where turret sits on 'player'
-	// - ADJUSTABLE - Only change if turrets position is wrong. // This is now accessed via "Turret.SetPos(x, y);
-	float xOffset = 0;
-	float yOffset = 0;
+	// -=-=- POSITION -=-=-
+	// - ADJUSTABLE - Change turrets pivot
+	m_fxOffset = 4;
+	m_fyOffset = 0;
 	
 	// -=-=- AESTHETIC -=-=- Just aesthetic things, these do not effect functionality.
 	// - ADJUSTABLE - Where the "kick back" from firing moves turret (distance)
@@ -61,10 +62,8 @@ Turret::Turret() {
 										        //otherwise "Timebetweenbullets" time has to pass before firing if 0.
 											
 
-	// - DO NOT TOUCH - Position correction of turret on 'player'
-	m_m3Offset.ResetToIdentity();
-	//m_m3Offset.SetPosition(xOffset, yOffset); //Will instead be changeable via "SetPos(x, y);" so turrets position can change and have more then 1.
 
+	//Get input manager
 	m_input = aie::Input::GetInstance();
 
 	//more initialization
@@ -72,6 +71,12 @@ Turret::Turret() {
 	m_rotation = 0;
 	m_speed = 0;
 	m_velocity = 0;
+
+	// - DO NOT TOUCH - Position correction of turret on 'player'
+	m_m3Offset.ResetToIdentity();
+	m_m3Offset.SetPosition(m_fxOffset, m_fyOffset);
+	m_m3OffsetNeg.SetPosition(-m_fxOffset, -m_fyOffset);
+	//m_LocalTransform = m_LocalTransform * m_m3Offset;
 
 	//Sprite layer
 	SetSpriteDepth(-1);
@@ -86,17 +91,15 @@ Turret::~Turret() {
 
 void Turret::Update(float deltaTime) {
 	Controller(deltaTime);
-	//m_globalTransform = /*parent * */ m_localTransform * m_m3Offset;
-	//m_LocalTransform = m_LocalTransform* m_m3Offset;
 }
 
-//void Turret::Draw() {
-//
-//}
 
-void Turret::SetPos(float x, float y) {
-	m_m3Offset.SetPosition(x, y);
+
+Vector2 Turret::GetCameraPos() 
+{
+	return Camera::GetInstance()->GetPosition();
 }
+
 
 void Turret::Draw(aie::Renderer2D* _renderer2D)
 {
@@ -125,7 +128,7 @@ void Turret::Rotate(float deltaTime) {
 	turretPos = Vector2(aie::Application::GetInstance()->GetWindowWidth() / 2, aie::Application::GetInstance()->GetWindowHeight() / 2);
 #endif
 
-	Vector2 mousePos = GetMousePos();
+	Vector2 mousePos = GetMousePos() + GetCameraPos();
 	Vector2 diffPos = turretPos - mousePos;
 
 
@@ -173,7 +176,9 @@ void Turret::Rotate(float deltaTime) {
 
 		movement.ResetToIdentity();
 		movement.SetRotateZ(m_rotation * deltaTime);
+		m_LocalTransform = m_LocalTransform * m_m3OffsetNeg;
 		m_LocalTransform = m_LocalTransform * movement;
+		m_LocalTransform = m_LocalTransform * m_m3Offset;
 	}
 }
 
