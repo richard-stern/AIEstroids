@@ -220,3 +220,27 @@ void Camera::Shake(float strength, float duration)
 
 	shakeStrength = abs(strength); //The max distance the camera is set from it's base position each frame of the shake
 }
+
+bool Camera::IsPointOnScreen(Vector2 point)
+{
+	bool result = true;
+
+	if (point.x < GetPosition().x)
+	{
+		result = false;
+	}
+	else if (point.x > GetPosition().x + (application->GetWindowWidth()))
+	{
+		result = false;
+	}
+	else if (point.y < GetPosition().y)
+	{
+		result = false;
+	}
+	else if (point.y > GetPosition().y + (application->GetWindowHeight()))
+	{
+		result = false;
+	}
+
+	return result;
+}
