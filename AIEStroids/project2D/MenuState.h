@@ -36,8 +36,14 @@ namespace UI { // @incomplete move UI into its own file?
 	};
 	///
 	struct Colour {
+		Colour();
+		Colour(float _r, float _g, float _b, float _a) {
+			r = _r;
+			g = _g;
+			b = _b;
+			a = _a;
+		};
 		float r = 1.0f;  // white and opaque by default
-		float g = 1.0f;
 		float g = 1.0f;
 		float b = 1.0f;
 		float a = 1.0f;
