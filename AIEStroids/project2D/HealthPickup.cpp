@@ -51,7 +51,7 @@ void HealthPickup::OnCollision(CollisionEvent _event)
 		if (actor && m_IsActive)
 		{
 			actor->SetHealth(actor->GetHealth() + m_healthGained);
-			m_IsActive = false;
+			SetActive(false);
 		}
 	}
 	break;
@@ -68,7 +68,7 @@ void HealthPickup::OnCollision(CollisionEvent _event)
 	//Handle Bullet Collision
 	case CollisionLayer::BULLET:
 	{
-		m_IsActive = false;
+		SetActive(false);
 	}
 	break;
 

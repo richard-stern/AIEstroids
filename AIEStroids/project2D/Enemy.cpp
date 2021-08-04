@@ -17,7 +17,7 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(SPRITE_SIZE, SPRITE_SIZE, CollisionLayer::ENEMY, 0xff);
 
 	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy_small.png");
@@ -34,7 +34,7 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false)
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(SPRITE_SIZE, SPRITE_SIZE, CollisionLayer::ENEMY, 0xff);
 
 	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy_small.png");
