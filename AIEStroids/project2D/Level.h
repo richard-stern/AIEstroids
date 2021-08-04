@@ -3,7 +3,6 @@
 #pragma once
 #include "Application.h"
 #include "Renderer2D.h"
-#include "Application.h"
 
 #include "DynamicArray.h"
 #include "GameObject.h"
