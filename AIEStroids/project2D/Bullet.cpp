@@ -47,7 +47,11 @@ void Bullet::Shoot(Vector2 position, float angle)
 	SetRotation(angle);
 
 	//speed of the bullet when fired
+<<<<<<< HEAD
 	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 500);
+=======
+	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 100);
+>>>>>>> main
 }
 
 //Function gets updated allowing to use deltaTime 

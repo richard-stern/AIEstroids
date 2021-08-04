@@ -41,7 +41,7 @@ public:
 
 	aie::Texture* GetTexture() { return m_Texture; }
 	void SetTexture(aie::Texture* _texture) { m_Texture = _texture; }
-	void SetSpriteDepth(int _depth);
+	void SetSpriteDepth(float _depth);
 
 	virtual void OnCollision(CollisionEvent _event);
 	
@@ -57,7 +57,7 @@ protected:
 	float m_Drag = 0;
 
 	aie::Texture* m_Texture = nullptr;
-	int m_SpriteDepth = 0;
+	float m_SpriteDepth = 0;
 	bool m_IsActive = false;
 	bool m_WrapAndRespawn = false;
 };
