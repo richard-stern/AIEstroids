@@ -18,6 +18,7 @@ public:
 
 	void Update(float deltaTime);
 	void Shake(float strength, float duration);
+	bool IsPointOnScreen(Vector2 point);
 
 private:
 	Camera();
