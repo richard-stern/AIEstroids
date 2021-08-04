@@ -56,7 +56,15 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 						//just draw as a high point count polygon
 						auto shape = (CircleShape*)collisionObjects[i]->collider->shape;
 						Vector2 position = shape->GetGlobalCentrePoint();
-						renderer->SetRenderColour(1, 0, 1, 1);
+						if (collisionObjects[i]->GetActor()->GetActive())
+						{
+							renderer->SetRenderColour(1, 0, 1, 1);
+
+						}
+						else
+						{
+							renderer->SetRenderColour(0.5f, 0.5f, 0.5f, 1);
+						}
 						float rotationAmount = (float)M_PI / 10.0f;
 						for (int j = 0; j < 19; j++)
 						{
@@ -77,7 +85,15 @@ void CollisionManager::DebugDraw(aie::Renderer2D* renderer)
 					{
 						auto shape = (PolygonShape*)collisionObjects[i]->collider->shape;
 						auto vertices = shape->GetGlobalVertices();
-						renderer->SetRenderColour(1, 0, 1, 1);
+						if (collisionObjects[i]->GetActor()->GetActive())
+						{
+							renderer->SetRenderColour(1, 0, 1, 1);
+
+						}
+						else
+						{
+							renderer->SetRenderColour(0.5f, 0.5f, 0.5f, 1);
+						}
 						for (int j = 0; j < shape->GetCount() - 1; j++)
 						{
 							renderer->DrawLine(vertices[j].x, vertices[j].y, vertices[j + 1].x, vertices[j + 1].y, 3);
