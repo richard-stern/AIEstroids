@@ -137,7 +137,9 @@ void Player::Update(float deltaTime)
 			//Dividing angular velocity by its absolute value will give the sign of the value
 			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
 
-		animSprite->SetAnimationFPS(PLAYER_ANIM_FPS);
+		float ratio = m_PhysicsBody->GetVelocity().GetMagnitude() / PLAYER_MAXSPEED;
+		ratio = std::max(0.2f, std::min(ratio, 1.0f));
+		animSprite->SetAnimationFPS(ratio * PLAYER_ANIM_FPS);
 
 		//Check tha health
 		if (m_CurrentHealth <= 0)
