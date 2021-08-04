@@ -161,6 +161,9 @@ void Player::Update(float deltaTime)
 		if (m_CurrentHealth <= 0)
 			KillPlayer();
 
+		if (invincibilityTimer > 0)
+			invincibilityTimer -= deltaTime;
+
 	}
 	else
 	{
@@ -188,19 +191,23 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 	{
 		if (collisionEvent.other->GetCollider()->GetCollisionLayer() == (unsigned int)CollisionLayer::ROCK)
 		{
-			//Get component of velocity that is pointing away from the normal (toward the rock)
-			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
-			std::cout << "Impact Speed: " << impactSpeed << std::endl;
+			if (invincibilityTimer <= 0)
+			{
+				//Get component of velocity that is pointing away from the normal (toward the rock)
+				float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
+				std::cout << "Impact Speed: " << impactSpeed << std::endl;
 		
-			//Instakill player cos they hit the rock too hard
-			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
-			{
-				SetHealth(0);
-			}
-			//Normal impact damage
-			else if (impactSpeed > PLAYER_IMPACT_SPEED)
-			{
-				SetHealth(GetHealth() - PLAYER_IMPACT_DAMAGE);
+				//Instakill player cos they hit the rock too hard
+				if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
+				{
+					SetHealth(0);
+				}
+				//Normal impact damage
+				else if (impactSpeed > PLAYER_IMPACT_SPEED)
+				{
+					SetHealth(GetHealth() - PLAYER_IMPACT_DAMAGE);
+				}
+				invincibilityTimer = PLAYER_IMPACT_COOLDOWN;
 			}
 		}
 	}
