@@ -26,4 +26,5 @@ private:
 	//Float useds for the Update function for the timer
 	float m_fLifeTime;
 	float m_fLifeTimeTimer;
+	unsigned int m_nActiveLayer;
 };
