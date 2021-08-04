@@ -20,8 +20,8 @@ class Enemy : public Actor
 {
 private:
 	bool m_destroyed;
-	Player* m_player;
-	Rock** m_rocks;
+	Player* m_player;	
+	Rock** m_rocks;	
 	Vector2 steeringForce;
 
 public:
@@ -32,9 +32,9 @@ public:
 	void OnCollision(GameObject* other);
 	bool IsDestroyed() { return (m_CurrentHealth <= 0); }
 
-	const float MAX_SEE_AHEAD = 1000.0f;
+	const float MAX_SEE_AHEAD = 100.0f;
 	const float MAX_AVOID_FORCE = 10.0f;
-	const int RADIUS = 100;
+	const int ROCK_RADIUS = 120;
 
 private:
 	void Seek(Actor* target, float deltaTime);
