@@ -30,11 +30,11 @@ Turret::Turret() {
 
 	// -=-=- FIRE RATE -=-=-
 	// - ADJUSTABLE - Self explanatory, fire rate of turret, bullets per second
-	m_firerate = 5;
+	m_firerate = 8;
 
 	// -=-=- POSITION -=-=-
 	// - ADJUSTABLE - Change turrets pivot
-	m_fxOffset = 4;
+	m_fxOffset = 0;
 	m_fyOffset = 0;
 	
 	// -=-=- AESTHETIC -=-=- Just aesthetic things, these do not effect functionality.
@@ -48,7 +48,7 @@ Turret::Turret() {
 	// -=-=- Other config stuff -=-=-
 
 	//Assign turret texture
-	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Turret-2_2.png");
+	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Turrets.png");
 
 	// - DO NOT TOUCH - Waiting on other stuff to be completed  to uncomment
 	m_WrapAndRespawn = false; //Should be m_bWarpAndRespawn >:(

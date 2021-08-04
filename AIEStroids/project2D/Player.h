@@ -58,7 +58,7 @@ protected:
 	bool playerAlive = true;
 	float respawnTimer = 0;
 	int lives = LIVES;
-	Turret* turret = nullptr;
+	Turret* turrets[2];
 	GUI* gui = nullptr;
 };
 

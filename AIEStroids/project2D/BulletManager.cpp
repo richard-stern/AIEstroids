@@ -1,13 +1,12 @@
 #include "BulletManager.h"
 #include "Bullet.h"
-//Cap it just for now will change later
-#define MAX_BULLET 100
+
+//Size of how many bullets 
+#define MAX_BULLET 200
 
 //Constructor
 BulletManager::BulletManager()
 {
-	m_bActive = true;
-
 	//create the bullet array 
 	pBullet = new Bullet * [MAX_BULLET];
 	//pBullet is true
@@ -52,23 +51,33 @@ void BulletManager::ShootBullet(Vector2 position, float angle)
 			//create a bullet from the posision from the araay
 			pBullet[i]->Shoot(position, angle);
 
+			//Exits the loop
 			break;
 		}
 	}
 }
 
+//Updates on the Bullet
 void BulletManager::Update(float deltaTime)
 {
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
+		//Updates the Bullets GlobalPosition
+		pBullet[i]->UpdateTransforms();
+	}
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		//Passes in the deltaTime to the Bullet Update function to be used on bullet lifetime
 		pBullet[i]->Update(deltaTime);
 	}
 }
 
+//Draws the bullets
 void BulletManager::Draw(aie::Renderer2D* _renderer2D)
 {
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
+		//If bullet is active Draw the bullet in the array
 		if (pBullet[i]->GetActive())
 			pBullet[i]->Draw(_renderer2D);
 	}

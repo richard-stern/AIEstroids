@@ -16,13 +16,14 @@ public:
 	//Selecting a bullet to be fired and pass to the Bullet.cpp Shoot function
 	void ShootBullet(Vector2 position, float angle);
 
+	//Updates the bullets
 	void Update(float deltaTime);
 
+	//Draws the bullets
 	void Draw(aie::Renderer2D* _renderer2D);
 
 private:
+	//Creates a pointer to the Bullet class
 	Bullet** pBullet;
-
-	bool m_bActive;
 };
 
