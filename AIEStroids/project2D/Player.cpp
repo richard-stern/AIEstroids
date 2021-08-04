@@ -24,10 +24,10 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	m_PhysicsBody->GetCollider()->SetRestitution(1.0f);
 
 	//------------------CREATE TURRET----------------------//
+	turretAnchor = new Actor(Vector2(-12.0f, 0.0f), this);
 	turret = new Turret();
-	turret->SetParent(this);
-	AddChild(turret);
-	//turret->SetPos(1000.0f, 0.0f);
+	turret->SetParent(turretAnchor);
+	turretAnchor->AddChild(turret);
 	turret->SetPosition(Vector2(-12.0f, 0.0f));
 
 
@@ -144,7 +144,7 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 		{
 			//Get component of velocity that is pointing away from the normal (toward the rock)
 			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
-			std::cout << impactSpeed << std::endl;
+			std::cout << "Impact Speed: " << impactSpeed << std::endl;
 		
 			//Instakill player cos they hit the rock too hard
 			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
