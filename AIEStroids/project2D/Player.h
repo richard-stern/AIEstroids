@@ -31,6 +31,8 @@
 #define PLAYER_DEATH_SPIN 45.0f
 #define PLAYER_RESPAWN_TIME 3.0f
 
+#define PLAYER_ANIM_FPS 8.0f
+
 class GUI;
 
 class Player :
@@ -58,7 +60,8 @@ protected:
 	bool playerAlive = true;
 	float respawnTimer = 0;
 	int lives = LIVES;
-	Turret* turret = nullptr;
+	Turret* turrets[2];
 	GUI* gui = nullptr;
+	class AnimatedSprite* animSprite = nullptr;
 };
 

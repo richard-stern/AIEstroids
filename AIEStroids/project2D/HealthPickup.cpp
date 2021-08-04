@@ -9,7 +9,9 @@ HealthPickup::HealthPickup(int health) : Actor(/*textureName*/)
 	m_healthGained = health;
 	SetWrapAndRespawn(true);
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/car.png");
+
 	GeneratePhysicsBody(32, 32, CollisionLayer::PICKUP, (unsigned int)CollisionLayer::ALL);
+
 	//Set a random velocity at start
 	randomVelocity = Vector2(rand() % 1000, rand() % 1000);
 	randomVelocity = randomVelocity.GetNormalised();
@@ -17,6 +19,9 @@ HealthPickup::HealthPickup(int health) : Actor(/*textureName*/)
 
 	m_PhysicsBody->SetVelocity(direction.GetNormalised() *100);
 	m_PhysicsBody->SetAngularVelocity((rand() % 5) - 2.5);
+
+	Vector2 pos = Vector2(rand() % 1000, rand() % 1000);
+	SetPosition(pos);
 }
 
 HealthPickup::~HealthPickup()
@@ -46,7 +51,7 @@ void HealthPickup::OnCollision(CollisionEvent _event)
 		if (actor && m_IsActive)
 		{
 			actor->SetHealth(actor->GetHealth() + m_healthGained);
-			m_IsActive = false;
+			SetActive(false);
 		}
 	}
 	break;
@@ -63,7 +68,7 @@ void HealthPickup::OnCollision(CollisionEvent _event)
 	//Handle Bullet Collision
 	case CollisionLayer::BULLET:
 	{
-		m_IsActive = false;
+		SetActive(false);
 	}
 	break;
 

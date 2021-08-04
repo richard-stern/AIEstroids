@@ -7,7 +7,7 @@ GameObject::GameObject() : GameObject::GameObject(Vector2()) {}
 GameObject::GameObject(Vector2 _pos, GameObject* _parent)
 {
 	SetActive(true);
-	m_GlobalTransform.SetPosition(_pos);
+	m_LocalTransform.SetPosition(_pos);
 
 	if (m_Parent != nullptr)
 	{
@@ -60,7 +60,7 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 	}
 }
 
-void GameObject::SetSpriteDepth(int _depth)
+void GameObject::SetSpriteDepth(float _depth)
 {
 	m_SpriteDepth = _depth;
 }

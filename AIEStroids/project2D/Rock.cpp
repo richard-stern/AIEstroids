@@ -14,8 +14,8 @@ Rock::Rock(Player* player)
 	unsigned int layermask = (unsigned int)CollisionLayer::ALL;
 	//unsigned int layermask = 0;
 	//Create collider
-	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::ROCK, layermask);
-	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
+	GenerateCircleBody(m_Texture->GetWidth() / 2 - 4.0f, CollisionLayer::ROCK, (unsigned int)CollisionLayer::ALL);
+	
 	
 	SetRandomPath();
 }
@@ -25,9 +25,17 @@ Rock::~Rock()
 
 }
 
-void Rock::OnCollision(GameObject* other)
+void Rock::OnCollision(CollisionEvent _event)
 {
-	SetRandomPath();
+	if (_event.other->GetCollider()->GetCollisionLayer() == (unsigned short) CollisionLayer::BULLET) {
+		health = health - 1;
+		if (health == 0) {
+			SetRandomPath();
+			health = 5;
+		}
+	}
+	
+	
 } 
 
 void Rock::SetRandomPath()

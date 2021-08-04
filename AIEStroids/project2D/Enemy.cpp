@@ -7,6 +7,9 @@
 #include "Application.h"
 #include "Level.h"
 #include "Rock.h"
+#include "CollisionLayers.h"
+
+#include <iostream>
 
 Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 {
@@ -14,7 +17,7 @@ Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(SPRITE_SIZE, SPRITE_SIZE, CollisionLayer::ENEMY, 0xff);
 
 	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy_small.png");
@@ -31,7 +34,7 @@ Enemy::Enemy(Vector2 pos, Player* player, Rock** rocks) : m_destroyed(false)
 	m_rocks = rocks;
 	m_CurrentHealth = m_MaxHealth;
 
-	GeneratePhysicsBody(200, 200, CollisionLayer::ENEMY, 0xff);
+	GeneratePhysicsBody(SPRITE_SIZE, SPRITE_SIZE, CollisionLayer::ENEMY, 0xff);
 
 	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/textures/enemy_small.png");
@@ -46,31 +49,49 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
+	Vector2 velocity = m_PhysicsBody->GetVelocity();
 	Seek(m_player, deltaTime);
-	//steeringForce = { 0, 1 };
 	CollisionAvoidance(deltaTime);
 
-	Vector2 velocity = m_PhysicsBody->GetVelocity();
+	// smooth out the steering
+	if (steeringForce.GetMagnitude() > MAX_SEE_AHEAD)
+	{
+		steeringForce = steeringForce.GetNormalised();
+		steeringForce *= MAX_SEE_AHEAD;
+	}
 
 	// update the velocity of the enemy
-	m_PhysicsBody->SetVelocity(velocity + steeringForce);
+	m_PhysicsBody->SetVelocity(velocity + steeringForce *deltaTime);
 
 	// rotate enemy ship
 	float rotation = atan2(velocity.y, velocity.x) + M_PI / 2;
 
 	// set random rotation
 	SetRotation(rotation);
+
+	//GetGlobalTransform().GetUp();
 }
 
-void Enemy::OnCollision(GameObject* other)
+void Enemy::OnCollision(CollisionEvent event)
 {
-	if (other == m_player)
+	unsigned short layer = event.other->GetCollider()->GetCollisionLayer();
+
+	if (event.other == m_player->GetPhysicsBody())
 	{
-		m_CurrentHealth = 0; // destroy enemy ship
-		m_player->SetHealth(m_player->GetHealth() - 10); // damage the player
+		m_CurrentHealth = -50; // destroy enemy ship
+		m_player->SetHealth(m_player->GetHealth() - 50); // damage the player
+		std::cout << "Enemy collided with ship." << std::endl;
+		std::cout << "Enemy took 20 damage. Current health: " << m_CurrentHealth << std::endl;
+		std::cout << "Player Health: " << m_player->GetHealth() << std::endl;
 	}
-	else
-		m_CurrentHealth -= 10;
+	else if(layer == (unsigned short) CollisionLayer::BULLET) // This does not work
+	{
+		m_CurrentHealth -= 5;
+		std::cout << "Enemy took 20 damage. Current health: " << m_CurrentHealth << std::endl;
+	}
+
+	if (m_CurrentHealth <= 0)
+		std::cout << "Enemy is dead." << std::endl;
 }
 
 void Enemy::Seek(Actor* target, float deltaTime)
@@ -80,8 +101,6 @@ void Enemy::Seek(Actor* target, float deltaTime)
 
 	Vector2 desiredVelocity = difference.GetNormalised() * MAX_ENEMY_VELOCITY;
 	steeringForce = desiredVelocity - m_PhysicsBody->GetVelocity();
-
-	//m_PhysicsBody->SetVelocity(localSteeringForce);
 }
 
 void Enemy::SetRandomLocation()
@@ -127,13 +146,10 @@ void Enemy::CollisionAvoidance(float deltaTime)
 
 		avoidance.GetNormalised();
 		avoidance *= MAX_AVOID_FORCE;
-
-		//avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
 	} 
 	else
 	{
-		avoidance *= 0;
-		//avoidance.Scale(avoidance, { 0, 0 }); // nullify the avoidance force
+		avoidance *= 0;  // nullify the avoidance force
 	}
 
 	steeringForce += avoidance;
@@ -164,5 +180,10 @@ bool Enemy::LineIntersectsCircle(Vector2 ahead1, Vector2 ahead2, GameObject* obs
 	float ahead1Distance = obstacle->GetPosition().GetDistance(ahead1);
 	float ahead2Distance = obstacle->GetPosition().GetDistance(ahead2);
 
-	return (ahead1Distance <= RADIUS || ahead2Distance <= RADIUS);
+	float spriteSize = obstacle->GetTexture()->GetWidth();
+	Vector2 scale = obstacle->GetLocalTransform().GetScale();
+
+	float radius = (scale * spriteSize).GetMagnitude() + MIN_AVOID_DISTANCE;
+
+	return (ahead1Distance <= radius || ahead2Distance <= radius);
 }

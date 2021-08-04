@@ -4,6 +4,8 @@
 #include <cmath>
 #include "TextureManager.h"
 #include "CollisionLayers.h"
+#include "AnimatedSprite.h"
+#include "Texture.h"
 #include <iostream>
 
 //Author Rahul J. (BEANMEISTER)
@@ -15,6 +17,13 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 
 	//Assign ship texture
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Player_1.png");
+
+	//Create animation
+	animSprite = new AnimatedSprite(12.0f);
+	animSprite->AddTexture("../bin/sprites/Player_1.png");
+	animSprite->AddTexture("../bin/sprites/Player_2.png");
+
+	//Make me BEEEG
 	m_LocalTransform.SetScale(3.0f, 3.0f);
 	
 	//--------- COLLIDER GENERATION ----------------------//
@@ -24,18 +33,29 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	m_PhysicsBody->GetCollider()->SetRestitution(1.0f);
 
 	//------------------CREATE TURRET----------------------//
-	turret = new Turret();
-	turret->SetParent(this);
-	AddChild(turret);
-	//turret->SetPos(1000.0f, 0.0f);
-	turret->SetPosition(Vector2(-12.0f, 0.0f));
-
+	turrets[0] = new Turret();
+	turrets[0]->SetParent(this);
+	AddChild(turrets[0]);
+	turrets[0]->SetPosition(Vector2(-8.0f, 18.0f));
+	//Turret 2
+	turrets[1] = new Turret();
+	turrets[1]->SetParent(this);
+	AddChild(turrets[1]);
+	turrets[1]->SetPosition(Vector2(-8.0f, -16.0f));
+	//Flip scale
+	Matrix3 transform = turrets[1]->GetLocalTransform();
+	Vector2 scale = transform.GetScale();
+	transform.SetScale(scale.x, -scale.y);
+	turrets[1]->SetLocalTransform(transform);
 
 	gui = GUI::GetInstance();
 }
 
 Player::~Player()
 {
+	if (animSprite != nullptr)
+		delete animSprite;
+	animSprite = nullptr;
 }
 
 void Player::Update(float deltaTime)
@@ -117,13 +137,19 @@ void Player::Update(float deltaTime)
 			//Dividing angular velocity by its absolute value will give the sign of the value
 			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
 
+		float ratio = m_PhysicsBody->GetVelocity().GetMagnitude() / PLAYER_MAXSPEED;
+		ratio = std::max(0.2f, std::min(ratio, 1.0f));
+		animSprite->SetAnimationFPS(ratio * PLAYER_ANIM_FPS);
 
 		//Check tha health
 		if (m_CurrentHealth <= 0)
 			KillPlayer();
+
 	}
 	else
 	{
+		animSprite->SetAnimationFPS(0.0f);
+
 		//Tick down respawn timer
 		respawnTimer -= deltaTime;
 		if (respawnTimer <= 0)
@@ -131,6 +157,10 @@ void Player::Update(float deltaTime)
 			Respawn();
 		}
 	}
+
+	//Update sprite
+	animSprite->Update(deltaTime);
+	m_Texture = ((Actor*)animSprite)->GetTexture();
 
 	//Update GUI values
 	UpdateGUI();
@@ -144,7 +174,7 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 		{
 			//Get component of velocity that is pointing away from the normal (toward the rock)
 			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
-			std::cout << impactSpeed << std::endl;
+			std::cout << "Impact Speed: " << impactSpeed << std::endl;
 		
 			//Instakill player cos they hit the rock too hard
 			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
@@ -178,7 +208,7 @@ void Player::SetGUI(GUI* gui)
 void Player::UpdateGUI()
 {
 	gui->SetHealth(m_CurrentHealth);
-	gui->SetLives(m_PhysicsBody->GetVelocity().GetMagnitude());
+	gui->SetLives(lives);
 }
 
 PhysicsBody* Player::GetPhysicsBody()

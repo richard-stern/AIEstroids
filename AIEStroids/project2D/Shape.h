@@ -54,7 +54,7 @@ public:
 	float GetArea();
 	ShapeType GetType() { return ShapeType::CIRCLE; }
 	float GetRadius() { return radius; }
-	float GetGlobalRadius() { return radius; }
+	float GetGlobalRadius() { return globalRadius; }
 	int SetRadius(float rad) { radius = rad; }
 
 private:

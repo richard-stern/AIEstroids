@@ -19,7 +19,7 @@ Level::Level(aie::Renderer2D* renderer)
 
 	// Create Stars at random positions
 	for (int i = 0; i < STARS_COUNT; i++)
-		m_starArray[i] = new Star((float)(rand() % (int)windowW), (float)(rand() % (int)windowH));
+		m_starArray[i] = new Star((float)(rand() % (int)(windowW * 2)), (float)(rand() % (int)(windowH * 2)));
 
 	// Create Rocks (rocks automatically randomise position)
 	for (int i = 0; i < ROCKS_COUNT; i++)
@@ -28,6 +28,9 @@ Level::Level(aie::Renderer2D* renderer)
 
 	// Create Camera
 	Camera::Create(renderer, m_player);
+
+	// Set game over to false
+	isGameOver = false;
 }
 
 // Destructor - Deletes level objects and systems
@@ -83,19 +86,37 @@ void Level::Update(float deltaTime)
 
 	// Update Enemies
 	for (int i = 0; i < m_enemyArray.Count(); i++)
+	{
 		m_enemyArray[i]->Update(deltaTime);
+		if (m_enemyArray[i]->IsDestroyed())
+		{
+			delete m_enemyArray[i];
+			m_enemyArray.RemoveAt(i);
+		}
+	}
+		
+	// Update Health-Pickups
+	for (int i = 0; i < m_healthArray.Count(); i++)
+		m_healthArray[i]->Update(deltaTime);
 	#pragma endregion
 
-	// Process Enemy timer (creates Enemy whenever timer reaches 0, then resets timer)
+	// Process Enemy and Health-Pickup timers
+	// (creates Enemy/Health-Pickup whenever timer reaches 0, then resets timer)
 	enemyTimer -= deltaTime;
+	healthTimer -= deltaTime;
 	if (enemyTimer <= 0.0f)
 	{
 		m_enemyArray.Add(new Enemy(m_player, m_rockArray));
 		enemyTimer = ENEMY_RATE;
 	}
+	if (healthTimer <= 0.0f)
+	{
+		m_healthArray.Add(new HealthPickup(50));
+		healthTimer = HEALTH_RATE;
+	}
 
 	#pragma region Update Object Transforms
-	// Update Player Transforms
+	// Update Player and Health-Pickup Transforms
 	m_player->UpdateTransforms();
 
 	// Update Rocks Transforms
@@ -106,6 +127,10 @@ void Level::Update(float deltaTime)
 	for (int i = 0; i < m_enemyArray.Count(); i++)
 		m_enemyArray[i]->UpdateTransforms();
 	#pragma endregion
+
+	// Update Health-Pickup Transforms
+	for (int i = 0; i < m_healthArray.Count(); i++)
+		m_healthArray[i]->UpdateTransforms();
 
 	// Update Collision system
 	CollisionManager::GetInstance()->Update();
@@ -121,10 +146,18 @@ void Level::Update(float deltaTime)
 	// Update Enemies Transforms
 	for (int i = 0; i < m_enemyArray.Count(); i++)
 		m_enemyArray[i]->UpdateTransforms();
+
+	// Update Health-Pickup Transforms
+	for (int i = 0; i < m_healthArray.Count(); i++)
+		m_healthArray[i]->UpdateTransforms();
 	#pragma endregion
 
 	// Update Camera system
 	Camera::GetInstance()->Update(deltaTime);
+
+	// Update game over
+	if (m_player->GetLives() <= 0)
+		isGameOver = true;
 }
 
 // Draw loop - Runs draw loop for all level objects
@@ -145,5 +178,15 @@ void Level::Draw(aie::Renderer2D* renderer)
 	for (int i = 0; i < m_enemyArray.Count(); i++)
 		m_enemyArray[i]->Draw(renderer);
 
+	// Draw Health-Pickups
+	for (int i = 0; i < m_healthArray.Count(); i++)
+		m_healthArray[i]->Draw(renderer);
+
 	CollisionManager::GetInstance()->DebugDraw(renderer);
+}
+
+// Returns whether the player has run out of lives
+bool Level::IsGameOver()
+{
+	return isGameOver;
 }
