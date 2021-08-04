@@ -9,10 +9,11 @@ class AnimatedSprite : GameObject
 {
 public:
 	AnimatedSprite(DynamicArray<aie::Texture*>& pTextures, float fAnimationFPS = 30, int nDrawOrder = 0);
+	AnimatedSprite( float fAnimationFPS = 30, int nDrawOrder = 0);
 	~AnimatedSprite();
 	
 	void Update(float deltaTime) override;
-
+	void AddTexture(const char* filePath);
 	void SetAnimationTextures(const DynamicArray<aie::Texture*>& pTextures);
 	
 
