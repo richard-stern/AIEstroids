@@ -6,11 +6,13 @@ Bullet::Bullet() : Actor::Actor()
 	//uses function from the TextureManager to load the texture from the bullet
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Bullets_3.png");
 
+	SetSpriteDepth(-0.5);
+
 	//Set the variable to false
 	m_WrapAndRespawn = false;
 
-	//Sets the variable float value to 4
-	m_fLifeTime = 4;
+	//Sets the variable float value to 1
+	m_fLifeTime = 1;
 
 	//Sets the variable to equal the the same value as the other variable
 	m_fLifeTimeTimer = m_fLifeTime;
@@ -45,7 +47,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	SetRotation(angle);
 
 	//speed of the bullet when fired
-	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 1000);
+	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 500);
 }
 
 //Function gets updated allowing to use deltaTime 
@@ -66,7 +68,7 @@ void Bullet::Update(float m_fDeltaTime)
 			//Conllision
 			m_PhysicsBody->GetCollider()->SetCollisionLayer(0);
 			
-			//Resets the Timer back to 4
+			//Resets the Timer back to 1
 			m_fLifeTimeTimer = m_fLifeTime;
 		}
 	}
