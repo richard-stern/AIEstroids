@@ -9,9 +9,9 @@
 StateMachine::StateMachine(aie::Renderer2D* _renderer) {
 	menu_state      = new MenuState();
 	game_state      = new GameState(_renderer);
-	game_over_state = new GameOverState();
+	game_over_state = new GameOverState(_renderer);
 	current_state = nullptr;
-	ChangeState(ESTATE_GAME); // @incomplete change this to menu
+	ChangeState(ESTATE_GAME);
 	renderer = _renderer;
 };
 ///
