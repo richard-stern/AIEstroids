@@ -84,8 +84,7 @@ void Enemy::OnCollision(CollisionEvent event)
 		std::cout << "Enemy took 20 damage. Current health: " << m_CurrentHealth << std::endl;
 		std::cout << "Player Health: " << m_player->GetHealth() << std::endl;
 	}
-	else
-	//else if(layer == (unsigned short) CollisionLayer::BULLET ) // This does not work
+	else if(layer == (unsigned short) CollisionLayer::BULLET) // This does not work
 	{
 		m_CurrentHealth -= 5;
 		std::cout << "Enemy took 20 damage. Current health: " << m_CurrentHealth << std::endl;
@@ -181,10 +180,10 @@ bool Enemy::LineIntersectsCircle(Vector2 ahead1, Vector2 ahead2, GameObject* obs
 	float ahead1Distance = obstacle->GetPosition().GetDistance(ahead1);
 	float ahead2Distance = obstacle->GetPosition().GetDistance(ahead2);
 
-	//float spriteSize = obstacle->GetTexture()->GetWidth();
-	//Vector2 scale = obstacle->GetLocalTransform().GetScale();
+	float spriteSize = obstacle->GetTexture()->GetWidth();
+	Vector2 scale = obstacle->GetLocalTransform().GetScale();
 
-	//float radius = (scale * spriteSize).GetMagnitude() + MIN_AVOID_DISTANCE;
+	float radius = (scale * spriteSize).GetMagnitude() + MIN_AVOID_DISTANCE;
 
-	return (ahead1Distance <= MIN_AVOID_DISTANCE || ahead2Distance <= MIN_AVOID_DISTANCE);
+	return (ahead1Distance <= radius || ahead2Distance <= radius);
 }
