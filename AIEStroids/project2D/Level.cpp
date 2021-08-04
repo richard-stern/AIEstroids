@@ -83,8 +83,15 @@ void Level::Update(float deltaTime)
 
 	// Update Enemies
 	for (int i = 0; i < m_enemyArray.Count(); i++)
+	{
 		m_enemyArray[i]->Update(deltaTime);
-
+		if (m_enemyArray[i]->IsDestroyed())
+		{
+			delete m_enemyArray[i];
+			m_enemyArray.RemoveAt(i);
+		}
+	}
+		
 	// Update Health-Pickups
 	for (int i = 0; i < m_healthArray.Count(); i++)
 		m_healthArray[i]->Update(deltaTime);
