@@ -28,7 +28,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	
 	//--------- COLLIDER GENERATION ----------------------//
 	//Create a box that is the same dimensions as the texture
-	GeneratePhysicsBody(32, 32, CollisionLayer::PLAYER, (unsigned int)CollisionLayer::ALL);
+	GeneratePhysicsBody(26, 20, CollisionLayer::PLAYER, (unsigned int)CollisionLayer::ALL);
 	m_PhysicsBody->SetDrag(PLAYER_DRAG);
 	m_PhysicsBody->GetCollider()->SetRestitution(1.0f);
 
@@ -36,7 +36,7 @@ Player::Player(Vector2 startPos) : Actor::Actor(startPos)
 	turrets[0] = new Turret();
 	turrets[0]->SetParent(this);
 	AddChild(turrets[0]);
-	turrets[0]->SetPosition(Vector2(-8.0f, 18.0f));
+	turrets[0]->SetPosition(Vector2(-8.0f, 16.0f));
 	//Turret 2
 	turrets[1] = new Turret();
 	turrets[1]->SetParent(this);
@@ -80,6 +80,9 @@ void Player::Update(float deltaTime)
 		if (input->IsKeyDown(PLAYER_INPUT_LEFT))
 			inputVector.x--;
 
+		//BOOST INPUT
+		bool boosting = input->IsMouseButtonDown(aie::INPUT_MOUSE_BUTTON_RIGHT);
+
 		//Store current velocity
 		Vector2 currentVelocity = m_PhysicsBody->GetVelocity();
 		float currentAngularVelocity = m_PhysicsBody->GetAngularVelocity();
@@ -93,6 +96,10 @@ void Player::Update(float deltaTime)
 
 		if (inputVector.y > 0)
 		{
+			if (boosting)
+			{
+				thrustAmount *= PLAYER_BOOST_MULT;
+			}
 			//Scale the thrust amount if the player is facing away from their current velocity, helps with responsiveness
 			//Also only do this if player is accelerating forward
 			if (Vector2::Dot(playerForward, currentVelocity) < 0)
@@ -113,14 +120,23 @@ void Player::Update(float deltaTime)
 		//-------------------------P O S I T I O N----------------------------------------------------
 		m_PhysicsBody->AddVelocity(playerForward * inputVector.y * thrustAmount * deltaTime);
 
+		float maxspeed;
+		if (boosting)
+			maxspeed = PLAYER_BOOST_MAXSPEED;
+		else
+			maxspeed = PLAYER_MAXSPEED;
+
 		//Limit player speed
 		currentVelocity = m_PhysicsBody->GetVelocity();
-		if (currentVelocity.GetMagnitude() > PLAYER_MAXSPEED)
-			m_PhysicsBody->SetVelocity(currentVelocity.GetNormalised() * PLAYER_MAXSPEED);
+		if (currentVelocity.GetMagnitude() > maxspeed)
+			m_PhysicsBody->SetVelocity(currentVelocity.GetNormalised() * maxspeed);
 
 		//-------------------------R O T A T I O N----------------------------------------------------
 		if (inputVector.x != 0)
 		{
+			if (boosting)
+				torqueAmount *= PLAYER_BOOST_PENALTY;
+
 			//Remove drag so rotation doesn't get hampered
 			m_PhysicsBody->SetAngularDrag(0.0f);
 			m_PhysicsBody->AddAngularVelocity(-inputVector.x * torqueAmount * deltaTime);
@@ -137,11 +153,16 @@ void Player::Update(float deltaTime)
 			//Dividing angular velocity by its absolute value will give the sign of the value
 			m_PhysicsBody->SetAngularVelocity((currentAngularVelocity / absoluteValue) * PLAYER_MAXROTATIONSPEED * DEG2RAD);
 
-		animSprite->SetAnimationFPS(PLAYER_ANIM_FPS);
+		float ratio = m_PhysicsBody->GetVelocity().GetMagnitude() / PLAYER_MAXSPEED;
+		ratio = std::max(0.2f, std::min(ratio, 1.0f));
+		animSprite->SetAnimationFPS(ratio * PLAYER_ANIM_FPS);
 
 		//Check tha health
 		if (m_CurrentHealth <= 0)
 			KillPlayer();
+
+		if (invincibilityTimer > 0)
+			invincibilityTimer -= deltaTime;
 
 	}
 	else
@@ -170,19 +191,23 @@ void Player::OnCollision(CollisionEvent collisionEvent)
 	{
 		if (collisionEvent.other->GetCollider()->GetCollisionLayer() == (unsigned int)CollisionLayer::ROCK)
 		{
-			//Get component of velocity that is pointing away from the normal (toward the rock)
-			float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
-			std::cout << "Impact Speed: " << impactSpeed << std::endl;
+			if (invincibilityTimer <= 0)
+			{
+				//Get component of velocity that is pointing away from the normal (toward the rock)
+				float impactSpeed = Vector2::Dot(m_PhysicsBody->GetVelocity(), -collisionEvent.collisionNormal);
+				std::cout << "Impact Speed: " << impactSpeed << std::endl;
 		
-			//Instakill player cos they hit the rock too hard
-			if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
-			{
-				SetHealth(0);
-			}
-			//Normal impact damage
-			else if (impactSpeed > PLAYER_IMPACT_SPEED)
-			{
-				SetHealth(GetHealth() - PLAYER_IMPACT_DAMAGE);
+				//Instakill player cos they hit the rock too hard
+				if (impactSpeed > PLAYER_IMPACT_INSTAKILL)
+				{
+					SetHealth(0);
+				}
+				//Normal impact damage
+				else if (impactSpeed > PLAYER_IMPACT_SPEED)
+				{
+					SetHealth(GetHealth() - PLAYER_IMPACT_DAMAGE);
+				}
+				invincibilityTimer = PLAYER_IMPACT_COOLDOWN;
 			}
 		}
 	}

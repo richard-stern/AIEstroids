@@ -7,7 +7,7 @@
 #include "Application.h"
 #include "Camera.h"
 
-#define BORDER		32.0f		// Text offset from top-left corner (px)
+#define BORDER		-50.0f		// Text offset from top-left corner (px)
 #define PADDING		32.0f		// Vertical offset between each line (px)
 	
 class GUI
