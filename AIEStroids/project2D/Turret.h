@@ -28,7 +28,7 @@ public:
 	void SetPos(float x, float y);
 
 	//Empty
-	//void Draw();
+	void Draw(aie::Renderer2D* _renderer2D) override;
 
 private:
 
@@ -37,6 +37,9 @@ private:
 	Vector2 GetMousePos();
 	//returns if mouse is clicked
 	bool IsLeftMouseClicked();
+
+	//Camera position input
+	Vector2 GetCameraPos();
 	
 	//controller, changes variables based on player input
 	void Controller(float deltaTime);
@@ -48,8 +51,13 @@ private:
 	void TurretKickback(float deltaTime); 
 
 	//Visual Aesthetic stuff
-	//Position of turret offset from 'player'
+
+	//Change pivot maybe;
 	Matrix3 m_m3Offset;
+	Matrix3 m_m3OffsetNeg;
+	float m_fxOffset;
+	float m_fyOffset;
+
 	//Where the "kick back" from firing moves turret (distance)
 	float m_kickBackPos;
 	//Force turret is kicked back with
@@ -72,6 +80,7 @@ private:
 
 	//Turret Movement Variables
 	Matrix3 movement;
+	Matrix3 prevMovement;
 	Vector2 m_posChange;
 	float m_speed;
 	float m_momentum;
@@ -80,8 +89,8 @@ private:
 
 	//Hopefully temporary vars that will be in gameobject/actor once implemented
 	//GameObject m_parent;
-	Matrix3 m_globalTransform;
-	Matrix3 m_localTransform;
+	//Matrix3 m_globalTransform;
+	//Matrix3 m_localTransform;
 
 	//For input stuff, obv.
 	aie::Input* m_input;

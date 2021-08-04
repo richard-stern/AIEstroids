@@ -203,6 +203,7 @@ void Camera::Update(float deltaTime)
 		velocityValue = 12;
 
 	float zoomScale = (float)(sqrt(velocityValue + 4.0f) / 2.0f); //Ranges from 1 to 2
+	zoomScale = 1.20f; //DEBUG TO FIX JITTERING GUI FROM COLLISION JANK
 
 	#pragma endregion
 

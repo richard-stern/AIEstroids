@@ -1,22 +1,26 @@
-//Not all of this is right just a rough idea of what i think
-//so i don't forget what i tried and can work on later to fix
-
 #include "BulletManager.h"
 #include "Bullet.h"
 
-//Cap it just for now will change later
-#define MAX_BULLET 30
+//Size of how many bullets 
+#define MAX_BULLET 420
 
 //Constructor
 BulletManager::BulletManager()
 {
-	//Initialise the pBullet 
+	//create the bullet array 
 	pBullet = new Bullet * [MAX_BULLET];
-
-	//Set all pBullet in the list to null
-	for (int i = 0; i < MAX_BULLET; ++i)
+	//pBullet is true
+	if (pBullet)
 	{
-		pBullet[i] = nullptr;
+		//for loop that ruins through the array creating the pBullets
+		//for all pBullet in the array set active as false
+		for (int i = 0; i < MAX_BULLET; ++i)
+		{
+			(pBullet)[i] = new Bullet();
+
+			if (pBullet[i])
+				pBullet[i]->SetActive(false);
+		}
 	}
 }
 
@@ -31,28 +35,50 @@ BulletManager::~BulletManager()
 	delete[] pBullet;
 }
 
+
 //Shoot Bullet function that will pass the position and angle to Bullet.cpp Shoot function
 void BulletManager::ShootBullet(Vector2 position, float angle)
 {
-	//bool for while loop
-	bool run = true;
-
-	while (run)
+	//For loop to find the pBullet closes to the start of the array tha active equals false
+	for (int i = 0; i < MAX_BULLET; ++i)
 	{
-		//Runs thorugh the array to find a pBullet that is null
-		for (int i = 0; i < MAX_BULLET; ++i)
+		if (pBullet[i]->GetActive() == false)
 		{
-			if (pBullet[i] == nullptr)
-			{
-				//Creates the pBullet
-				pBullet[i] = new Bullet();
+			//Set the pBullet to true
+			pBullet[i]->SetActive(true);
 
-				//Calls the function from Bullet.cpp
-				pBullet[i]->Shoot(position, angle);
+			//calls thje shoot function from Bullet cpp file that will
+			//create a bullet from the posision from the araay
+			pBullet[i]->Shoot(position, angle);
 
-				//Sets bool to false to end while loop
-				run = false;
-			}
+			//Exits the loop
+			break;
 		}
+	}
+}
+
+//Updates on the Bullet
+void BulletManager::Update(float deltaTime)
+{
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		//Updates the Bullets GlobalPosition
+		pBullet[i]->UpdateTransforms();
+	}
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		//Passes in the deltaTime to the Bullet Update function to be used on bullet lifetime
+		pBullet[i]->Update(deltaTime);
+	}
+}
+
+//Draws the bullets
+void BulletManager::Draw(aie::Renderer2D* _renderer2D)
+{
+	for (int i = 0; i < MAX_BULLET; i++)
+	{
+		//If bullet is active Draw the bullet in the array
+		if (pBullet[i]->GetActive())
+			pBullet[i]->Draw(_renderer2D);
 	}
 }
