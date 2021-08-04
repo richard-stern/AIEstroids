@@ -60,7 +60,7 @@ void GameObject::Draw(aie::Renderer2D* _renderer2D)
 	}
 }
 
-void GameObject::SetSpriteDepth(int _depth)
+void GameObject::SetSpriteDepth(float _depth)
 {
 	m_SpriteDepth = _depth;
 }
