@@ -22,7 +22,7 @@ Contains a header (i.e. "Game Over!") and help text (i.e. "Enter to continue..."
 class GameOverState : public BaseState
 {
 public:
-	GameOverState();
+	GameOverState(aie::Renderer2D* renderer);
 	~GameOverState();
 
 	void Enter();
@@ -44,4 +44,8 @@ private:
 	const char strText[64] = "Press the Enter key to restart.";
 	float posHeader;
 	float posText;
+
+	// Misc.
+	aie::Renderer2D* renderer;
+	bool animationComplete;
 };
