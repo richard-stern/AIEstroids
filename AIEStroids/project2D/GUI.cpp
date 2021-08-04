@@ -64,7 +64,7 @@ void GUI::Draw(aie::Renderer2D* renderer, aie::Font* font, aie::Input* input)
 	sprintf_s(strFPS, "FPS: %i", aie::Application::GetInstance()->GetFPS());
 
 	// Draw GUI
-	float xPos = xOrigin + BORDER;
+	float xPos = xOrigin + BORDER - 50;
 	float yPos = yOrigin - BORDER;
 	renderer->SetRenderColour(0xFFFFFFFF);
 	renderer->DrawText2D(font, strHealth, xPos, yPos);			yPos -= PADDING;
