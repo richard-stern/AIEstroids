@@ -3,12 +3,13 @@
 class HealthPickup :	public Actor
 {
 public:
-	HealthPickup(int health,const char* textureName);
+	HealthPickup(int health);
 	~HealthPickup();
 
 	void OnCollision(CollisionEvent _event) override;
-
+	void Update(float deltaTime) override;
 private:
 	int m_healthGained;
+	Vector2 randomVelocity;
 };
 
