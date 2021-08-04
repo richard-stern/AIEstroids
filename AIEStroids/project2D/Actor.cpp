@@ -2,16 +2,13 @@
 #include "Application.h"
 #include "PhysicsBody.h"
 #include "CollisionManager.h"
+#include "Camera.h"
+#include <iostream>
 
-Actor::Actor()
-{
-	SetPosition({ 0, 0 });
-	SetHealth(m_MaxHealth);
-}
+Actor::Actor() : Actor::Actor(Vector2()) {}
 
-Actor::Actor(Vector2 _pos, GameObject* _parent)
+Actor::Actor(Vector2 _pos, GameObject* _parent) : GameObject::GameObject(_pos, _parent)
 {
-	SetPosition(_pos);
 	SetHealth(m_MaxHealth);
 }
 
@@ -25,33 +22,40 @@ void Actor::Update(float _deltaTime)
 {
 	GameObject::Update(_deltaTime);
 
-	aie::Application* application = aie::Application::GetInstance();
+	Vector2 cameraPos = Camera::GetInstance()->GetPosition();
+	Vector2 position = GetPosition();
+	aie::Application* app = app->GetInstance();
+	int xThresh = 200;
+	int yThresh = 150;
+	int height = app->GetWindowHeight();
+	int width = app->GetWindowWidth();
+
+	
 	if (m_WrapAndRespawn)
 	{
-		int h = application->GetWindowHeight();
-		int w = application->GetWindowWidth();
-		Vector2 pos = GetPosition();
+		if (position.x < cameraPos.x - xThresh)
+		{
+			SetPosition({ cameraPos.x + width + xThresh, position.y});
+			//std::cout << "wrapping left to right" << std::endl;
+		}
+		if (position.x > cameraPos.x + width + xThresh)
+		{
+			SetPosition({ cameraPos.x - xThresh, position.y});
+			//std::cout << "wrapping right to left" << std::endl;
+		}
+		if (position.y < cameraPos.y - yThresh)
+		{
+			SetPosition({ position.x, cameraPos.y + height + yThresh});
+			//std::cout << "wrapping bottom to top" << std::endl;
+		}
+		if (position.y > cameraPos.y + height + yThresh)
+		{
+			SetPosition({ position.x, cameraPos.y - yThresh });
+			//std::cout << "wrapping top to bottom" << std::endl;
+		}
 
-		// if actor moves off the screen horizontally
-		if (pos.x > w)
-		{
-			SetPosition({ (float)-w, pos.y });
-		}
-		else if (pos.x < 0)
-		{
-			SetPosition({ (float)w, pos.y });
-		}
-		// vertically
-		if (pos.y > h)
-		{
-			SetPosition({ pos.x, (float)-h });
-		}
-		else if (pos.x < 0)
-		{
-			SetPosition({ pos.x, (float)-h });
-		}
+
 	}
-	
 }
 
 void Actor::OnCollision(CollisionEvent _event)
@@ -69,6 +73,13 @@ void Actor::GeneratePhysicsBody(aie::Texture* texture, CollisionLayer layer, uns
 void Actor::GeneratePhysicsBody(float _width, float _height, CollisionLayer layer, unsigned short layerMask)
 {
 	Shape* shape = PolygonShape::CreateBox(_width / 2.0f, _height / 2.0f, Vector2::ZERO());
+	auto collider = new Collider(shape, (unsigned short)layer, layerMask);
+	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
+}
+
+void Actor::GenerateCircleBody(float _radius, CollisionLayer layer, unsigned short layerMask)
+{
+	Shape* shape = new CircleShape(Vector2::ZERO(), _radius);
 	auto collider = new Collider(shape, (unsigned short)layer, layerMask);
 	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
 }
