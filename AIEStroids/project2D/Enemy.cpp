@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "Level.h"
 #include "Rock.h"
+#include "CollisionLayers.h"
 
 #include <iostream>
 
@@ -73,6 +74,8 @@ void Enemy::Update(float deltaTime)
 
 void Enemy::OnCollision(CollisionEvent event)
 {
+	unsigned short layer = event.other->GetCollider()->GetCollisionLayer();
+
 	if (event.other == m_player->GetPhysicsBody())
 	{
 		m_CurrentHealth = -50; // destroy enemy ship
@@ -82,6 +85,7 @@ void Enemy::OnCollision(CollisionEvent event)
 		std::cout << "Player Health: " << m_player->GetHealth() << std::endl;
 	}
 	else
+	//else if(layer == (unsigned short) CollisionLayer::BULLET ) // This does not work
 	{
 		m_CurrentHealth -= 5;
 		std::cout << "Enemy took 20 damage. Current health: " << m_CurrentHealth << std::endl;
