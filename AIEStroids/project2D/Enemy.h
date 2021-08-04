@@ -14,6 +14,7 @@ class Player;
 class Level;
 class Rock;
 
+#define SPRITE_SIZE 128
 #define MAX_ENEMY_VELOCITY 200
 
 class Enemy : public Actor

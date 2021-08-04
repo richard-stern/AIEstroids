@@ -25,11 +25,12 @@ public:
 	virtual void OnCollision(CollisionEvent _event);
 	void GeneratePhysicsBody(aie::Texture* texture, CollisionLayer layer, unsigned short layerMask);
 	void GeneratePhysicsBody(float _width, float _height, CollisionLayer layer, unsigned short layerMask);
+	void GenerateCircleBody(float _radius, CollisionLayer layer, unsigned short layerMask);
 	void RemovePhysicsBody() { m_PhysicsBody = nullptr; }
 
 protected:
 	PhysicsBody* m_PhysicsBody = nullptr;
-
+	Vector2 m_CameraPos;
 	const int m_MaxHealth = 100;
 	int m_CurrentHealth;
 	
