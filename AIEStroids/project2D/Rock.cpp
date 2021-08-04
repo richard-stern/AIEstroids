@@ -14,8 +14,8 @@ Rock::Rock(Player* player)
 	unsigned int layermask = (unsigned int)CollisionLayer::ALL;
 	//unsigned int layermask = 0;
 	//Create collider
-	Collider* collider = new Collider(shape, (unsigned short)CollisionLayer::ROCK, layermask);
-	m_PhysicsBody = new PhysicsBody(this, BodyType::DYNAMIC, collider);
+	GenerateCircleBody(m_Texture->GetWidth() / 2 - 4.0f, CollisionLayer::ROCK, (unsigned int)CollisionLayer::ALL);
+	
 	
 	SetRandomPath();
 }
