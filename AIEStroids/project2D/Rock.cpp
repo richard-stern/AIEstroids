@@ -25,9 +25,14 @@ Rock::~Rock()
 
 }
 
-void Rock::OnCollision(GameObject* other)
+void Rock::OnCollision(CollisionEvent _event)
 {
-	SetRandomPath();
+	health = health - 1;
+	if (health == 0) {
+		SetRandomPath();
+		health = 5;
+	}
+	
 } 
 
 void Rock::SetRandomPath()

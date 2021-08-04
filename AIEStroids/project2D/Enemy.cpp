@@ -8,6 +8,8 @@
 #include "Level.h"
 #include "Rock.h"
 
+#include <iostream>
+
 Enemy::Enemy(Player* player, Rock** rocks) : m_destroyed(false)
 {
 	m_player = player;
@@ -69,15 +71,24 @@ void Enemy::Update(float deltaTime)
 	//GetGlobalTransform().GetUp();
 }
 
-void Enemy::OnCollision(GameObject* other)
+void Enemy::OnCollision(CollisionEvent event)
 {
-	if (other == m_player)
+	if (event.other == m_player->GetPhysicsBody())
 	{
-		m_CurrentHealth = 0; // destroy enemy ship
-		m_player->SetHealth(m_player->GetHealth() - 10); // damage the player
+		m_CurrentHealth = -50; // destroy enemy ship
+		m_player->SetHealth(m_player->GetHealth() - 50); // damage the player
+		std::cout << "Enemy collided with ship." << std::endl;
+		std::cout << "Enemy took 20 damage. Current health: " << m_CurrentHealth << std::endl;
+		std::cout << "Player Health: " << m_player->GetHealth() << std::endl;
 	}
 	else
-		m_CurrentHealth -= 10;
+	{
+		m_CurrentHealth -= 5;
+		std::cout << "Enemy took 20 damage. Current health: " << m_CurrentHealth << std::endl;
+	}
+
+	if (m_CurrentHealth <= 0)
+		std::cout << "Enemy is dead." << std::endl;
 }
 
 void Enemy::Seek(Actor* target, float deltaTime)
@@ -166,5 +177,10 @@ bool Enemy::LineIntersectsCircle(Vector2 ahead1, Vector2 ahead2, GameObject* obs
 	float ahead1Distance = obstacle->GetPosition().GetDistance(ahead1);
 	float ahead2Distance = obstacle->GetPosition().GetDistance(ahead2);
 
-	return (ahead1Distance <= ROCK_RADIUS || ahead2Distance <= ROCK_RADIUS);
+	//float spriteSize = obstacle->GetTexture()->GetWidth();
+	//Vector2 scale = obstacle->GetLocalTransform().GetScale();
+
+	//float radius = (scale * spriteSize).GetMagnitude() + MIN_AVOID_DISTANCE;
+
+	return (ahead1Distance <= MIN_AVOID_DISTANCE || ahead2Distance <= MIN_AVOID_DISTANCE);
 }
