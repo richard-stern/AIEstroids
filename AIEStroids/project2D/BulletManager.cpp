@@ -44,9 +44,6 @@ void BulletManager::ShootBullet(Vector2 position, float angle)
 	{
 		if (pBullet[i]->GetActive() == false)
 		{
-			//Set the pBullet to true
-			pBullet[i]->SetActive(true);
-
 			//calls thje shoot function from Bullet cpp file that will
 			//create a bullet from the posision from the araay
 			pBullet[i]->Shoot(position, angle);
@@ -79,7 +76,7 @@ void BulletManager::Draw(aie::Renderer2D* _renderer2D)
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
 		//If bullet is active Draw the bullet in the array
-		if (pBullet[i]->GetActive())
+		//if (pBullet[i]->GetActive())
 			pBullet[i]->Draw(_renderer2D);
 	}
 }

@@ -20,6 +20,7 @@ Bullet::Bullet() : Actor::Actor()
 	//Creates a clipping mask so the bullet and Player can't make contact with each other
 	m_nActiveLayer = (unsigned int)CollisionLayer::ALL ^ ((unsigned int)CollisionLayer::PLAYER | (unsigned int)CollisionLayer::BULLET);
 	GeneratePhysicsBody(32, 32, CollisionLayer::BULLET, m_nActiveLayer);
+
 }
 
 //Destructor
@@ -38,7 +39,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	m_fLifeTimeTimer = m_fLifeTime;
 
 	//Calls function to make visable so it will renderer
-	/*SetActive(true);*/
+	SetActive(true);
 
 	//Set the local position of the bullet
 	SetPosition(position);
@@ -69,7 +70,7 @@ void Bullet::Update(float m_fDeltaTime)
 			//m_PhysicsBody->GetCollider()->SetCollisionLayer(0);
 			
 			//Resets the Timer back to 1
-			m_fLifeTimeTimer = m_fLifeTime;
+			/*m_fLifeTimeTimer = m_fLifeTime;*/
 		}
 	}
 }
@@ -85,4 +86,5 @@ void Bullet::OnCollision(CollisionEvent _event)
 
 	//Reset timer
 	m_fLifeTimeTimer = m_fLifeTime;
+
 }
