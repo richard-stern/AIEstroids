@@ -1,4 +1,5 @@
 #include "AnimatedSprite.h"
+#include "TextureManager.h"
 
 AnimatedSprite::AnimatedSprite(DynamicArray<aie::Texture*>& pTextures, float fAnimationFPS, int nDrawOrder)
 {
@@ -9,6 +10,13 @@ AnimatedSprite::AnimatedSprite(DynamicArray<aie::Texture*>& pTextures, float fAn
 	//Set Up Textures
 	SetAnimationTextures(pTextures);
 	SetTexture(m_vAnimTextures.GetAt(0));
+}
+
+AnimatedSprite::AnimatedSprite(float fAnimationFPS, int nDrawOrder)
+{
+	m_fAnimationFPS = fAnimationFPS;
+	m_fCurrentFrame = 0;
+	m_nDrawOrder = nDrawOrder;
 }
 
 AnimatedSprite::~AnimatedSprite()
@@ -33,6 +41,11 @@ void AnimatedSprite::Update(float deltaTime)
 		SetTexture(m_vAnimTextures[static_cast<int> (m_fCurrentFrame)]);
 
 	}
+}
+
+void AnimatedSprite::AddTexture(const char* filePath)
+{
+	m_vAnimTextures.Add(TextureManager::Get()->LoadTexture(filePath));
 }
 
 void AnimatedSprite::SetAnimationTextures(const DynamicArray<aie::Texture*>& pTextures)
