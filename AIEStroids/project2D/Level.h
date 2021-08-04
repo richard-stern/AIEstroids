@@ -28,6 +28,7 @@ public:
 
 	void Update(float deltaTime);
 	void Draw(aie::Renderer2D* renderer);
+	bool IsGameOver();
 
 private:
 	// Objects
@@ -40,4 +41,5 @@ private:
 	// Misc.
 	float enemyTimer = ENEMY_RATE;				// Countdown to spawn a new Enemy
 	float healthTimer = HEALTH_RATE;			// Countdown to spawn a new Health-Pickup
+	bool isGameOver;							// Whether the player's has lives or not
 };
