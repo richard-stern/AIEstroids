@@ -3,8 +3,9 @@
 #include "PhysicsBody.h"
 #include "CollisionManager.h"
 #include "Camera.h"
+#include <iostream>
 
-#define LEVEL_SIZE 20000
+Actor::Actor() : Actor::Actor(Vector2()) {}
 
 Actor::Actor(Vector2 _pos, GameObject* _parent) : GameObject::GameObject(_pos, _parent)
 {
@@ -21,23 +22,38 @@ void Actor::Update(float _deltaTime)
 {
 	GameObject::Update(_deltaTime);
 
-	m_Camera = Camera::GetInstance();
+	Vector2 cameraPos = Camera::GetInstance()->GetPosition();
+	Vector2 position = GetPosition();
+	aie::Application* app = app->GetInstance();
+	int xThresh = 500;
+	int yThresh = 500;
+	int height = app->GetWindowHeight();
+	int width = app->GetWindowWidth();
+
 	
 	if (m_WrapAndRespawn)
 	{
-		// V2 pos
-		// V2 cameraPos
-		// int xThresh
-		// int yThresh
+		if (position.x < m_CameraPos.x - xThresh)
+		{
+			SetPosition({ m_CameraPos.x + width + xThresh, position.y});
+			std::cout << "wrapping left to right" << std::endl;
+		}
+		if (position.x > m_CameraPos.x + width + xThresh)
+		{
+			SetPosition({ m_CameraPos.x - xThresh, position.y});
+			std::cout << "wrapping right to left" << std::endl;
+		}
+		if (position.y < m_CameraPos.y - yThresh)
+		{
+			SetPosition({ position.x, m_CameraPos.y + height + yThresh});
+			std::cout << "wrapping bottom to top" << std::endl;
+		}
+		if (position.y > m_CameraPos.y + height + yThresh)
+		{
+			SetPosition({ position.x, m_CameraPos.y - yThresh });
+			std::cout << "wrapping top to bottom" << std::endl;
+		}
 
-		// if (pos.x < campos.x + xThresh)
-		// SetPos(campos.x + xthresh, thispos.y + rand() % ythresh)
-		// if (pos.x > campos.x + xThresh)
-		// SetPos(campos.x - xthresh, thispos.y + rand() % ythresh)
-		// if (pos.y < campos.y + yThresh)
-		// SetPos(campos.y + xthresh, thispos.y + rand() % xthresh)
-		// if (pos.y > campos.y + yThresh)
-		// SetPos(campos.y + xthresh, thispos.y + rand() % xthresh)
 
 	}
 }
