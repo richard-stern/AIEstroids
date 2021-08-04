@@ -6,18 +6,20 @@ Bullet::Bullet() : Actor::Actor()
 	//uses function from the TextureManager to load the texture from the bullet
 	m_Texture = TextureManager::Get()->LoadTexture("../bin/sprites/Bullets_3.png");
 
+	SetSpriteDepth(-0.5);
+
 	//Set the variable to false
 	m_WrapAndRespawn = false;
 
-	//Sets the variable float value to 10 
-	m_fLifeTime = 4;
+	//Sets the variable float value to 1
+	m_fLifeTime = 1;
 
 	//Sets the variable to equal the the same value as the other variable
 	m_fLifeTimeTimer = m_fLifeTime;
 
 	//Creates a clipping mask so the bullet and Player can't make contact with each other
 	m_nActiveLayer = (unsigned int)CollisionLayer::ALL ^ ((unsigned int)CollisionLayer::PLAYER | (unsigned int)CollisionLayer::BULLET);
-	GeneratePhysicsBody(32, 32, (CollisionLayer)0, m_nActiveLayer);
+	GeneratePhysicsBody(32, 32, CollisionLayer::BULLET, m_nActiveLayer);
 }
 
 //Destructor
@@ -29,12 +31,14 @@ Bullet::~Bullet()
 //takes in the position and angle 
 void Bullet::Shoot(Vector2 position, float angle)
 {
-	m_PhysicsBody->GetCollider()->SetCollisionLayer((unsigned int)CollisionLayer::BULLET);
+	//Conllision
+	//m_PhysicsBody->GetCollider()->SetCollisionLayer((unsigned int)CollisionLayer::BULLET);
+	
 	//Starts the timer on the bullet before deleted
 	m_fLifeTimeTimer = m_fLifeTime;
 
 	//Calls function to make visable so it will renderer
-	SetActive(true);
+	/*SetActive(true);*/
 
 	//Set the local position of the bullet
 	SetPosition(position);
@@ -42,6 +46,7 @@ void Bullet::Shoot(Vector2 position, float angle)
 	//Set the rotation of the bullet when fired to face the way the turret faces
 	SetRotation(angle);
 
+	//speed of the bullet when fired
 	m_PhysicsBody->SetVelocity(Vector2(cos(angle),sin(angle)) * 1000);
 }
 
@@ -59,8 +64,11 @@ void Bullet::Update(float m_fDeltaTime)
 		{
 			//Set the bullet m_bActive to false meaing the bullet is no longer renderer on screen
 			SetActive(false);
-			m_PhysicsBody->GetCollider()->SetCollisionLayer(0);
-			//Resets the Timer back to 2
+			
+			//Conllision
+			//m_PhysicsBody->GetCollider()->SetCollisionLayer(0);
+			
+			//Resets the Timer back to 1
 			m_fLifeTimeTimer = m_fLifeTime;
 		}
 	}
@@ -71,6 +79,10 @@ void Bullet::OnCollision(CollisionEvent _event)
 {
 	//Gets rid of the bullet when it hits an object
 	SetActive(false);
-	m_PhysicsBody->GetCollider()->SetCollisionLayer(0);
+
+	//Conllision
+	//m_PhysicsBody->GetCollider()->SetCollisionLayer(0);
+
+	//Reset timer
 	m_fLifeTimeTimer = m_fLifeTime;
 }

@@ -2,7 +2,7 @@
 #include "Bullet.h"
 
 //Size of how many bullets 
-#define MAX_BULLET 420
+#define MAX_BULLET 200
 
 //Constructor
 BulletManager::BulletManager()
@@ -62,13 +62,14 @@ void BulletManager::Update(float deltaTime)
 {
 	for (int i = 0; i < MAX_BULLET; i++)
 	{
-		//Updates the Bullets GlobalPosition
-		pBullet[i]->UpdateTransforms();
-	}
-	for (int i = 0; i < MAX_BULLET; i++)
-	{
-		//Passes in the deltaTime to the Bullet Update function to be used on bullet lifetime
-		pBullet[i]->Update(deltaTime);
+		if (pBullet[i]->GetActive() == true)
+		{
+			//Updates the Bullets GlobalPosition
+			pBullet[i]->UpdateTransforms();
+
+			//Passes in the deltaTime to the Bullet Update function to be used on bullet lifetime
+			pBullet[i]->Update(deltaTime);
+		}
 	}
 }
 

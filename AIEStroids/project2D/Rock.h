@@ -11,10 +11,11 @@ public:
 	Rock(Player* player);
 	~Rock();
 	void Update(float deltaTime) override;
-	void OnCollision(GameObject* other);
+	void OnCollision(CollisionEvent _event);
 	
 
 private:
 	void SetRandomPath();
 	Player* _player;
+	int health = 5;
 };

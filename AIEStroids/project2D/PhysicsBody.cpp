@@ -38,6 +38,9 @@ PhysicsBody::~PhysicsBody()
 
 void PhysicsBody::Update(float deltaTime)
 {
+	if (!actorObject->GetActive())
+		return;
+
 	switch (type)
 	{
 	case BodyType::DYNAMIC:
