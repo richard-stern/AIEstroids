@@ -1,4 +1,4 @@
-// Created by Cameron
+// Author: Cameron
 
 #pragma once
 #include "Renderer2D.h"
@@ -9,15 +9,6 @@
 #include "TextureManager.h"
 #include "StateMachine.h"
 #include "BaseState.h"
-
-/*
-GameOverState Class
-
-Presents a game over screen, and returns to the game state
-upon pressing enter.
-
-Contains a header (i.e. "Game Over!") and help text (i.e. "Enter to continue...").
-*/
 
 class GameOverState : public BaseState
 {
@@ -40,8 +31,8 @@ private:
 	aie::Font* fontText;
 
 	// Strings
-	const char strHeader[16] = "GAME OVER!";
-	const char strText[64] = "Press the Enter key to restart.";
+	const char strHeader[16] = "YOU DIED";
+	const char strText[64] = "Press the Enter key to restart...";
 	float posHeader;
 	float posText;
 

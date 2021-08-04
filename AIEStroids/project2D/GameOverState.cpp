@@ -1,4 +1,4 @@
-// Created by Cameron
+// Author: Cameron
 
 #include "GameOverState.h"
 
@@ -17,7 +17,8 @@ GameOverState::~GameOverState()
 // Called when state is entered - Initializes private variables
 void GameOverState::Enter()
 {
-	// Reset camera scale for animation
+	// Reset camera position and scale for animation
+	renderer->SetCameraPos(0.0f, 0.0f);
 	renderer->SetCameraScale(1.0f);
 	animationComplete = false;
 
@@ -54,7 +55,7 @@ void GameOverState::Update(float deltaTime, StateMachine* stateMachine)
 		return;
 	}
 
-	// If Enter is pressed, restart game (set state)
+	// If Enter is pressed (after animation complete), restart game
 	if (aie::Input::GetInstance()->WasKeyPressed(aie::INPUT_KEY_ENTER))
 		stateMachine->ChangeState(StateMachine::ESTATE_GAME);
 }
@@ -78,12 +79,14 @@ void GameOverState::Draw(aie::Renderer2D* renderer)
 		renderer->DrawText2D(fontText, strText, posText, (windowH * 0.25f));
 	}
 	
-	// Reset render colour to white
+	// Reset render colour back to default
 	renderer->SetRenderColour(0xFFFFFFFF);
 }
 
 // Called when state is exited - Resets camera scale
 void GameOverState::Exit()
 {
+	// Return camera position and scale back to default (just in case it was changed anywhere in here)
+	renderer->SetCameraPos(0.0f, 0.0f);
 	renderer->SetCameraScale(1.0f);
 }

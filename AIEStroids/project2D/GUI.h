@@ -13,14 +13,14 @@
 class GUI
 {
 public:
-	static void Create();
-	static void Destroy();
-	static GUI* GetInstance();
+	static void Create();		// Singleton creation
+	static void Destroy();		// Singleton deletion
+	static GUI* GetInstance();	// Singleton getter
 
 	void Draw(aie::Renderer2D* renderer, aie::Font* font,  aie::Input* input);
 
 	void SetHealth(int health);
-	void SetScore(int score);
+	void SetScore(int score);	
 	void SetLives(int lives);
 
 private:

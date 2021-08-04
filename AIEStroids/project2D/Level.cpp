@@ -5,9 +5,10 @@
 // Constructor - Initializes level objects and systems
 Level::Level(aie::Renderer2D* renderer)
 {
-	// Create Collision and GUI systems
+	// Create Collision and GUI systems, setting game over to false
 	CollisionManager::CreateInstance();
 	GUI::Create();
+	isGameOver = false;
 
 	#pragma region Create Objects
 	// Get game window size (for spawn positions)
@@ -28,9 +29,6 @@ Level::Level(aie::Renderer2D* renderer)
 
 	// Create Camera
 	Camera::Create(renderer, m_player);
-
-	// Set game over to false
-	isGameOver = false;
 }
 
 // Destructor - Deletes level objects and systems
@@ -60,6 +58,13 @@ Level::~Level()
 	{
 		delete m_enemyArray[i];
 		m_enemyArray[i] = nullptr;
+	}
+
+	// Delete Health-Pickups
+	for (int i = 0; i < m_healthArray.Count(); i++)
+	{
+		delete m_healthArray[i];
+		m_healthArray[i] = nullptr;
 	}
 	#pragma endregion
 
@@ -126,11 +131,11 @@ void Level::Update(float deltaTime)
 	// Update Enemies Transforms
 	for (int i = 0; i < m_enemyArray.Count(); i++)
 		m_enemyArray[i]->UpdateTransforms();
-	#pragma endregion
 
 	// Update Health-Pickup Transforms
 	for (int i = 0; i < m_healthArray.Count(); i++)
 		m_healthArray[i]->UpdateTransforms();
+	#pragma endregion
 
 	// Update Collision system
 	CollisionManager::GetInstance()->Update();
@@ -155,7 +160,7 @@ void Level::Update(float deltaTime)
 	// Update Camera system
 	Camera::GetInstance()->Update(deltaTime);
 
-	// Update game over
+	// Check if game is over
 	if (m_player->GetLives() <= 0)
 		isGameOver = true;
 }
@@ -163,6 +168,7 @@ void Level::Update(float deltaTime)
 // Draw loop - Runs draw loop for all level objects
 void Level::Draw(aie::Renderer2D* renderer)
 {
+	#pragma region Draw Objects
 	// Draw Player
 	m_player->Draw(renderer);
 
@@ -181,7 +187,9 @@ void Level::Draw(aie::Renderer2D* renderer)
 	// Draw Health-Pickups
 	for (int i = 0; i < m_healthArray.Count(); i++)
 		m_healthArray[i]->Draw(renderer);
+	#pragma endregion
 
+	// Temporary - Draw debugging info
 	CollisionManager::GetInstance()->DebugDraw(renderer);
 }
 
