@@ -46,20 +46,27 @@ Enemy::~Enemy()
 
 void Enemy::Update(float deltaTime)
 {
+	Vector2 velocity = m_PhysicsBody->GetVelocity();
 	Seek(m_player, deltaTime);
-	//steeringForce = { 0, 1 };
 	CollisionAvoidance(deltaTime);
 
-	Vector2 velocity = m_PhysicsBody->GetVelocity();
+	// smooth out the steering
+	if (steeringForce.GetMagnitude() > MAX_SEE_AHEAD)
+	{
+		steeringForce = steeringForce.GetNormalised();
+		steeringForce *= MAX_SEE_AHEAD;
+	}
 
 	// update the velocity of the enemy
-	m_PhysicsBody->SetVelocity(velocity + steeringForce);
+	m_PhysicsBody->SetVelocity(velocity + steeringForce *deltaTime);
 
 	// rotate enemy ship
 	float rotation = atan2(velocity.y, velocity.x) + M_PI / 2;
 
 	// set random rotation
 	SetRotation(rotation);
+
+	//GetGlobalTransform().GetUp();
 }
 
 void Enemy::OnCollision(GameObject* other)
@@ -80,8 +87,6 @@ void Enemy::Seek(Actor* target, float deltaTime)
 
 	Vector2 desiredVelocity = difference.GetNormalised() * MAX_ENEMY_VELOCITY;
 	steeringForce = desiredVelocity - m_PhysicsBody->GetVelocity();
-
-	//m_PhysicsBody->SetVelocity(localSteeringForce);
 }
 
 void Enemy::SetRandomLocation()
@@ -127,13 +132,10 @@ void Enemy::CollisionAvoidance(float deltaTime)
 
 		avoidance.GetNormalised();
 		avoidance *= MAX_AVOID_FORCE;
-
-		//avoidance.Scale(avoidance, { MAX_AVOID_FORCE, MAX_AVOID_FORCE });
 	} 
 	else
 	{
-		avoidance *= 0;
-		//avoidance.Scale(avoidance, { 0, 0 }); // nullify the avoidance force
+		avoidance *= 0;  // nullify the avoidance force
 	}
 
 	steeringForce += avoidance;
@@ -164,5 +166,5 @@ bool Enemy::LineIntersectsCircle(Vector2 ahead1, Vector2 ahead2, GameObject* obs
 	float ahead1Distance = obstacle->GetPosition().GetDistance(ahead1);
 	float ahead2Distance = obstacle->GetPosition().GetDistance(ahead2);
 
-	return (ahead1Distance <= RADIUS || ahead2Distance <= RADIUS);
+	return (ahead1Distance <= ROCK_RADIUS || ahead2Distance <= ROCK_RADIUS);
 }
